@@ -28,4 +28,17 @@ public class HandScore {
     public void setRank(Rank rank) {
         this.rank = rank;
     }
+
+    /**
+     * Compare two HandScore
+     * @param handScore
+     * @return positive number if the first handScire is higher than the second, 0 if both score equals. Negative number otherwise
+     */
+    public int compareTo(HandScore handScore) {
+        if (this.handType.equals(handScore.handType)) {
+            return this.rank.compareTo(handScore.rank);
+        } else {
+            return handType.compareTo(handType);
+        }
+    }
 }

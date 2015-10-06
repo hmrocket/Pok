@@ -1,6 +1,6 @@
 package com.hmrocket.poker.card;
 
-public class Card {
+public class Card implements Comparable<Card> {
 
     private Rank rank;
     private Suit suit;
@@ -63,6 +63,7 @@ public class Card {
         return true;
     }
 
+    @Override
     public int compareTo(Card card) {
         return this.getRank().compareTo(card.rank);
     }

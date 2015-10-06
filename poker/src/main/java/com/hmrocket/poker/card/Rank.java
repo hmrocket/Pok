@@ -21,8 +21,6 @@ public enum Rank {
     @Override
     public String toString() {
         switch (this) {
-            case ACE:
-                return "A";
             case TWO:
                 return "2";
             case THREE:
@@ -47,6 +45,8 @@ public enum Rank {
                 return "Q";
             case KING:
                 return "K";
+            case ACE:
+                return "A";
             default:
                 return null;
         }

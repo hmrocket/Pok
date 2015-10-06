@@ -20,6 +20,26 @@ public class Hand {
         this.card2 = cards.get(1);
     }
 
+    public Card getCard1() {
+        return card1;
+    }
+
+    public void setCard1(Card card1) {
+        this.card1 = card1;
+    }
+
+    public Card getCard2() {
+        return card2;
+    }
+
+    public void setCard2(Card card2) {
+        this.card2 = card2;
+    }
+
+    public Card[] getCards() {
+        return new Card[]{card1, card2};
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,7 +62,7 @@ public class Hand {
      *
      * @param o hand of two cards
      * @return 1 if the frist hand have a higher odds to win, -1 if the second.
-     *      0 if both card has the same chance of winning
+     * 0 if both card has the same chance of winning
      */
     public int compareTo(Hand o) {
         if (isPair()) {
@@ -88,7 +108,7 @@ public class Hand {
         }
     }
 
-    private boolean isPair() {
+    public boolean isPair() {
         return card1.getRank() == card2.getRank();
     }
 }
