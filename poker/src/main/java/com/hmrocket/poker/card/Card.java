@@ -63,6 +63,16 @@ public class Card implements Comparable<Card> {
         return true;
     }
 
+    public boolean equalRank(Card card) {
+        if (card == null) return false;
+        return this.rank.equals(card.rank);
+    }
+
+    public boolean equalSuit(Card card) {
+        if (card == null) return false;
+        return this.suit.equals(card.suit);
+    }
+
     @Override
     public int compareTo(Card card) {
         return this.getRank().compareTo(card.rank);
