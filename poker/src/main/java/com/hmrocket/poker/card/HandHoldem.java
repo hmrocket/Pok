@@ -35,7 +35,7 @@ public class HandHoldem {
         throw new OperationNotSupportedException();
     }
 
-    public HandScoreFactory getreturn() throws OperationNotSupportedException {
+    public HandScoreCalculator getreturn() throws OperationNotSupportedException {
         throw new OperationNotSupportedException();
     }
 
