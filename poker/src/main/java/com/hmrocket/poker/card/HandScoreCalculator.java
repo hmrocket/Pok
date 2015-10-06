@@ -61,7 +61,8 @@ public class HandScoreCalculator {
             return new HandScore(handType, rank);
         } else if (handScore.getHandType() == HandType.FOUR_OF_A_KIND || handScore.getHandType() == HandType.FULL_HOUSE)
             return handScore;
-        else if (suit != null || rank != null) return new HandScore(suit != null ? HandType.FLUSH : HandType.STRAIGHT, rank);
+        else if (suit != null || rank != null)
+            return new HandScore(suit != null ? HandType.FLUSH : HandType.STRAIGHT, rank);
         else return handScore;
     }
 
@@ -173,8 +174,9 @@ public class HandScoreCalculator {
         if (map.containsValue(4)) handType = HandType.FOUR_OF_A_KIND;
         else if (map.containsValue(3))
             handType = map.containsValue(2) ? HandType.FULL_HOUSE : HandType.THREE_OF_A_KIND;
-        else if (map.containsValue(2)) handType = HandType.TWO_PAIRS;
-        else handType = HandType.ONE_PAIR;
+        else if (map.containsValue(2))
+            handType = HandType.ONE_PAIR; // HandType can be TWO_PAIRS Also we don't know at this point
+        else handType = HandType.HIGH_CARD;
 
         Rank rank;
         switch (handType) {
@@ -189,6 +191,13 @@ public class HandScoreCalculator {
             case ONE_PAIR:
                 // the first rank is the highest rank of the two pair
                 rank = searchRankOfthisValue(map, 2);
+                map.remove(rank);
+                Rank rank2 = searchRankOfthisValue(map, 2);
+                if (rank2 != null) {
+                    handType = HandType.TWO_PAIRS;
+                    if (rank.compareTo(rank2) < 0)
+                        throw new IllegalStateException("From my comment algorithm rank1 should be higher than rank2");
+                }
                 break;
             case HIGH_CARD:
             default:
@@ -200,6 +209,7 @@ public class HandScoreCalculator {
 
     /**
      * Search for the first Rank that has value equal to integer
+     *
      * @param map
      * @param integer
      * @return the first Rank that has value equals to integer
