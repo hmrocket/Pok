@@ -17,7 +17,12 @@ public class Pot {
     private Stack<EqualBet> equalBets;
 
     public Pot () {
+        reset();
+    }
 
+    public void reset() {
+        value = 0;
+        equalBets.removeAllElements();
     }
 
     public void addBet(HashMap<Player, Long> bets) {

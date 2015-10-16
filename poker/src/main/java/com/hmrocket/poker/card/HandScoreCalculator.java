@@ -139,7 +139,7 @@ public class HandScoreCalculator {
                 }
             }
             if (consecutiveCards < 4) {
-                // start the next loop from card j
+                // startNewHand the next loop from card j
                 i = j;
                 continue;
             } else {
