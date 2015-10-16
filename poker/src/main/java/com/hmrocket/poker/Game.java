@@ -1,6 +1,7 @@
 package com.hmrocket.poker;
 
 import com.hmrocket.poker.card.Deck;
+import com.hmrocket.poker.card.HandHoldem;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public class Game {
 
-    public interface GameEvent {
+    protected interface GameEvent {
         public void gameEnded();
         public void playerBusted(Player player);
     }
@@ -31,6 +32,12 @@ public class Game {
     public void startNewHand(List<Player> players, int dealerIndex) {
         deck.reset();
         pot.reset();
+        // give players new Hand
+        for(Player player : players) {
+            player.setState(Player.PlayerState.ACTIVE);
+            HandHoldem handHoldem = new HandHoldem(deck.drawCard(), deck.drawCard());
+            player.setHand(handHoldem);
+        }
         pokerRound = new PokerRound(players, dealerIndex);
     }
 

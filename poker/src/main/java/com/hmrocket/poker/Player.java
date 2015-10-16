@@ -17,6 +17,7 @@ public class Player { //TODO what's the needed attribute that player need
 
     public enum PlayerState {
         INACTIVE,
+        ACTIVE,
         CHECK,
         FOLD,
         RAISE,
@@ -33,6 +34,14 @@ public class Player { //TODO what's the needed attribute that player need
 
     public long getCash() {
         return cash;
+    }
+
+    public void setState(PlayerState state) {
+        this.state = state;
+    }
+
+    public void setHand(HandHoldem hand) {
+        this.hand = hand;
     }
 
     public void fold() {
