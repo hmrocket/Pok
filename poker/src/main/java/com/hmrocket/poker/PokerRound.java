@@ -9,16 +9,19 @@ import java.util.List;
 
 
 /**
+ * Make sure that everyone has bet the right amount
+ * Handle the rounds
  * @author mhamed
  * @since Oct 8, 2015
  */
 public class PokerRound extends Round {
 
 
-    protected interface RoundCallbacks {
-        public void onRoundFinish();
+    protected interface RoundEvent {
+        public void onRoundFinish(RoundPhase phase, HashMap<Player, Long> bets);
 
         public void onRaise();
+
     }
 
     private HashMap<Player, Long> bets;

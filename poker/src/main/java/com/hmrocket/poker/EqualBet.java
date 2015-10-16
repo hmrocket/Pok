@@ -1,7 +1,5 @@
 package com.hmrocket.poker;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,4 +30,13 @@ public class EqualBet {
     public void setValue(long value) {
         this.value = value;
     }
+
+    /**
+     *
+     * @return the number of player who has bet the same amount
+     */
+    public int count() {
+        return players.size();
+    }
+
 }

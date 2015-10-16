@@ -5,18 +5,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.naming.OperationNotSupportedException;
-
 /**
  * poker arnaqueur - poker crook
  * Created by hmrocket on 04/10/2015.
  */
-public class HandScoreCalculator {
+public final class HandScoreCalculator {
 
     private HandScoreCalculator() {
     }
 
-    public HandScore getHandScore(Hand hand) {
+    public static HandScore getHandScore(Hand hand) {
         if (hand.isPair()) {
             return new HandScore(HandType.ONE_PAIR, hand.getMax().getRank());
         } else {
@@ -24,32 +22,21 @@ public class HandScoreCalculator {
         }
     }
 
-    public HandScore getHandScore(Hand hand, Flop flop) {
+
+    public static HandScore getHandScore(Hand hand, Flop flop) {
         return calculateHandScore(hand.getCard1(), hand.getCard2(), flop.getCard1(), flop.getCard2(), flop.getCard3());
 
     }
 
-    public HandScore getHandScoreCalculator(Hand hand, Flop flop, Card turn) {
+    public static HandScore getHandScoreCalculator(Hand hand, Flop flop, Card turn) {
         return calculateHandScore(hand.getCard1(), hand.getCard2(), flop.getCard1(), flop.getCard2(), flop.getCard3(), turn);
     }
 
-    public HandScore getHandScoreCalculator(Hand hand, Flop flop, Card turn, Card river) {
+    public static HandScore getHandScoreCalculator(Hand hand, Flop flop, Card turn, Card river) {
         return calculateHandScore(hand.getCard1(), hand.getCard2(), flop.getCard1(), flop.getCard2(), flop.getCard3(), turn, river);
     }
 
-    public HandScore getHandScoreCalculator(Hand hand, Card... cards) throws OperationNotSupportedException {
-        if (cards.length > 5)
-            throw new IllegalArgumentException("no more than 5 cards should be passed");
-        // TODO calculate hand type and rank
-        throw new OperationNotSupportedException();
-    }
-
-    public HandScoreCalculator(HandHoldem handHoldem) throws OperationNotSupportedException {
-        // TODO calculate hand type and rank
-        throw new OperationNotSupportedException();
-    }
-
-    private HandScore calculateHandScore(Card... cards) {
+    private static HandScore calculateHandScore(Card... cards) {
         // Check Flush
         Rank rank;
         Suit suit;
@@ -70,7 +57,7 @@ public class HandScoreCalculator {
      * @param cards
      * @return {@link Suit} of the flush, null if no flush can be constructed from <code>cards</code>cards
      */
-    private Suit checkFlush(Card... cards) {
+    private static Suit checkFlush(Card... cards) {
         if (cards == null || cards.length < 5) return null;
         int hearts = 0, clubs = 0, diamonds = 0, spades = 0;
         for (Card card : cards) {
@@ -103,7 +90,7 @@ public class HandScoreCalculator {
      * @param cards
      * @return
      */
-    private Rank getFlushRank(Suit flushSuit, Card... cards) {
+    private static Rank getFlushRank(Suit flushSuit, Card... cards) {
         if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
         Rank maxRank = null;
         for (Card card : cards) {
@@ -121,7 +108,7 @@ public class HandScoreCalculator {
      * @param cards
      * @return the higher card rank of the straight, null otherwise
      */
-    private Rank checkStraight(Card... cards) {
+    private static Rank checkStraight(Card... cards) {
         // Card implements comparable. Rank Comparative
         Arrays.sort(cards);
         for (int i = cards.length - 1; i >= 0; i--) {
@@ -153,7 +140,7 @@ public class HandScoreCalculator {
         return null;
     }
 
-    private HandScore checkRecurrences(Card... cards) {
+    private static HandScore checkRecurrences(Card... cards) {
         // sort cards based on cards ranks
         Arrays.sort(cards);
         HashMap<Rank, Integer> map = new HashMap<Rank, Integer>();
@@ -214,7 +201,7 @@ public class HandScoreCalculator {
      * @param integer
      * @return the first Rank that has value equals to integer
      */
-    private Rank searchRankOfthisValue(HashMap<Rank, Integer> map, Integer integer) {
+    private static Rank searchRankOfthisValue(HashMap<Rank, Integer> map, Integer integer) {
         Iterator it = map.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Rank, Integer> pair = (Map.Entry<Rank, Integer>) it.next();
@@ -223,4 +210,5 @@ public class HandScoreCalculator {
         }
         return null;
     }
+
 }

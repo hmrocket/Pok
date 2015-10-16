@@ -1,10 +1,12 @@
 package com.hmrocket.poker;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -17,6 +19,7 @@ public class Pot {
     private Stack<EqualBet> equalBets;
 
     public Pot () {
+        equalBets = new Stack<EqualBet>();
         reset();
     }
 
@@ -31,7 +34,7 @@ public class Pot {
         // check if the number of players equal the last bet last bet (->merge both equalBets)
         if (isEqualBets(bets)) {
             int PlayersNumberLastBet = this.equalBets.peek().getPlayers().size();
-            if (PlayersNumberLastBet == bets.keySet().size()) {
+            if (PlayersNumberLastBet == bets.size()) {
                 long newAmount = this.equalBets.peek().getValue() + bets.values().iterator().next();
                 this.equalBets.peek().setValue(newAmount);
             }else {
@@ -82,5 +85,40 @@ public class Pot {
         // All bets are equals
         return true;
     }
+
+    public boolean isEmpty() {
+        return equalBets.isEmpty();
+    }
+
+    public void distributeToWinners() {
+        EqualBet equalBet;
+        Set<Player> losers;
+        Player potentialWinner;
+        List<Player> levelWinners = new ArrayList<Player>();
+
+        // As long there is EqualBet (money) in the pot, Add cash to winners
+        while (!isEmpty()) {
+            levelWinners.clear();
+            equalBet = equalBets.pop(); // Remove a layer of EqualBet from pot
+            losers = equalBet.getPlayers();
+            potentialWinner = Collections.max(losers);
+            while (potentialWinner != null) {
+				// potentialWinner is a levelWinner, remove it form losers
+                levelWinners.add(potentialWinner);
+                losers.remove(potentialWinner);
+				// see if there is another winner with a same high score
+                Player multipleWinners = Collections.max(losers);
+                potentialWinner = potentialWinner.compareTo(multipleWinners) == 0 ? multipleWinners : null;
+            }
+			// distribute level pot To Winners
+            long levelWinValue = equalBet.getValue() * equalBet.count() / levelWinners.size(); // Every Winner will have this amount of money
+            for (Player winner : levelWinners) {
+                winner.addCash(levelWinValue);
+            }
+        }
+
+    }
+
+
 
 }
