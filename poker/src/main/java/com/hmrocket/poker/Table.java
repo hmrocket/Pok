@@ -1,7 +1,9 @@
 package com.hmrocket.poker;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hmrocket on 07/10/2015.
@@ -43,7 +45,7 @@ public class Table implements Game.GameEvent {
         }
         this.seatsAvailable = capacity;
         this.minBet = minBet;
-        this.game = new Game(minBet, this);
+        this.game = new Game(this);
     }
 
     private int nextDealer() {
@@ -86,20 +88,22 @@ public class Table implements Game.GameEvent {
     }
 
     public void startGame() {
-        int playerIndex =  nextDealer();
-        game.startNewHand(players, playerIndex);
+        int playerIndex = nextDealer();
+        game.startNewHand(minBet, players, playerIndex);
 
     }
 
     @Override
     public void gameEnded() {
         // Update the list of players of this new hand
-       startGame();
+        startGame();
     }
 
     @Override
-    public void playerBusted(Player player) {
-        // Player dosen't have enough cash to Buy-In
-        removePlayer(player);
+    public void playerBusted(Set<Player> playersBusted) {
+        // Player doesn't have enough cash to Buy-In
+        Iterator<Player> iterator = playersBusted.iterator();
+        while (iterator.hasNext())
+            removePlayer(iterator.next());
     }
 }

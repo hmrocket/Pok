@@ -85,6 +85,10 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         return cash;
     }
 
+    public PlayerState getStatus() {
+        return state;
+    }
+
     public void setState(PlayerState state) {
         this.state = state;
     }

@@ -18,7 +18,7 @@ public class Pot {
     // there might be more than 4 equalBets (pre-flop, flop, turn, river)
     private Stack<EqualBet> equalBets;
 
-    public Pot () {
+    public Pot() {
         equalBets = new Stack<EqualBet>();
         reset();
     }
@@ -37,7 +37,7 @@ public class Pot {
             if (PlayersNumberLastBet == bets.size()) {
                 long newAmount = this.equalBets.peek().getValue() + bets.values().iterator().next();
                 this.equalBets.peek().setValue(newAmount);
-            }else {
+            } else {
                 equalBets.add(new EqualBet(bets.values().iterator().next(), bets.keySet()));
             }
         } else {
@@ -90,9 +90,14 @@ public class Pot {
         return equalBets.isEmpty();
     }
 
-    public void distributeToWinners() {
+    /**
+     * Distribute level pot To Winners
+     *
+     * @return busted players if there's any
+     */
+    public Set<Player> distributeToWinners() {
         EqualBet equalBet;
-        Set<Player> losers;
+        Set<Player> losers = null;
         Player potentialWinner;
         List<Player> levelWinners = new ArrayList<Player>();
 
@@ -103,22 +108,34 @@ public class Pot {
             losers = equalBet.getPlayers();
             potentialWinner = Collections.max(losers);
             while (potentialWinner != null) {
-				// potentialWinner is a levelWinner, remove it form losers
+                // potentialWinner is a levelWinner, remove it form losers
                 levelWinners.add(potentialWinner);
                 losers.remove(potentialWinner);
-				// see if there is another winner with a same high score
+                // see if there is another winner with a same high score
                 Player multipleWinners = Collections.max(losers);
                 potentialWinner = potentialWinner.compareTo(multipleWinners) == 0 ? multipleWinners : null;
             }
-			// distribute level pot To Winners
+            // distribute level pot To Winners
             long levelWinValue = equalBet.getValue() * equalBet.count() / levelWinners.size(); // Every Winner will have this amount of money
             for (Player winner : levelWinners) {
                 winner.addCash(levelWinValue);
             }
         }
 
-    }
+        // first level of the pot - check if there is busted players
+        // (players went all among loser)
 
+        if (losers != null || losers.isEmpty()) {
+            return null;
+        }
+        Iterator<Player> iterator = losers.iterator();
+        while (iterator.hasNext()) {
+            Player player = iterator.next();
+            if (player.getStatus() != Player.PlayerState.ALL_IN)
+                losers.remove(player);
+        }
+        return losers;
+    }
 
 
 }
