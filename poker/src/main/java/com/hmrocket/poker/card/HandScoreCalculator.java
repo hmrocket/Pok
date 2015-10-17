@@ -36,6 +36,10 @@ public final class HandScoreCalculator {
         return calculateHandScore(hand.getCard1(), hand.getCard2(), flop.getCard1(), flop.getCard2(), flop.getCard3(), turn, river);
     }
 
+    public static HandScore getHandScoreCalculator(Hand hand, CommunityCards communityCards) {
+        return getHandScoreCalculator(hand, communityCards.getFlop(), communityCards.getTurn(), communityCards.getRiver());
+    }
+
     private static HandScore calculateHandScore(Card... cards) {
         // Check Flush
         Rank rank;

@@ -1,5 +1,6 @@
 package com.hmrocket.poker;
 
+import com.hmrocket.poker.card.CommunityCards;
 import com.hmrocket.poker.card.Deck;
 import com.hmrocket.poker.card.HandHoldem;
 
@@ -20,6 +21,7 @@ public class Game implements PokerRound.RoundEvent {
 
     private PokerRound pokerRound;
     private Pot pot;
+    private CommunityCards communityCards;
     private Deck deck;
     private GameEvent gameEventListener;
 
@@ -39,10 +41,11 @@ public class Game implements PokerRound.RoundEvent {
     public void startNewHand(long mibBet, List<Player> players, int dealerIndex) {
         deck.reset();
         pot.reset();
+        communityCards = new CommunityCards();
         // give players new Hand
         for (Player player : players) {
             player.setState(Player.PlayerState.ACTIVE);
-            HandHoldem handHoldem = new HandHoldem(deck.drawCard(), deck.drawCard());
+            HandHoldem handHoldem = new HandHoldem(deck.drawCard(), deck.drawCard(), communityCards);
             player.setHand(handHoldem);
         }
         pokerRound = new PokerRound(players, dealerIndex);
@@ -57,13 +60,13 @@ public class Game implements PokerRound.RoundEvent {
         pot.addBet(bets);
         switch (phase) {
             case PRE_FLOP:
-                deck.dealFlop();
+                communityCards.setFlop(deck.dealFlop());
                 break;
             case FLOP:
-                deck.drawCard();
+                communityCards.setTurn(deck.drawCard());
                 break;
             case TURN:
-                deck.drawCard();
+                communityCards.setRiver(deck.drawCard());
                 break;
             case RIVER: // Game ended
                 Set<Player> busted = pot.distributeToWinners();
