@@ -1,0 +1,26 @@
+1) You can cast not only on people but also the deck (liek altering the next comming card)
+2) You can cast magic on other player but for you drink potions (potion to protect you from spells 3 tours)
+3) Create a pre-selected or create mutli player game from the begging
+
+----> App Name
+Poker Cheater (tricheur de poker)
+
+
+----> cheats
+- Note: Play music or have some effect 
+1) The Cosby (human): Throw a sleeping pill in the glass of the player that will take him in a deep sleep on the next hand.
+		Tip: Use this on a blind bet bully to help him to relax ;)
+2) Screw you guys I'm going home (human): take your bet back and fold. Can be only be activate 
+	on the 3rd raise on that round and must be more than 2 players in the table.
+		Tip: when everyone go crazy and start raising use this to fold and not lose your current raise.
+		
+3) The oracle (oracle): See the next card
+4)Color Blind (ninja - sharingan): targeted Player lose the ability to identify the suit on Cards 
+5)Ulusion (ninja - sharingan): make the target see a specific card something else (doesn't apply on the card alread shown)
+6)what's the odds (oracle): see the odds of he winning this match
+7)Gimi (oracle): see if the player has double cards of the same rank
+8)Roayl ? (oracle): remove any an going effect on you.
+9) Burn (Ninja): burn a card
+10) buyIn change (magic) : change the buy in of the table for one play
+
+----> Levels: Poker player, Poker Cheater, Poker Ninja, Poker Magician, Poker Oracle, 

@@ -1,0 +1,21 @@
+1) splash screen (activity)
+2) Home screen (activity) 
+	- play (Show as magic wand image )
+	- item Shop (Big pot)
+	- potion list (grimoire)
+	- by more ship (gold chip)
+	- setting (up on the right)
+3) Play (Activity)
+	- rounded table with seats
+	- either profiles's images or hats ?
+	- Text on top and buttom (one for the status (call, raise) the other money left) + Rank 
+	- cards close to every player
+	- cast pop-up for every player
+	- cast all pop-up for the servent
+	- text how much money on the table (pot)
+	- Action game log
+	- buttons for (raise, call, fold)
+	- Time for progress for every player
+5) potion list
+	- fragment gride list with potions (some locked, other not)
+	- pop-up ingrediant needed or buy it.
