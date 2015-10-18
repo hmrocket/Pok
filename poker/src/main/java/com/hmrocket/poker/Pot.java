@@ -131,7 +131,7 @@ public class Pot {
         Iterator<Player> iterator = losers.iterator();
         while (iterator.hasNext()) {
             Player player = iterator.next();
-            if (player.getStatus() != Player.PlayerState.ALL_IN)
+            if (player.getState() != Player.PlayerState.ALL_IN)
                 losers.remove(player);
         }
         return losers;

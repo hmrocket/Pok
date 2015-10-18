@@ -17,7 +17,6 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     private PlayerState state;
 
 
-
     public enum PlayerState {
         INACTIVE,
         ACTIVE,
@@ -31,10 +30,11 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
 
     @Override
     public int compareTo(Player o) {
-        if (hand == null && o == null || state == PlayerState.FOLD && o.state == state) return 0; // return 0 if both player has not hands or both of them folded
-        else if(state == PlayerState.FOLD) // lose automatically if he folded
+        if (hand == null && o == null || state == PlayerState.FOLD && o.state == state)
+            return 0; // return 0 if both player has not hands or both of them folded
+        else if (state == PlayerState.FOLD) // lose automatically if he folded
             return -1;
-        else if(o.state == PlayerState.FOLD) // lose automatically if he folded
+        else if (o.state == PlayerState.FOLD) // lose automatically if he folded
             return 1;
         return hand.compareTo(o.hand);
     }
@@ -42,7 +42,7 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     /**
      * Player Bet Comparator
      */
-    public static Comparator <Player> BET_COMPARATOR = new Comparator<Player>() {
+    public static Comparator<Player> BET_COMPARATOR = new Comparator<Player>() {
         @Override
         public int compare(Player o1, Player o2) {
             if (o1 == null && o2 == null)
@@ -60,7 +60,7 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     /**
      * Player cash Comparator, Useful to determine all-in amount
      */
-    public static Comparator <Player> CASH_COMPARATOR = new Comparator<Player>() {
+    public static Comparator<Player> CASH_COMPARATOR = new Comparator<Player>() {
         @Override
         public int compare(Player o1, Player o2) {
             if (o1 == null && o2 == null)
@@ -85,7 +85,26 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         return cash;
     }
 
-    public PlayerState getStatus() {
+    /**
+     * All in not consider as  just waiting for the end of the match
+     *
+     * @return
+     */
+    public boolean isPlaying() {
+        return state != PlayerState.ALL_IN && state != PlayerState.INACTIVE
+                && state != PlayerState.FOLD && state != PlayerState.Zzz;
+    }
+
+    /**
+     *
+     * @param calledAmount called amount so far not just in the current Round
+     * @return true if the player raised the bet
+     */
+    public boolean didRaise(long calledAmount) {
+        return state == PlayerState.RAISE ||state == PlayerState.ALL_IN && (bet > calledAmount);
+    }
+
+    public PlayerState getState() {
         return state;
     }
 
@@ -105,23 +124,25 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         state = PlayerState.FOLD;
     }
 
-    private void bet(long amount) {
+    private long bet(long amount) {
         cash -= amount;
         bet += amount;
+        return amount;
     }
 
     public void addCash(long amount) {
-        if (amount < 0 ) {
+        if (amount < 0) {
             System.out.println("Amount can be negative");
             return;
         }
-        cash+= amount;
+        cash += amount;
         // bet = 0;
     }
 
-    public void raise(long amount) {
-        bet(amount);
+    public long raise(long amount) {
+        amount = bet(amount);
         state = PlayerState.RAISE;
+        return amount;
     }
 
     public void call(long amount) {
@@ -149,12 +170,12 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
                 fold();
                 break;
             case 1:
-                long raiseAmount = r.nextInt((int) cash) ;
+                long raiseAmount = r.nextInt((int) cash);
                 if (amountToContinue > raiseAmount) fold();
                 else raise(raiseAmount);
                 break;
             case 2:
-                long callAmount = r.nextInt((int) cash) ;
+                long callAmount = r.nextInt((int) cash);
                 if (amountToContinue > callAmount) fold();
                 else call(amountToContinue);
                 break;

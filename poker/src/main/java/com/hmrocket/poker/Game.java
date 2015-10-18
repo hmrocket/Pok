@@ -38,7 +38,7 @@ public class Game implements PokerRound.RoundEvent {
     }
 
     //TODO POker round should aks for mean bet
-    public void startNewHand(long mibBet, List<Player> players, int dealerIndex) {
+    public void startNewHand(long minBet, List<Player> players, int dealerIndex) {
         deck.reset();
         pot.reset();
         communityCards = new CommunityCards();
@@ -48,7 +48,8 @@ public class Game implements PokerRound.RoundEvent {
             HandHoldem handHoldem = new HandHoldem(deck.drawCard(), deck.drawCard(), communityCards);
             player.setHand(handHoldem);
         }
-        pokerRound = new PokerRound(players, dealerIndex);
+        pokerRound = new PokerRound(minBet, players, dealerIndex);
+        pokerRound.startGame();
     }
 
     public void removePlayer(Player player) {
@@ -68,10 +69,10 @@ public class Game implements PokerRound.RoundEvent {
             case TURN:
                 communityCards.setRiver(deck.drawCard());
                 break;
-            case RIVER: // Game ended
+            case RIVER: // Game ended // the game not always ends here !
                 Set<Player> busted = pot.distributeToWinners();
                 if (gameEventListener != null) {
-                    if (busted != null) gameEventListener.playerBusted(busted);
+                    gameEventListener.playerBusted(busted);
                     gameEventListener.gameEnded();
                 }
                 break;

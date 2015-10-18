@@ -27,8 +27,11 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	public HandHoldem(Card card1, Card card2, CommunityCards communityCards) {
 		this.hand = new Hand(card1, card2);
-		// FIXME you might just getting a copy of the object and you and up referring to nothing
-		this.communityCardsWeakReference = new WeakReference<CommunityCards>(communityCards);
+		if (communityCards != null) {
+			communityCards.addObserver(this);
+			// FIXME you might just getting a copy of the object and you and up referring to nothing
+			this.communityCardsWeakReference = new WeakReference<CommunityCards>(communityCards);
+		}
 	}
 
 	public Flop getFlop() { // No setter cause this is a reference
