@@ -6,9 +6,9 @@
 Poker Cheater (tricheur de poker)
 
 
-----> cheats
+----> cheats (12 per level)
 - Note: Play music or have some effect 
-1) The Cosby (human): Throw a sleeping pill in the glass of the player that will take him in a deep sleep on the next hand.
+1) The Cosby (human): Put a sleeping pill in the glass of one of surrounding player (left or right) that will take him in a deep sleep on the next hand.
 		Tip: Use this on a blind bet bully to help him to relax ;)
 2) Screw you guys I'm going home (human): take your bet back and fold. Can be only be activate 
 	on the 3rd raise on that round and must be more than 2 players in the table.
@@ -22,5 +22,14 @@ Poker Cheater (tricheur de poker)
 8)Roayl ? (oracle): remove any an going effect on you.
 9) Burn (Ninja): burn a card
 10) buyIn change (magic) : change the buy in of the table for one play
+11) suicidal chips (human): once these chips are won they will explode and take with them 5% of the cash of the winner (condition you can make an algorithm to determine the percentage of chip damaged in cash compared of the sucuidale chips added)
+12) Kage Bunshin no Jutsu (Shadow Clone) Chips (Ninja): create a 5% clones of your chips
+13)The Cosby 2 (human): Throw a sleeping pill in the glass of the player that will take him in a deep sleep on the next hand.
+		Tip: Use this on a blind bet bully to help him to relax ;)
 
 ----> Levels: Poker player, Poker Cheater, Poker Ninja, Poker Magician, Poker Oracle, 
+
+---->Marketing
+1) Add all Linkedin panding invitaitons
+2) get a picture from tasnim playing poker (prefebly boobs bit naturally showing and naturally playing poker)
+
