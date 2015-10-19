@@ -1,4 +1,6 @@
-package com.hmrocket.poker;
+package com.hmrocket.poker.pot;
+
+import com.hmrocket.poker.Player;
 
 import java.util.Collection;
 import java.util.List;

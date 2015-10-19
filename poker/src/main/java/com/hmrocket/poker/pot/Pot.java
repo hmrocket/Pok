@@ -1,7 +1,9 @@
-package com.hmrocket.poker;
+package com.hmrocket.poker.pot;
+
+import com.hmrocket.poker.Player;
+import com.hmrocket.poker.PokerTools;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -203,11 +205,27 @@ public class Pot {
      * @return busted players if there's any
      */
     public Set<Player> distributeToWinners2() {
-        Set<Player> losers = null;
+        Set<Player> busted = new HashSet<Player>();
         Player potentialWinner;
-        List<Player> levelWinners = new ArrayList<Player>();
+        Set<Player> levelWinners;
 
-        
+        // Get Winners of MainPot
+        levelWinners = PokerTools.getWinners(potentialWinners);
+		distribute(levelWinners, sidePot.getValue());
+
+		//As long there is SidePot
+		while (sidePots.isEmpty() == false) {
+			SidePot sidePot = sidePots.pop();
+			levelWinners.addAll(sidePot.getAllInPlayers());
+			levelWinners = PokerTools.getWinners(levelWinners);
+			distribute(levelWinners, sidePot.getValue());
+			for(Player player :sidePot.getAllInPlayers()) {
+				if (levelWinners.contains(player))
+					busted.add(player);
+			}
+		}
+
+		return busted;
 
         // As long there is EqualBet (money) in the pot, Add cash to winners
         while (!isEmpty()) {
@@ -244,6 +262,20 @@ public class Pot {
         }
         return losers;
     }
+
+	/**
+	 * Distribute the winning value equally on winners
+	 * @param winners Set of player who has won the Pot
+	 * @param potValue Value of winning
+	 */
+	private void distribute(Set<Player> winners, long potValue) {
+		// distribute level pot To Winners
+		long levelWinValue = potValue / winners.size(); // Every Winner will have this amount of money
+		for (Player winner : winners) {
+			winner.addCash(levelWinValue);
+		}
+
+	}
 
 
 }

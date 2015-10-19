@@ -1,8 +1,10 @@
-package com.hmrocket.poker;
+package com.hmrocket.poker.pot;
+
+import com.hmrocket.poker.Player;
+import com.hmrocket.poker.PokerTools;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
