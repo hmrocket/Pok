@@ -8,7 +8,6 @@ import java.lang.Exception;
 
 import static org.junit.Assert.*;
 
-import  com.hmrocket.poker
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
