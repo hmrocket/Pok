@@ -13,50 +13,6 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     private String name;
     private long bankBalance;
     private long cash;
-    private long bet;
-    private PlayerState state;
-
-
-    public enum PlayerState {
-        INACTIVE,
-        ACTIVE,
-        CHECK,
-        FOLD,
-        RAISE,
-        CALL,
-        ALL_IN,
-        Zzz // sleeping this for The Cosby
-    }
-
-    @Override
-    public int compareTo(Player o) {
-        if (hand == null && o == null || state == PlayerState.FOLD && o.state == state)
-            return 0; // return 0 if both player has not hands or both of them folded
-        else if (state == PlayerState.FOLD) // lose automatically if he folded
-            return -1;
-        else if (o.state == PlayerState.FOLD) // lose automatically if he folded
-            return 1;
-        return hand.compareTo(o.hand);
-    }
-
-    /**
-     * Player Bet Comparator
-     */
-    public static Comparator<Player> BET_COMPARATOR = new Comparator<Player>() {
-        @Override
-        public int compare(Player o1, Player o2) {
-            if (o1 == null && o2 == null)
-                return 0;
-            else if (o2 == null)
-                return 1;
-            else if (o1 == null)
-                return -1;
-            else {
-                return Long.compare(o1.bet, o2.bet);
-            }
-        }
-    };
-
     /**
      * Player cash Comparator, Useful to determine all-in amount
      */
@@ -74,6 +30,25 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
             }
         }
     };
+    private long bet;
+    /**
+     * Player Bet Comparator
+     */
+    public static Comparator<Player> BET_COMPARATOR = new Comparator<Player>() {
+        @Override
+        public int compare(Player o1, Player o2) {
+            if (o1 == null && o2 == null)
+                return 0;
+            else if (o2 == null)
+                return 1;
+            else if (o1 == null)
+                return -1;
+            else {
+                return Long.compare(o1.bet, o2.bet);
+            }
+        }
+    };
+    private PlayerState state;
 
     public Player(String name, long bankBalance, long cash) {
         this.name = name;
@@ -81,8 +56,26 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         this.cash = cash;
     }
 
+    @Override
+    public int compareTo(Player o) {
+        if (hand == null && o == null || state == PlayerState.FOLD && o.state == state)
+            return 0; // return 0 if both player has not hands or both of them folded
+        else if (state == PlayerState.FOLD) // lose automatically if he folded
+            return -1;
+        else if (o.state == PlayerState.FOLD) // lose automatically if he folded
+            return 1;
+        return hand.compareTo(o.hand);
+    }
+
     public long getCash() {
         return cash;
+    }
+
+    /**
+     * @return the player bet
+     */
+    public long getBet() {
+        return bet;
     }
 
     /**
@@ -93,6 +86,13 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     public boolean isPlaying() {
         return state != PlayerState.ALL_IN && state != PlayerState.INACTIVE
                 && state != PlayerState.FOLD && state != PlayerState.Zzz;
+    }
+
+    /**
+     * @return true if the player has folded or inactive
+     */
+    public boolean isOut() {
+        return state == PlayerState.FOLD || state == PlayerState.INACTIVE || state == PlayerState.Zzz;
     }
 
     /**
@@ -112,12 +112,12 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         this.state = state;
     }
 
-    public void setHand(HandHoldem hand) {
-        this.hand = hand;
-    }
-
     public HandHoldem getHand() {
         return hand;
+    }
+
+    public void setHand(HandHoldem hand) {
+        this.hand = hand;
     }
 
     public void fold() {
@@ -162,7 +162,7 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     }
 
     // DEBUGGING
-    public void play(long amountToContinue) {
+    public long play(long amountToContinue) {
         Random r = new Random();
         int action = r.nextInt(5);
         switch (action) {
@@ -180,6 +180,7 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
                 else call(amountToContinue);
                 break;
         }
+        return amountToContinue;
     }
 
     @Override // FIXME regenerate
@@ -196,5 +197,16 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     @Override // FIXME regenerate
     public int hashCode() {
         return hand != null ? hand.hashCode() : 0;
+    }
+
+    public enum PlayerState {
+        INACTIVE,
+        ACTIVE,
+        CHECK,
+        FOLD,
+        RAISE,
+        CALL,
+        ALL_IN,
+        Zzz // sleeping this for The Cosby
     }
 }
