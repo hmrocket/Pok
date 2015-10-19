@@ -4,7 +4,6 @@ import com.hmrocket.poker.card.CommunityCards;
 import com.hmrocket.poker.card.Deck;
 import com.hmrocket.poker.card.HandHoldem;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -13,23 +12,16 @@ import java.util.Set;
  */
 public class Game implements PokerRound.RoundEvent {
 
-    protected interface GameEvent { // Table is expecting a callback when game ends and when a player doesn't have enough money to bet
-        public void gameEnded();
-
-        public void playerBusted(Set<Player> player);
-    }
-
     private PokerRound pokerRound;
     private Pot pot;
     private CommunityCards communityCards;
     private Deck deck;
     private GameEvent gameEventListener;
-
-
     protected Game() {
         pot = new Pot();
         deck = new Deck();
     }
+
 
     public Game(GameEvent gameEvent) {
         pot = new Pot();
@@ -56,32 +48,67 @@ public class Game implements PokerRound.RoundEvent {
         pokerRound.removePlayer(player);
     }
 
-    @Override
-    public void onRoundFinish(RoundPhase phase, HashMap<Player, Long> bets) {
+    /**
+     * Poker Round only ends when (1) only one player is left or
+     * (2) all remaining players have matched the highest total bet made during the round.
+     */
+    @Override // TODO Game should check win
+    public void onRoundFinish(RoundPhase phase, List<Player> players) {
         pot.addBet(bets);
-        switch (phase) {
-            case PRE_FLOP:
-                communityCards.setFlop(deck.dealFlop());
-                break;
-            case FLOP:
-                communityCards.setTurn(deck.drawCard());
-                break;
-            case TURN:
-                communityCards.setRiver(deck.drawCard());
-                break;
-            case RIVER: // Game ended // the game not always ends here !
-                Set<Player> busted = pot.distributeToWinners();
-                if (gameEventListener != null) {
-                    gameEventListener.playerBusted(busted);
-                    gameEventListener.gameEnded();
-                }
-                break;
+        pot.update(players);
+
+        if (isAllPlayersExceptOneFolded()) endGame();
+        else
+            switch (phase) {
+                case PRE_FLOP:
+                    communityCards.setFlop(deck.dealFlop());
+                    break;
+                case FLOP:
+                    communityCards.setTurn(deck.drawCard());
+                    break;
+                case TURN:
+                    communityCards.setRiver(deck.drawCard());
+                    break;
+                case RIVER: // Game ended // the game not always ends here !
+                    showdown();
+                    break;
+            }
+    }
+
+    private boolean isAllPlayersExceptOneFolded(List<Player> players) {
+        int numberOfPlayerNotOut = 0;
+        for (Player player :
+                players) {
+            if (player.isOut() == false) numberOfPlayerNotOut++;
+            if (numberOfPlayerNotOut > 1) return false;
         }
+        return true;
+    }
+
+    /**
+     * when
+     */
+    private void endGame() {
+        Set<Player> busted = pot.distributeToWinners();
+        if (gameEventListener != null) {
+            gameEventListener.playerBusted(busted);
+            gameEventListener.gameEnded();
+        }
+    }
+
+    private void showdown() {
+        endGame();
     }
 
     @Override
     public void onRaise() {
 
+    }
+
+    protected interface GameEvent { // Table is expecting a callback when game ends and when a player doesn't have enough money to bet
+        public void gameEnded();
+
+        public void playerBusted(Set<Player> player);
     }
 
 
