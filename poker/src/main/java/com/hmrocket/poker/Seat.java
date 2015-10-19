@@ -6,9 +6,17 @@ package com.hmrocket.poker;
 public class Seat {
     private Status status;
 
-    public Status getStatus() {
-        return status;
-    }
+	public Seat(Status status) {
+		this.status = status;
+	}
+
+	public Seat() {
+		this.status = Status.AVAILABLE;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
 
     public void setStatus(Status status) {
         this.status = status;

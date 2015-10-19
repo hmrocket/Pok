@@ -32,11 +32,11 @@ public class Game implements PokerRound.RoundEvent {
 		gameEventListener = gameEvent;
 	}
 
-	//TODO POker round should aks for mean bet
 	public void startNewHand(long minBet, List<Player> players, int dealerIndex) {
 		deck.reset();
 		pot.setup(players);
 		communityCards = new CommunityCards();
+
 		// give players new Hand
 		for (Player player : players) {
 			player.setState(Player.PlayerState.ACTIVE);
@@ -44,7 +44,7 @@ public class Game implements PokerRound.RoundEvent {
 			player.setHand(handHoldem);
 		}
 		pokerRound = new PokerRound(minBet, players, dealerIndex);
-		pokerRound.startGame();
+		pokerRound.startGame(players.get(dealerIndex));
 	}
 
 	public void removePlayer(Player player) {
