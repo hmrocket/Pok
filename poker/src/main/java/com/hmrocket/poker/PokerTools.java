@@ -3,6 +3,7 @@ package com.hmrocket.poker;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +41,15 @@ public class PokerTools {
         } while (winner.compareTo(winners.get(0)) == 0);
 
         return winners;
+    }
+
+    public static Set<Player> findAllInPlayers(Set<Player> players) {
+        Iterator<Player> iterator = players.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getState() != Player.PlayerState.ALL_IN)
+                iterator.remove();
+        }
+        return players;
     }
 
     /**

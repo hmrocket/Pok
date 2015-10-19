@@ -78,6 +78,10 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         return bet;
     }
 
+    public void setBet(long bet) {
+        this.bet = bet;
+    }
+
     /**
      * All in not consider as  just waiting for the end of the match
      *

@@ -1,8 +1,10 @@
 package com.hmrocket.poker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,26 +16,84 @@ import java.util.Stack;
  */
 public class Pot {
 
+    private MainPot mainPot;
+
     private long value;
+    private Set<Player> potentialWinners;
+    private Stack<SidePot> sidePots;
     // there might be more than 4 equalBets (pre-flop, flop, turn, river)
     private Stack<EqualBet> equalBets;
 
     public Pot() {
         equalBets = new Stack<EqualBet>();
+        potentialWinners = new HashSet<Player>();
+        sidePots = new Stack<SidePot>();
         reset();
     }
 
     public void reset() {
         value = 0;
         equalBets.removeAllElements();
+        potentialWinners.clear();
+        sidePots.clear();
     }
+
+    public void setup(Set<Player> playersInTheGame) {
+        reset();
+        // we will add all players only once
+        potentialWinners.addAll(playersInTheGame);
+        mainPot = new MainPot(playersInTheGame);
+    }
+
+    public void update() {
+        if (potentialWinners.isEmpty())
+            return;
+
+        //////// --------------------
+
+        Set<Player> allInPlayers = PokerTools.findAllInPlayers(potentialWinners);
+        Player allInPlayer;
+
+        while (allInPlayers.isEmpty() == false) {
+            allInPlayer = Collections.min(allInPlayers, Player.BET_COMPARATOR);
+            allInPlayers.remove(allInPlayer);
+            SidePot sidePot = new SidePot(allInPlayer);
+            for (Player player : potentialWinners) {
+                sidePot.addBet(player);
+                if (player.isPlaying() == false)
+                    potentialWinners.remove(player);
+            }
+
+            sidePots.add(sidePot);
+            allInPlayer = Collections.min(allInPlayers, Player.BET_COMPARATOR);
+            allInPlayers.remove(allInPlayer);
+
+        }
+
+        // Equal bets from this point
+        Iterator<Player> iterator = potentialWinners.iterator();
+        Player player;
+        while (iterator.hasNext()) {
+            player = iterator.next();
+            value += player.getBet();
+            player.setBet(0);
+            if (player.isPlaying() == false)
+                iterator.remove();
+        }
+    }
+
 
     public void addBet(HashMap<Player, Long> bets) {
         // FIXME This way of adding equal bets might be slow; and it can be optimized
         // check if all  players has bet the same amount (->if not separate bet into two or more)
         // check if the number of players equal the last bet last bet (->merge both equalBets)
         if (isEqualBets(bets)) {
-            int PlayersNumberLastBet = this.equalBets.peek().getPlayers().size();
+            int PlayersNumberLastBet;
+            try {
+                PlayersNumberLastBet = this.equalBets.peek().getPlayers().size();
+            } catch (NullPointerException e) {
+                PlayersNumberLastBet = -1;
+            }
             if (PlayersNumberLastBet == bets.size()) {
                 long newAmount = this.equalBets.peek().getValue() + bets.values().iterator().next();
                 this.equalBets.peek().setValue(newAmount);
@@ -100,6 +160,54 @@ public class Pot {
         Set<Player> losers = null;
         Player potentialWinner;
         List<Player> levelWinners = new ArrayList<Player>();
+
+        // As long there is EqualBet (money) in the pot, Add cash to winners
+        while (!isEmpty()) {
+            levelWinners.clear();
+            equalBet = equalBets.pop(); // Remove a layer of EqualBet from pot
+            losers = equalBet.getPlayers();
+            potentialWinner = Collections.max(losers);
+            while (potentialWinner != null) {
+                // potentialWinner is a levelWinner, remove it form losers
+                levelWinners.add(potentialWinner);
+                losers.remove(potentialWinner);
+                // see if there is another winner with a same high score
+                Player multipleWinners = Collections.max(losers);
+                potentialWinner = potentialWinner.compareTo(multipleWinners) == 0 ? multipleWinners : null;
+            }
+            // distribute level pot To Winners
+            long levelWinValue = equalBet.getValue() * equalBet.count() / levelWinners.size(); // Every Winner will have this amount of money
+            for (Player winner : levelWinners) {
+                winner.addCash(levelWinValue);
+            }
+        }
+
+        // first level of the pot - check if there is busted players
+        // (players went all among loser)
+
+        if (losers != null || losers.isEmpty()) {
+            return null;
+        }
+        Iterator<Player> iterator = losers.iterator();
+        while (iterator.hasNext()) {
+            Player player = iterator.next();
+            if (player.getState() != Player.PlayerState.ALL_IN)
+                losers.remove(player);
+        }
+        return losers;
+    }
+
+    /**
+     * Distribute level pot To Winners
+     *
+     * @return busted players if there's any
+     */
+    public Set<Player> distributeToWinners2() {
+        Set<Player> losers = null;
+        Player potentialWinner;
+        List<Player> levelWinners = new ArrayList<Player>();
+
+        
 
         // As long there is EqualBet (money) in the pot, Add cash to winners
         while (!isEmpty()) {
