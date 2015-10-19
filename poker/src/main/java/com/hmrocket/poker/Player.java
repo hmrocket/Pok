@@ -82,7 +82,11 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         this.bet = bet;
     }
 
-    /**
+	public String getName() {
+		return name;
+	}
+
+	/**
      * All in not consider as  just waiting for the end of the match
      *
      * @return

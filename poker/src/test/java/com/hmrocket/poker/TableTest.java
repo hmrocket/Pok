@@ -12,6 +12,7 @@ public class TableTest extends TestCase {
 
 	Table table;
 	private List<Player> players;
+	private List<Player> playersTest;
 	private int seatsAvailable;
 	private List<Seat> seats;
 	private int dealer;
@@ -26,6 +27,7 @@ public class TableTest extends TestCase {
 		Player kais = new Player("Kais", (long) 2e6, (long) 2e6);
 		Player mhamed = new Player("Mhamed", (long) 1e7, (long) 2e6);
 		Player kevin = new Player("Kevin", 450633L, (long) 1e6);
+		playersTest.add(kais);playersTest.add(mhamed);playersTest.add(kevin);
 		table.addPlayer(kais, 0);
 		table.addPlayer(mhamed, 3);
 		table.addPlayer(kevin, 6);
@@ -39,7 +41,10 @@ public class TableTest extends TestCase {
 	public void testAddPlayer() throws Exception {
 		assertNotNull(players);
 		assertFalse("table shouldn't be empty", players.isEmpty());
-		assertTrue("table doesn't have the right size, table curent size = " + players.size(), players.size() == 10);
+		assertTrue("table doesn't have the right size, table curent size = " + players.size(), players.size() == 9);
+		for (Player player : playersTest) {
+			assertTrue("table dosen't contain an added player called " + player.getName() ,players.contains(player));
+		}
 
 	}
 
