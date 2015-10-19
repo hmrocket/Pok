@@ -11,5 +11,9 @@ public enum RoundPhase {
 	PRE_FLOP,
 	FLOP,
 	TURN,
-	RIVER
+	RIVER;
+
+	public static int getCount() {
+		return 4; // 4 rounds in poker
+	}
 }
