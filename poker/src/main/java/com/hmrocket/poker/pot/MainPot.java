@@ -2,8 +2,7 @@ package com.hmrocket.poker.pot;
 
 import com.hmrocket.poker.Player;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,18 +10,33 @@ import java.util.Set;
  * Created by hmrocket on 18/10/2015.
  */
 public class MainPot {
-    private Set<Player> potentialWinners; // potential winners
-    private long totalValue; // represent the total amount (potential winner money + losers money)
+	protected Set<Player> potentialWinners; // potential winners
+	protected long value; // represent the total amount (potential winner money + losers money)
 
-    public MainPot(Collection<Player> playersInGame) {
-        totalValue = 0;
-        potentialWinners.addAll(playersInGame);
+	public MainPot(Set<Player> playersInGame) {
+		init(playersInGame);
+	}
 
-        // look for All In player
-        // for every all in you create a side pot
-    }
+	protected void init(Set<Player> playersInGame) {
+		value = 0;
+		if (playersInGame != null)
+			potentialWinners = playersInGame;
+		else {
+			if (potentialWinners != null) {
+				potentialWinners.clear();
+			} else {
+				potentialWinners = new HashSet<Player>(); // Init an empty HashMap
+			}
+		}
+	}
 
-    public List<SidePot> update() { //TODO implemnt this
-        return null;
-    }
+	public MainPot() {
+		init(null);
+	}
+
+	public void reset() {
+		value = 0;
+		potentialWinners.clear();
+	}
+
 }

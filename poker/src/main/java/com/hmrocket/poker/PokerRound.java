@@ -125,34 +125,6 @@ public class PokerRound extends Round {
 
     }
 
-/*
-    public void call(Player player) {
-        // FIXME Pot will have a list of Player to him to handle (Player got bet amount use that to have EqualBet)
-        if (bets.containsKey(player)) {
-            raise(player, calledAmount);
-        } else
-            bets.put(player, calledAmount);
-    }
-
-
-    public void placeBet(Player player, long amount) {
-        if (bets.containsKey(player)) {
-            raise(player, amount);
-        } else
-            bets.put(player, amount);
-    }
-
-    public void raise(Player player, long amount) {
-        bets.put(player, bets.get(player) + amount);
-
-    }
-
-    public void fold(Player player) {
-        // remove player
-        removePlayer(player);
-        nextTurn();
-    }
-*/
 }
 
 /**

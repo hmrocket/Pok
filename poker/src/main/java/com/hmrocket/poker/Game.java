@@ -18,6 +18,8 @@ public class Game implements PokerRound.RoundEvent {
     private CommunityCards communityCards;
     private Deck deck;
     private GameEvent gameEventListener;
+
+
     protected Game() {
         pot = new Pot();
         deck = new Deck();
@@ -33,7 +35,7 @@ public class Game implements PokerRound.RoundEvent {
     //TODO POker round should aks for mean bet
     public void startNewHand(long minBet, List<Player> players, int dealerIndex) {
         deck.reset();
-        pot.reset();
+        pot.setup(players);
         communityCards = new CommunityCards();
         // give players new Hand
         for (Player player : players) {
@@ -55,10 +57,9 @@ public class Game implements PokerRound.RoundEvent {
      */
     @Override // TODO Game should check win
     public void onRoundFinish(RoundPhase phase, List<Player> players) {
-        pot.addBet(bets);
-        pot.update(players);
+        pot.update();
 
-        if (isAllPlayersExceptOneFolded()) endGame();
+        if (isAllPlayersExceptOneFolded(players)) endGame();
         else
             switch (phase) {
                 case PRE_FLOP:
