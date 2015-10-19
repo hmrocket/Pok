@@ -6,6 +6,7 @@ import com.hmrocket.poker.PokerTools;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -25,7 +26,7 @@ public class Pot {
 		sidePotsTotalValue = 0;
 	}
 
-	public Pot(Set<Player> playersInTheGame) {
+	public Pot(List<Player> playersInTheGame) {
 		mainPot = new MainPot();
 		sidePots = new Stack<SidePot>();
 		setup(playersInTheGame);
@@ -40,7 +41,7 @@ public class Pot {
 		sidePotsTotalValue = 0;
 	}
 
-	public void setup(Set<Player> playersInTheGame) {
+	public void setup(List<Player> playersInTheGame) {
 		reset();
 		// we will add all players only once
 		mainPot.init(playersInTheGame);
