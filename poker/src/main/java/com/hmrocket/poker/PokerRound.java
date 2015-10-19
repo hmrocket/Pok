@@ -4,7 +4,6 @@
 package com.hmrocket.poker;
 
 import java.security.InvalidParameterException;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -18,58 +17,52 @@ import java.util.List;
 public class PokerRound extends Round {
 
 
-    protected interface RoundEvent {
-        public void onRoundFinish(RoundPhase phase, HashMap<Player, Long> bets);
-
-        public void onRaise();
-
-    }
-
-    private HashMap<Player, Long> bets;
-    private long calledAmount;
+    private long[] calledAmountByRound;
     private RoundPhase phase;
     private RoundEvent roundEvent;
-
     // Only table or game should create this if we will pass this object to the player
     public PokerRound(List<Player> playersOrderedRightLeft, Player dealer) {
         super(playersOrderedRightLeft, dealer);
-        bets = new HashMap<>();
     }
 
     public PokerRound(List<Player> playersOrderedRightLeft, int dealer) {
         super(playersOrderedRightLeft, dealer);
-        bets = new HashMap<>();
     }
 
     public PokerRound(long minBet, List<Player> playersOrderedRightLeft, int dealerIndex) {
         super(playersOrderedRightLeft, dealerIndex);
-        calledAmount = minBet;
         setup(minBet);
     }
 
     /**
-     * Handle the first bets
+     * 1) setup round and called amount in that round
+     * 2) Handle the first bets
      * Add small blind and big blind before Round start
      * Note: the dealer isn't the one to start first is the big blind player
      */
     private void setup(long minBet) {
-        phase = null;
-        bets = new HashMap<>();
+        phase = RoundPhase.PRE_FLOP;
+        calledAmountByRound = new long[RoundPhase.getCount()];
+        calledAmountByRound[phase.ordinal()] = minBet;
+
         Player smallBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-        bets.put(smallBlindPlayer, smallBlindPlayer.raise(minBet / 2));
+        smallBlindPlayer.raise(minBet / 2);
 
         // big blind is the one to start the game
         Player bigBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-        bets.put(bigBlindPlayer, bigBlindPlayer.raise(minBet));
+        bigBlindPlayer.raise(minBet);
         startGame(bigBlindPlayer);
     }
 
-    public void startGame(Player startPlayer) {
-        phase = RoundPhase.PRE_FLOP;
+    /**
+     * Play all Poker Rounds until showdown or until all player folded except one
+     * @param startPlayer b
+     */
+    protected void startGame(Player startPlayer) {
 
         while (isCompleted() == false) {
             this.newRound(startPlayer); // new poker round (not super new round )
-            roundEvent.onRoundFinish(phase, bets);
+            roundEvent.onRoundFinish(phase, players);
             setNextPhase();
         }
 
@@ -78,22 +71,30 @@ public class PokerRound extends Round {
     private void setNextPhase() {
         if (phase != RoundPhase.RIVER)
             phase =  RoundPhase.values()[phase.ordinal() + 1];
+        else System.out.println("Next Round called at River");
     }
 
+    /**
+     * Poker Round only ends when (1) only one player is left or
+     * (2) all remaining players have matched the highest total bet made during the round.
+     *
+     * @param playerToStart first Player to start this Round
+     */
     @Override
-    public void newRound(Player playerToStart) {
+    protected void newRound(Player playerToStart) {
         super.newRound(playerToStart);
         do {
             // FIXME either
-            playerToStart.play(calledAmount); // player play a move
-            if (playerToStart.didRaise()) {
-                // Start new raising Round
-                super.newRound();
+            long addedBet = playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
+            if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
+                // update calledAmount and Start new raising Round
+                calledAmountByRound[phase.ordinal()] += addedBet;
+                super.newRound(playerToStart); // New Round not Poker Round
+                nextTurn();
             }
+            playerToStart = nextTurn();
         } while (super.isCompleted() == false);
-
     }
-
 
     /**
      * @return next Player still in the game
@@ -117,7 +118,14 @@ public class PokerRound extends Round {
         // bets.remove(player);
     }
 
+    protected interface RoundEvent {
+        public void onRoundFinish(RoundPhase phase, List<Player> players);
 
+        public void onRaise();
+
+    }
+
+/*
     public void call(Player player) {
         // FIXME Pot will have a list of Player to him to handle (Player got bet amount use that to have EqualBet)
         if (bets.containsKey(player)) {
@@ -144,7 +152,7 @@ public class PokerRound extends Round {
         removePlayer(player);
         nextTurn();
     }
-
+*/
 }
 
 /**
@@ -159,7 +167,7 @@ class Round {
     /**
      * Active {@link Player} in this round. Turn direction may varies
      */
-    private List<Player> players;
+    protected List<Player> players;
     private int playerTurn; // current turn
     private int turnLeft; //
     private int turnStart;
@@ -173,6 +181,33 @@ class Round {
         init(playersOrderedRightLeft, playerToStart, true);
     }
 
+    protected Round(List<Player> playersOrdered, boolean rightToLeft) {
+        init(playersOrdered, 0, rightToLeft);
+    }
+
+    protected Round(List<Player> playersOrdered, int playerTurn, boolean rightToLeft) {
+        init(playersOrdered, playerTurn, rightToLeft);
+    }
+
+    /**
+     * return the left Player
+     *
+     * @param players must be ordered from right to left
+     * @param player
+     * @return Player on the left of <code>player</code>
+     */
+    protected static Player getLeftPlayer(List<Player> players, Player player) {
+        if (players == null || players.isEmpty())
+            return null;
+
+        int nextPlayerIndex = players.indexOf(player) + 1;
+        if (nextPlayerIndex == 0) //player doesn't exist in the list (index = -1)
+            return null;
+        else if (nextPlayerIndex == players.size()) // player is in the end, left player is the first of list
+            return players.get(0);
+        else return players.get(nextPlayerIndex);
+    }
+
     private void init(List<Player> playersOrderedRightLeft, int playerToStart, boolean rightToLeft) {
         if (playerToStart >= playersOrderedRightLeft.size() || playerToStart < 0)
             throw new InvalidParameterException("Invalid player starter");
@@ -180,14 +215,6 @@ class Round {
         playerTurn = turnStart = playerToStart;
         turnLeft = playersOrderedRightLeft.size();
         turnIncrement = rightToLeft ? 1 : -1;
-    }
-
-    protected Round(List<Player> playersOrdered, boolean rightToLeft) {
-        init(playersOrdered, 0, rightToLeft);
-    }
-
-    protected Round(List<Player> playersOrdered, int playerTurn, boolean rightToLeft) {
-        init(playersOrdered, playerTurn, rightToLeft);
     }
 
     public Player nextTurn() {
@@ -278,25 +305,6 @@ class Round {
      */
     protected void newRound() {
         reset();
-    }
-
-    /**
-     * return the left Player
-     *
-     * @param players must be ordered from right to left
-     * @param player
-     * @return Player on the left of <code>player</code>
-     */
-    protected static Player getLeftPlayer(List<Player> players, Player player) {
-        if (players == null || players.isEmpty())
-            return null;
-
-        int nextPlayerIndex = players.indexOf(player) + 1;
-        if (nextPlayerIndex == 0) //player doesn't exist in the list (index = -1)
-            return null;
-        else if (nextPlayerIndex == players.size()) // player is in the end, left player is the first of list
-            return players.get(0);
-        else return players.get(nextPlayerIndex);
     }
 
 }
