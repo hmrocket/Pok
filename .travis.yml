@@ -1,8 +1,5 @@
 language: android
 
-before_install:
-  - chmod +x gradlew
-
 android:
   components:
     # Uncomment the lines below if you want to
@@ -39,8 +36,8 @@ before_script:
   - adb shell input keyevent 82 & #Unluck the device
 
 #script:
-#  - android list target
-#  - ./gradlew connectedAndroidTest
+#  By default it will run build and connectedCheck (The check anchor tasks have connectedAndroidTest and connectedUiAutomatorTest as dependencies)
+#  - ./gradlew build connetedCheck # == build connectedAndroidTest connectedUiAutomatorTest
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
