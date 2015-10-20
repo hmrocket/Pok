@@ -48,7 +48,7 @@ public class Table implements Game.GameEvent {
         this.game = new Game(this);
     }
 
-    private int nextDealer() {
+    protected int nextDealer() {
         if (seatsAvailable == players.size() || seatsAvailable == players.size() - 1)
             return dealer;
         while (dealer++ < players.size()) {
@@ -70,7 +70,7 @@ public class Table implements Game.GameEvent {
         else if (player.getCash() < PokerTools.getMinBuyIn(minBet))
             System.out.println("Player exist and already added");
         else {
-            players.add(seatId, player);
+            players.set(seatId, player);
             seats.get(seatId).setStatus(Seat.Status.UNAVAILABLE);
             seatsAvailable--;
         }
