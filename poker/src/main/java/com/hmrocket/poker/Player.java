@@ -191,22 +191,6 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         return amountToContinue;
     }
 
-    @Override // FIXME regenerate
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Player player = (Player) o;
-
-        return !(hand != null ? !hand.equals(player.hand) : player.hand != null);
-
-    }
-
-    @Override // FIXME regenerate
-    public int hashCode() {
-        return hand != null ? hand.hashCode() : 0;
-    }
-
     public enum PlayerState {
         INACTIVE,
         ACTIVE,
