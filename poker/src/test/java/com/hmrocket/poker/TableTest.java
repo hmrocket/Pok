@@ -52,8 +52,8 @@ public class TableTest extends TestCase {
 	});
 
 	static {
-		PLAYERS_COUNT = new Random().nextInt(10);
 		SEATS_COUNT = 9;
+		PLAYERS_COUNT = new Random().nextInt(SEATS_COUNT + 1);
 		R = new Random();
 		DEALER = R.nextInt(SEATS_COUNT);
 		MIN_BET = R.nextInt(10000) * 2;
@@ -134,44 +134,108 @@ public class TableTest extends TestCase {
 	}
 
 	public void testAddPlayer() throws Exception {
-		long minBuyIn = PokerTools.getMinBuyIn(MIN_BET);
-		for (int i = 0; i < SEATS_COUNT; i++) {
-			Player player = PLAYERS.get(i);
-			if (i < PLAYERS_COUNT) {
-				if (minBuyIn > player.getCash()) {
-					assertFalse(PLAYERS.get(i).getName() + " doesn't have enough buy-in to seat at the table", this.tablePlayers.contains(PLAYERS.get(i)));
-					assertTrue("Seat " + PLAYERS.get(i).getName() + " wasn't inserted in the right seat", tableSeats.get(PLAYERS_FAVORITE_SEAT.get(i)).isAvailable());
-				} else {
-					assertTrue("table doesn't contain an added player called " + PLAYERS.get(i).getName(), this.tablePlayers.contains(PLAYERS.get(i)));
-					assertTrue("Player " + PLAYERS.get(i).getName() + " wasn't inserted at seat:" + this.tablePlayers.indexOf(PLAYERS.get(i)), this.tablePlayers.indexOf(PLAYERS.get(i)) == PLAYERS_FAVORITE_SEAT.get(i));
-				}
-			} else {
-				assertFalse("table contain a not added player called " + PLAYERS.get(i).getName(), this.tablePlayers.contains(PLAYERS.get(i)));
-				assertTrue("Seat " + PLAYERS.get(i).getName() + " wasn't inserted in the right seat", tableSeats.get(PLAYERS_FAVORITE_SEAT.get(i)).isAvailable());
-			}
+		int seatCount = 9;
+		long buyIn = 100;
+		long passBuyIn = PokerTools.getMinBuyIn(buyIn);
+		table = new Table(seatCount, buyIn);
+		Player player;
+		// test player with no cash
+		player = new Player("no money", 1000, 0);
+		table.addPlayer(player, 0);
+		assertFalse(table.getPlayers().contains(player));
+		// test player with not enough buy in
+		player = new Player("no buy-in", 1000, R.nextInt((int) passBuyIn));
+		table.addPlayer(player, seatCount - 1);
+		assertFalse(table.getPlayers().contains(player));
+		// test player with just enough buy in
+		player = new Player("=buy-in", 1000, passBuyIn);
+		table.addPlayer(player, 0);
+		assertTrue(getPlayersField().contains(player));
+		// test player with more than enough to buy in
+		player = new Player("super buy-in", 1000, Math.abs(R.nextInt()) + passBuyIn);
+		table.addPlayer(player, 1);
+		assertTrue(getPlayersField().contains(player));
+		// test player null player
+		table.addPlayer(null, R.nextInt(seatCount));
+		assertFalse(table.getPlayers().contains(null));
+		// test seatId doesn't exist
+		IllegalArgumentException e1, e2;
+		e1 = e2 = null;
+		try {
+			table.addPlayer(player, R.nextInt(seatCount) + seatCount);
+		} catch (IllegalArgumentException e) {
+			e1 = e;
 		}
+		assertNotNull(e1);
+		try {
+			table.addPlayer(player, R.nextInt(seatCount) - seatCount);
+		} catch (IllegalArgumentException e) {
+			e2 = e;
+		}
+		assertNotNull(e2);
+		//test already added player
+		int seatsAvailableBefore = getSeatsAvailable();
+		table.addPlayer(player, 3);
+		assertTrue(seatsAvailableBefore == getSeatsAvailable());
+		// test occupied seat
+		player = new Player(" ", 1000, Math.abs(R.nextInt()) + passBuyIn);
+		table.addPlayer(player, 0);
+		assertFalse(getPlayersField().contains(player));
 
 	}
 
 	public void testRemovePlayer() throws Exception {
 		// Remove a Random player
-
-		Player player = PLAYERS.get(R.nextInt(PLAYERS_COUNT));
+		int seatCount = 9;
+		long buyIn = 100;
+		long passBuyIn = PokerTools.getMinBuyIn(buyIn);
+		table = new Table(seatCount, passBuyIn);
+		Player player = new Player("removePlayer", passBuyIn, passBuyIn);
+		table.addPlayer(player, R.nextInt(seatCount));
 		table.removePlayer(player);
-
 		getPlayersField();
 		assertFalse(player.getName() + " still on the table at Seat:" + tablePlayers.indexOf(player), tablePlayers.contains(player));
+		//Remove a player doesn't exist
+		int count = table.getPlayers().size();
+		table.removePlayer(new Player("NOBODY", passBuyIn, passBuyIn));
+		assertTrue(count == table.getPlayers().size());
+
+	}
+
+	public void testGetPlayerInTheGame() throws Exception {
+		List<Player> playersInTheGame = table.getPlayers();
+		long minBuyIn = PokerTools.getMinBuyIn(MIN_BET);
+
+		//asset that player in the game is equal or less PLAYERS_COUNT (not all players are added because of the buy-In)
+		assertTrue(playersInTheGame.size() <= PLAYERS_COUNT);
+
+		//assert all player added exist in the list
+		int playerCouldntBuyIn = 0;
+		for (int i = 0; i < PLAYERS_COUNT; i++) {
+			Player player = PLAYERS.get(i);
+			if (minBuyIn > player.getCash()) { //Players doesn't have enough buy-in
+				playerCouldntBuyIn++;
+				assertFalse(PLAYERS.get(i).getName() + " doesn't have enough buy-in to seat at the table", this.tablePlayers.contains(PLAYERS.get(i)));
+				assertTrue("Seat " + PLAYERS.get(i).getName() + " wasn't inserted in the right seat", tableSeats.get(PLAYERS_FAVORITE_SEAT.get(i)).isAvailable());
+			} else {
+				assertTrue("table doesn't contain an added player called " + PLAYERS.get(i).getName(), this.tablePlayers.contains(PLAYERS.get(i)));
+				// Check the seat id
+				assertTrue("Player " + PLAYERS.get(i).getName() + " wasn't inserted at seat:" + this.tablePlayers.indexOf(PLAYERS.get(i)), this.tablePlayers.indexOf(PLAYERS.get(i)) == PLAYERS_FAVORITE_SEAT.get(i));
+			}
+		}
+		String msg = String.format("Player on table: %d, Player couldn't buy-in: %d", playersInTheGame.size(), playerCouldntBuyIn);
+		assertTrue(msg, playersInTheGame.size() == PLAYERS_COUNT - playerCouldntBuyIn);
 
 	}
 
 	public void testNextDealer() throws Exception {
-		for (int i = 0; i < PLAYERS_COUNT; i++) {
+		List<Player> playersInTheGame = table.getPlayers();
+		for (int i = 0; i < playersInTheGame.size(); i++) {
 			Player player = table.nextDealer();
 			// dealer should be Player at Seat i
-			Player dealer = PLAYERS.get(PLAYERS_FAVORITE_SEAT.indexOf((i + 1) % PLAYERS_COUNT));
-			int playerIndex = PLAYERS.indexOf(player);
+			Player dealer = playersInTheGame.get((i + 1) % playersInTheGame.size());
 			String errorMessage = String.format("Current Dealer is %s index:%d should been %s index:%d",
-					player.getName(), playerIndex, dealer.getName(), (i + 1) % PLAYERS_COUNT);
+					player.getName(), i, dealer.getName(), (i + 1) % playersInTheGame.size());
 			assertTrue(errorMessage, dealer.equals(player));
 		}
 	}
