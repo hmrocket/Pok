@@ -9,4 +9,19 @@ public enum Suit {
     DIAMONDS,
     CLUBS;
 
+	@Override
+	public String toString() {
+		switch (this) {
+			case CLUBS:
+				return "♣";
+			case DIAMONDS:
+				return "♦";
+			case HEARTS:
+				return "♥";
+			case SPADES:
+				return "♠";
+			default:
+				return null;
+		}
+	}
 }

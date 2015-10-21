@@ -77,4 +77,9 @@ public class Card implements Comparable<Card> {
     public int compareTo(Card card) {
         return this.getRank().compareTo(card.rank);
     }
+
+	@Override
+	public String toString() {
+		return rank.toString() + suit;
+	}
 }
