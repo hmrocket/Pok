@@ -48,33 +48,43 @@ public class Table implements Game.GameEvent {
         this.game = new Game(this);
     }
 
-    protected int nextDealer() {
-        if (seatsAvailable == players.size() || seatsAvailable == players.size() - 1)
-            return dealer;
-        while (dealer++ < players.size()) {
-            if (players.get(dealer) == null)
-                continue;
-            else return dealer;
-        }
-        dealer = -1;
-        return nextDealer();
-    }
+	protected Player nextDealer() {
+		dealer = (dealer++) % players.size();
+
+		for (int i = dealer; i < players.size(); i++) {
+			Player player = players.get(dealer);
+			if (player == null)
+				continue;
+			else
+				return player;
+		}
+
+		for (int i = 0; i < dealer; i++) {
+			Player player = players.get(dealer);
+			if (player == null)
+				continue;
+			else
+				return player;
+		}
+
+		return null;
+	}
 
     public void addPlayer(Player player, int seatId) {
-        if (seatId >= players.size() || seatId < 0) {
-            throw new IllegalArgumentException("No seat available at index " + seatId);
-        } else if (seatsAvailable <= 0 || !seats.get(seatId).isAvailable())
-            System.out.println("Seat Not available");
-        else if (players.contains(player))
+		if (seatId >= seats.size() || seatId < 0) {
+			throw new IllegalArgumentException("No seat available at index " + seatId);
+		} else if (seatsAvailable <= 0 || !seats.get(seatId).isAvailable())
+			System.out.println("Seat Not available");
+		else if (players.contains(player))
             System.out.println("Player exist and already added");
         else if (player.getCash() < PokerTools.getMinBuyIn(minBet))
-            System.out.println("Player exist and already added");
-        else {
-            players.set(seatId, player);
-            seats.get(seatId).setStatus(Seat.Status.UNAVAILABLE);
-            seatsAvailable--;
-        }
-    }
+			System.out.println("Player doesn't have enough to buy-in");
+		else {
+			seatsAvailable--; // no need to check if (players.get(seatId) == null) cause the seat is available
+			players.set(seatId, player);
+			seats.get(seatId).setStatus(Seat.Status.UNAVAILABLE);
+		}
+	}
 
     public void removePlayer(Player player) {
         int seatIndex;
@@ -88,10 +98,22 @@ public class Table implements Game.GameEvent {
     }
 
     public void startGame() {
-        int playerIndex = nextDealer();
-        game.startNewHand(minBet, players, playerIndex);
+		Player PlayerDealer = nextDealer();
+		List<Player> playersInTheGame = getPlayers();
+		game.startNewHand(minBet, playersInTheGame, playersInTheGame.indexOf(PlayerDealer));
 
     }
+
+	public List<Player> getPlayers() {
+		List<Player> playersInGame = new ArrayList<>(players);
+		Iterator<Player> iterator = playersInGame.iterator();
+		while (iterator.hasNext()) {
+			if (iterator.next() == null)
+				iterator.remove();
+		}
+		// Return a list of Player in the game (ordered from right to left)
+		return playersInGame;
+	}
 
     @Override
     public void gameEnded() {
@@ -106,4 +128,5 @@ public class Table implements Game.GameEvent {
         while (iterator.hasNext())
             removePlayer(iterator.next());
     }
+
 }
