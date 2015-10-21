@@ -17,25 +17,6 @@ public class Table implements Game.GameEvent {
     private Game game;
     private long minBet;
 
-    public static void main(String[] args) {
-        Table table = new Table(9, 1000L);
-        Player kais = new Player("Kais", (long) 2e6, (long) 2e6);
-        Player mhamed = new Player("Mhamed", (long) 1e7, (long) 2e6);
-        Player kevin = new Player("Kevin", 450633L, (long) 1e6);
-        table.addPlayer(kais, 0);
-        table.addPlayer(mhamed, 3);
-        table.addPlayer(kevin, 6);
-
-        table.startGame();
-        // plays next hand
-        Player itachi = new Player("Itachi", (long) 10e7, 182000L);
-        table.addPlayer(itachi, 8);
-        Player yassin = new Player("Yassin", (long) 4e6, 100000L);
-        table.addPlayer(yassin, 2);
-        table.removePlayer(itachi);
-        table.addPlayer(itachi, 1);
-    }
-
     public Table(int capacity, long minBet) {
         this.players = new ArrayList<Player>(capacity);
         this.seats = new ArrayList<Seat>(capacity);
@@ -49,17 +30,18 @@ public class Table implements Game.GameEvent {
     }
 
 	protected Player nextDealer() {
-		dealer = (dealer++) % players.size();
+		int currentDealer = dealer;
 
-		for (int i = dealer; i < players.size(); i++) {
+		//Increment dealer until find a non-null player
+		for (dealer++; dealer < players.size(); dealer++) {
 			Player player = players.get(dealer);
-			if (player == null)
+			if (player == null || player.getState() == Player.PlayerState.INACTIVE)
 				continue;
 			else
 				return player;
 		}
 
-		for (int i = 0; i < dealer; i++) {
+		for (dealer = 0; dealer <= currentDealer; dealer++) {
 			Player player = players.get(dealer);
 			if (player == null)
 				continue;
@@ -74,11 +56,11 @@ public class Table implements Game.GameEvent {
 		if (seatId >= seats.size() || seatId < 0) {
 			throw new IllegalArgumentException("No seat available at index " + seatId);
 		} else if (seatsAvailable <= 0 || !seats.get(seatId).isAvailable())
-			System.out.println("Seat Not available");
+			System.out.println("Seat Not available for " + player.getName());
 		else if (players.contains(player))
-            System.out.println("Player exist and already added");
-        else if (player.getCash() < PokerTools.getMinBuyIn(minBet))
-			System.out.println("Player doesn't have enough to buy-in");
+			System.out.println(player.getName() + " exist and already added");
+		else if (player.getCash() < PokerTools.getMinBuyIn(minBet))
+			System.out.println(player.getName() + " doesn't have enough to buy-in");
 		else {
 			seatsAvailable--; // no need to check if (players.get(seatId) == null) cause the seat is available
 			players.set(seatId, player);
@@ -88,8 +70,8 @@ public class Table implements Game.GameEvent {
 
     public void removePlayer(Player player) {
         int seatIndex;
-        if (players != null && (seatIndex = players.indexOf(player)) > 0) {
-            seatsAvailable++;
+		if (players != null && (seatIndex = players.indexOf(player)) != -1) {
+			seatsAvailable++;
             seats.get(seatIndex).setStatus(Seat.Status.AVAILABLE);
             players.set(seatIndex, null);
             // TODO if player is active must inform the game
