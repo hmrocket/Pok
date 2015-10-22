@@ -71,9 +71,7 @@ public class Pot {
 			// SidePot is created from min allInPlayer and MainPot cause the value of of MainPot will be transferred to the SidePot
 			SidePot sidePot = new SidePot(allInPlayer, mainPot);
 
-			for (Player player : mainPot.potentialWinners) {
-				sidePot.addBet(player);
-			}
+            sidePot.consumeBets(mainPot);
 
 			sidePots.add(sidePot);
 			sidePotsTotalValue += sidePot.getValue();
@@ -136,7 +134,9 @@ public class Pot {
 	 * @param potValue Value of winning
 	 */
 	private void distribute(Set<Player> winners, long potValue) {
-		// distribute level pot To Winners
+        if (potValue <= 0)
+            return; // Nothing to distribute
+        // distribute level pot To Winners
 		long levelWinValue = potValue / winners.size(); // Every Winner will have this amount of money
 		for (Player winner : winners) {
 			winner.addCash(levelWinValue);

@@ -75,7 +75,7 @@ public class PotTest extends TestCase {
         players.add(allin0);
         players.add(allin1);
         players.add(allin2);
-        pot.setup(players);
+        pot.setup(players);//FIXME why allin1 is added before 0
         allin2.allIn();
         allin1.call(20);
         allin0.call(20);

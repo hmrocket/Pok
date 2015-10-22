@@ -25,8 +25,8 @@ public class SidePot implements Comparable<SidePot> {
 		value = mainPot.value;
 		mainPot.value = 0;
 
-		addBet(allInPlayer);
-	}
+        addBet(allInPlayer); // addAllInPlayer(player); and set the bet to 0
+    }
 
 
 	/**
@@ -38,8 +38,8 @@ public class SidePot implements Comparable<SidePot> {
 	public boolean addAllInPlayer(Player player) {
 		if (player != null && player.getState() == Player.PlayerState.ALL_IN) {
 			Iterator<Player> iterator = allInPlayers.iterator();
-			if (iterator.hasNext() == false || iterator.next().getBet() == player.getBet()) {
-				// this player belong to this sidePot
+            if (iterator.hasNext() == false || allInValue == player.getBet()) {
+                // this player belong to this sidePot
 				// http://poker.stackexchange.com/questions/462/how-are-side-pots-built
 				allInPlayers.add(player);
 				return true;
@@ -90,6 +90,25 @@ public class SidePot implements Comparable<SidePot> {
 			player.setBet(0);
 		}
 	}
+
+    public void consumeBets(MainPot mainPot) {
+        Iterator<Player> iterator = mainPot.potentialWinners.iterator();
+        while (iterator.hasNext()) {
+            Player player = iterator.next();
+            if (player.getBet() > allInValue) {
+                value += allInValue;
+                player.setBet(player.getBet() - allInValue);
+            } else {
+                if (player.getBet() == allInValue && player.getState() == Player.PlayerState.ALL_IN) {
+                    addAllInPlayer(player);
+                }
+                value += player.getBet();
+                player.setBet(0);
+                if (player.isPlaying() == false)
+                    iterator.remove(); // player should be removed from potential winner if he folded
+            }
+        }
+    }
 
 	@Override
 	public int compareTo(SidePot o) {
