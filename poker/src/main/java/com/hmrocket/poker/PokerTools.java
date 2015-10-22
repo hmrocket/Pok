@@ -43,7 +43,8 @@ public class PokerTools {
         return winners;
     }
 
-    public static Set<Player> findAllInPlayers(Set<Player> players) {
+    public static Set<Player> findAllInPlayers(Set<Player> playersInGame) {
+        Set<Player> players = new HashSet<>(playersInGame);
         Iterator<Player> iterator = players.iterator();
         while (iterator.hasNext()) {
             if (iterator.next().getState() != Player.PlayerState.ALL_IN)
@@ -53,12 +54,14 @@ public class PokerTools {
     }
 
     /**
-     * @param potentialWinners players who has chance of winning, use {@link Player#isOut()}
+     * @param potentialWinnersInTheGame players who has chance of winning, use {@link Player#isOut()}
      * @return one or more winning hand players, null if the potentialWinners is empty or null
      */
-    public static Set<Player> getWinners(Set<Player> potentialWinners) {
-        if (potentialWinners == null || potentialWinners.isEmpty())
-            return null;
+    public static Set<Player> getWinners(Set<Player> potentialWinnersInTheGame) {
+        Set<Player> potentialWinners = new HashSet<>();
+        if (potentialWinnersInTheGame == null || potentialWinnersInTheGame.isEmpty())
+            return potentialWinners;
+        else potentialWinnersInTheGame.addAll(potentialWinnersInTheGame);
 
         Set<Player> winners = new HashSet<Player>();
         Player winner = Collections.max(potentialWinners); // find best hand

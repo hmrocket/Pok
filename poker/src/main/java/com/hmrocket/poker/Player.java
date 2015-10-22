@@ -172,7 +172,7 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     // DEBUGGING
     public long play(long amountToContinue) {
         Random r = new Random();
-        int action = r.nextInt(5);
+        int action = r.nextInt(3);
         switch (action) {
             case 0:
                 fold();
