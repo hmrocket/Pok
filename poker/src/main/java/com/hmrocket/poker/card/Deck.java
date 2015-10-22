@@ -27,7 +27,10 @@ public class Deck {
         Collections.shuffle(cards);
     }
 
-    public Card drawCard() {
+	/**
+	 * @return Top Card in the deck, {@link Card#NO_CARD} if the Deck is empty
+	 */
+	public Card drawCard() {
         if (drawn == 52) {
             return Card.NO_CARD;
         }
