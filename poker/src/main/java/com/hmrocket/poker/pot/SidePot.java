@@ -68,8 +68,12 @@ public class SidePot implements Comparable<SidePot> {
 		return value;
 	}
 
-	/**
-	 * Add player bet to this SidePot (Player Bet will be reduiced after this operation),
+    public void setValue(long value) {
+        this.value = value;
+    }
+
+    /**
+     * Add player bet to this SidePot (Player Bet will be reduiced after this operation),
 	 * If the went all in with the same value he will be added to this pot
 	 *
 	 * @param player

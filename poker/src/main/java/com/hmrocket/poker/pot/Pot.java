@@ -103,7 +103,12 @@ public class Pot {
 
 		// Get Winners of MainPot
 		levelWinners = PokerTools.getWinners(mainPot.potentialWinners);
-		distribute(levelWinners, mainPot.value);
+        if (levelWinners == null || levelWinners.isEmpty()) {
+            SidePot sidePot = sidePots.peek();
+            sidePot.setValue(sidePot.getValue() + mainPot.value);
+        } else {
+            distribute(levelWinners, mainPot.value);
+        }
 
 		//As long there is SidePot, (money) on the table, Add cash to winners
 		while (sidePots.isEmpty() == false) {
