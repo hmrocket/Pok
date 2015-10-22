@@ -41,7 +41,16 @@ public class CardTest extends TestCase {
 	}
 
 	public void testHashCode() throws Exception {
+		int equalHashCodeCount = 0;
+		for (Rank r : Rank.values()) {
+			for (Suit s : Suit.values()) {
+				Card c = new Card(r, s);
+				if (card.hashCode() == c.hashCode())
+					equalHashCodeCount++;
+			}
+		}
 
+		assertTrue(equalHashCodeCount == 1);
 
 	}
 

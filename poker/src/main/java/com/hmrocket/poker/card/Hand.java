@@ -40,27 +40,35 @@ public class Hand {
         return new Card[]{card1, card2};
     }
 
-    @Override
-    public boolean equals(Object o) {
+	/*
+	equal and compareTO ARE TO DIFFERENT THINGS
+	http://developer.android.com/reference/java/lang/Object.html
+	 */
+	@Override
+	public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Hand hand = (Hand) o;
 
-        return this.compareTo(hand) == 0;
-    }
+		return getMax().equals(hand.getMax()) && getMin().equals(hand.getMin());
+	}
 
-    @Override
-    public int hashCode() {
+	/* If you override equals, you should also override hashCode: equal instances must have equal hash codes.
+	For every compared attribute in equal, include a hashCode of that object
+	http://developer.android.com/reference/java/lang/Object.html
+	 */
+	@Override
+	public int hashCode() {
         int result = getMax().hashCode();
         result = 31 * result + getMin().hashCode();
         return result;
     }
 
     /**
-     * Comapre two hands against each other without including other cards.
-     *
-     * @param o hand of two cards
+	 * Compare two hands against each other without including other cards.
+	 *
+	 * @param o hand of two cards
      * @return 1 if the frist hand have a higher odds to win, -1 if the second.
      * 0 if both card has the same chance of winning
      */
