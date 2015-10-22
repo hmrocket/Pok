@@ -1,0 +1,13 @@
+How are side pots built? http://poker.stackexchange.com/questions/462/how-are-side-pots-built
+When is the true end of round (pre-flop, flop, turn, or river)? http://poker.stackexchange.com/questions/2723/when-is-the-true-end-of-round-pre-flop-flop-turn-or-river
+
+-----> AI Bots 
+https://github.com/mdp/JsPoker/blob/master/players/status3Bot.js#L40
+https://github.com/mdp/JsPoker/blob/master/players/thoseAreMyFish.js
+
+
+----->AI Bots resources
+https://en.wikipedia.org/wiki/Monte_Carlo_method
+http://www.deducer.org/pmwiki/pmwiki.php?n=Main.ArtificialIntelligencePoker
+http://stackoverflow.com/questions/506167/building-a-texas-holdem-playing-ai-from-scratch
+http://cowboyprogramming.com/2007/01/04/programming-poker-ai/
