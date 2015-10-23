@@ -8,11 +8,11 @@ import junit.framework.TestCase;
 public class HandTest extends TestCase {
 
 	private Hand hand;
-	private Card card0;
-	private Card card1;
+	private final static Card card0;
+	private final static Card card1;
 
 
-	{
+	static {
 		Deck deck = new Deck();
 		card0 = deck.drawCard();
 		card1 = deck.drawCard();
@@ -80,7 +80,7 @@ public class HandTest extends TestCase {
 						Hand handCompareTo = new Hand(card1, card2);
 						HandScore handScore = HandScoreCalculator.getHandScore(hand);
 						HandScore handScore2 = HandScoreCalculator.getHandScore(handCompareTo);
-						assertTrue(handScore.compareTo(handScore2) == hand.compareTo(handCompareTo));
+						assertEquals(handScore.compareTo(handScore2), hand.compareTo(handCompareTo));
 //						if(handScore)
 //							assertTrue(hand.compareTo(handCompareTo) == 0);
 //						else if (hand.getMax().compareTo(card1) < 0)
