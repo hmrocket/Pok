@@ -112,8 +112,9 @@ public class SidePot implements Comparable<SidePot> {
 
 	@Override
 	public int compareTo(SidePot o) {
-		if (o == null || value > o.value)
+		if (value > o.value)
 			return 1;
-		return value == o.value ? 0 : -1;
+		else
+			return value == o.value ? 0 : -1;
 	}
 }

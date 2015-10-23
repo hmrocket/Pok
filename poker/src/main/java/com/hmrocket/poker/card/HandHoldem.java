@@ -70,9 +70,10 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	@Override
 	public int compareTo(HandHoldem o) {
-		if (o == null)
-			return 1;
-		else
+		// compareTo should throw a nullPointerException if o is null
+//		if (o == null)
+//			return 1;
+//		else
 			return getHandScore().compareTo(o.getHandScore());
 	}
 

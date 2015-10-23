@@ -58,11 +58,11 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
 
     @Override
     public int compareTo(Player o) {
-        if (hand == null && o == null || state == PlayerState.FOLD && o.state == state)
+        if (hand == null && o.hand == null || isOut() && o.isOut())
             return 0; // return 0 if both player has not hands or both of them folded
-        else if (state == PlayerState.FOLD) // lose automatically if he folded
+        else if (this.isOut()) // lose automatically if he folded
             return -1;
-        else if (o.state == PlayerState.FOLD) // lose automatically if he folded
+        else if (o.isOut()) // lose automatically if he folded
             return 1;
         return hand.compareTo(o.hand);
     }
