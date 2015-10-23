@@ -64,7 +64,7 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	public HandScore getHandScore() {
 		if (handScore == null) // Lazy getter (Calculate the score when needed)
-			handScore = HandScoreCalculator.getHandScoreCalculator(hand, communityCardsWeakReference.get());
+			handScore = HandScoreCalculator.getHandScore(hand, communityCardsWeakReference.get());
 		return handScore;
 	}
 

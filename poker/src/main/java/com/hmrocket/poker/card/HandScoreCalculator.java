@@ -31,21 +31,37 @@ public final class HandScoreCalculator {
 
 
     public static HandScore getHandScore(Hand hand, Flop flop) {
-		return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3());
+		if (flop == null) {
+			return calculateHandScore(hand);
+		} else {
+			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3());
+		}
 
-    }
-
-    public static HandScore getHandScoreCalculator(Hand hand, Flop flop, Card turn) {
-		return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3(), turn);
 	}
 
-    public static HandScore getHandScoreCalculator(Hand hand, Flop flop, Card turn, Card river) {
-		return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3(), turn, river);
+	public static HandScore getHandScore(Hand hand, Flop flop, Card turn) {
+		if (turn != null) {
+			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3(), turn);
+		} else {
+			return HandScoreCalculator.getHandScore(hand, flop);
+		}
 	}
 
-    public static HandScore getHandScoreCalculator(Hand hand, CommunityCards communityCards) {
-        return getHandScoreCalculator(hand, communityCards.getFlop(), communityCards.getTurn(), communityCards.getRiver());
-    }
+	public static HandScore getHandScore(Hand hand, Flop flop, Card turn, Card river) {
+		if (river != null) {
+			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3(), turn, river);
+		} else {
+			return getHandScore(hand, flop, turn);
+		}
+	}
+
+	public static HandScore getHandScore(Hand hand, CommunityCards communityCards) {
+		if (communityCards != null) {
+			return getHandScore(hand, communityCards.getFlop(), communityCards.getTurn(), communityCards.getRiver());
+		} else {
+			return getHandScore(hand);
+		}
+	}
 
 	private static HandScore calculateHandScore(Hand hand, Card... cards) {
 		// Check Flush
