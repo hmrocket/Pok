@@ -134,7 +134,7 @@ public class HandScore implements Comparable<HandScore> {
         return "HandScore{" +
                 "handType=" + handType +
                 ", rank=" + rank +
-                ", kickers=" + (kickers == null ? 0 : kickers.size()) +
+                ", kickers=" + (kickers == null ? "" : Arrays.deepToString(kickers.toArray())) +
                 '}';
     }
 }
