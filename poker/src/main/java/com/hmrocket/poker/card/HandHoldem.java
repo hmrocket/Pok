@@ -83,4 +83,12 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		// XXX You might need also to update your week reference here
 		handScore = null;
 	}
+
+	@Override
+	public String toString() {
+		return "hand=" + hand +
+				", communityCardsWeakReference=" + communityCardsWeakReference == null ? null : communityCardsWeakReference.get() +
+				", handScore=" + handScore +
+				'}';
+	}
 }

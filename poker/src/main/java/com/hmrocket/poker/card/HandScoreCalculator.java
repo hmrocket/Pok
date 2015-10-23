@@ -23,7 +23,7 @@ public final class HandScoreCalculator {
         if (hand.isPair()) {
 			return new HandScore(HandType.ONE_PAIR, hand.getCard1().getRank());
 		} else {
-			ArrayList<Card> kicker = new ArrayList<Card>();
+			ArrayList<Card> kicker = new ArrayList<>();
 			kicker.add(hand.getMin());
 			return new HandScore(HandType.HIGH_CARD, hand.getMax().getRank(), kicker);
 		}

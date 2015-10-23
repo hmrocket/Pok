@@ -119,4 +119,9 @@ public class Hand {
     public boolean isPair() {
         return card1.getRank() == card2.getRank();
     }
+
+	@Override
+	public String toString() {
+		return card1 + ":" + card2;
+	}
 }

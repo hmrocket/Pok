@@ -52,4 +52,13 @@ public class CommunityCards extends Observable {
         this.river = river;
         notifyObservers();
     }
+
+    @Override
+    public String toString() {
+        return "CommunityCards{" +
+                "flop=" + flop +
+                ", turn=" + turn +
+                ", river=" + river +
+                '}';
+    }
 }

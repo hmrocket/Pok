@@ -31,4 +31,13 @@ public class Flop {
     public Card[] getCards() {
         return new Card[]{card1, card2, card3};
     }
+
+    @Override
+    public String toString() {
+        return "Flop{" +
+                "card1=" + card1 +
+                ", card2=" + card2 +
+                ", card3=" + card3 +
+                '}';
+    }
 }

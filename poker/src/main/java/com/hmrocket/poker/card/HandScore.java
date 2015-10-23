@@ -105,4 +105,13 @@ public class HandScore implements Comparable<HandScore> {
         // All kickers are equal
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "HandScore{" +
+                "handType=" + handType +
+                ", rank=" + rank +
+                ", kickers=" + (kickers == null ? 0 : kickers.size()) +
+                '}';
+    }
 }
