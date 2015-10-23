@@ -1,5 +1,6 @@
 package com.hmrocket.poker.card;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,6 +67,28 @@ public class HandScore implements Comparable<HandScore> {
 
     public void setKickers(List<Card> kickers) {
         this.kickers = kickers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HandScore handScore = (HandScore) o;
+
+        if (handType != handScore.handType) return false;
+        if (rank != handScore.rank) return false;
+        // Deep equal of the Card not CompareTo
+        return !(kickers != null ? !Arrays.deepEquals(kickers.toArray(), handScore.kickers.toArray()) : handScore.kickers != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = handType.hashCode();
+        result = 31 * result + rank.hashCode();
+        result = 31 * result + (kickers != null ? kickers.hashCode() : 0);
+        return result;
     }
 
     /**
