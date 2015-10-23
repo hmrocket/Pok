@@ -6,7 +6,7 @@ import java.util.List;
  * To determine the winner HandScore class hold 3 keyValue of the Rank of a Hand ({@link HandType HandType}, {@link Rank Rank} , {@link Card kickers})
  * Created by hmrocket on 04/10/2015.
  */
-public class HandScore {
+public class HandScore implements Comparable<HandScore> {
 
     private HandType handType;
     /**
@@ -73,6 +73,7 @@ public class HandScore {
      * @param handScore
      * @return positive number if the first handScire is higher than the second, 0 if both score equals. Negative number otherwise
      */
+    @Override
     public int compareTo(HandScore handScore) {
         if (this.handType.equals(handScore.handType)) {
             int compareTo = this.rank.compareTo(handScore.rank);
