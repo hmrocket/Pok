@@ -32,7 +32,7 @@ public final class HandScoreCalculator {
 
     public static HandScore getHandScore(Hand hand, Flop flop) {
 		if (flop == null) {
-			return calculateHandScore(hand);
+			return getHandScore(hand);
 		} else {
 			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3());
 		}
@@ -64,6 +64,9 @@ public final class HandScoreCalculator {
 	}
 
 	private static HandScore calculateHandScore(Hand hand, Card... cards) {
+		//cards are null, go through different process
+		if (cards == null || cards.length == 0)
+			return getHandScore(hand);
 		// Check Flush
         Rank rank;
         Suit suit;
