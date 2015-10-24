@@ -76,8 +76,8 @@ public final class HandScoreCalculator {
             return getHandScore(hand);
         // all cards
         Card[] cards = new Card[2 + sharedCards.length];
-        System.arraycopy(cards, 0, hand.getCards(), 0, 2);
-        System.arraycopy(cards, 2, sharedCards, 0, sharedCards.length);
+        System.arraycopy(hand.getCards(), 0, cards, 0, 2);
+        System.arraycopy(sharedCards, 0, cards, 2, sharedCards.length);
 
         // Check Flush
         Rank rank;
@@ -138,10 +138,11 @@ public final class HandScoreCalculator {
      */
     private static Rank getFlushRank(Suit flushSuit, Card... cards) {
         if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
-        Rank maxRank = null;
-        for (Card card : cards) {
+        Rank maxRank = cards[0].getRank();
+        for (int i = 1; i < cards.length; i++) {
+            Card card = cards[i];
             if (!flushSuit.equals(card.getSuit())) continue;
-            if (card.getRank().compareTo(maxRank) > 0) {
+            if (maxRank.compareTo(card.getRank()) < 0) {
                 maxRank = card.getRank();
             }
         }
