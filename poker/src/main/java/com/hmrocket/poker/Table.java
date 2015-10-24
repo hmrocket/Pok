@@ -55,10 +55,10 @@ public class Table implements Game.GameEvent {
     public void addPlayer(Player player, int seatId) {
 		if (seatId >= seats.size() || seatId < 0) {
 			throw new IllegalArgumentException("No seat available at index " + seatId);
-		} else if (seatsAvailable <= 0 || !seats.get(seatId).isAvailable())
-			System.out.println("Seat Not available for " + player.getName());
-		else if (player == null)
+		} else if (player == null)
 			System.out.println("Player is null");
+		else if (seatsAvailable <= 0 || !seats.get(seatId).isAvailable())
+			System.out.println("Seat Not available for " + player.getName());
 		else if (players.contains(player))
 			System.out.println(player.getName() + " exist and already added");
 		else if (player.getCash() < PokerTools.getMinBuyIn(minBet))
