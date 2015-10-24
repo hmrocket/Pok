@@ -152,26 +152,27 @@ public class PotTest extends TestCase {
         long cash[] = new long[3];
 
         //case 0:  2 all in and 1 fold
-        PLAYERS.get(0).allIn();
+		for (int i = 0; i < 3; i++)
+			cash[i] = PLAYERS.get(i).getCash();
+		PLAYERS.get(0).allIn();
         PLAYERS.get(1).allIn();
         PLAYERS.get(2).fold();
         pot.update();
-        for (int i = 0; i < 3; i++)
-            cash[i] = PLAYERS.get(i).getCash();
         pot.distributeToWinners();
         assertEquals("update: cash(0)=" + PLAYERS.get(0).getCash(), cash[0] + cash[1], PLAYERS.get(0).getCash());
         assertEquals("update: cash(1)=" + PLAYERS.get(1).getCash(), 0, PLAYERS.get(1).getCash());
         assertEquals("update: cash(2)=" + PLAYERS.get(2).getCash(), cash[2], PLAYERS.get(2).getCash());
 
         //case 1: 2 all in 1 fold
-        PLAYERS.get(2).call(10);
-        PLAYERS.get(0).allIn();
-        PLAYERS.get(1).addCash(100);
+		PLAYERS.get(1).addCash(100);
+		for (int i = 0; i < 3; i++)
+			cash[i] = PLAYERS.get(i).getCash();
+		pot.setup(players);
+		PLAYERS.get(2).call(10);
+		PLAYERS.get(0).allIn();
         PLAYERS.get(1).allIn();
         PLAYERS.get(2).fold();
         pot.update();
-        for (int i = 0; i < 3; i++)
-            cash[i] = PLAYERS.get(i).getCash();
         pot.distributeToWinners();
         assertEquals("update: cash(0)=" + PLAYERS.get(0).getCash(), 10 + cash[0] + cash[1], PLAYERS.get(0).getCash());
         assertEquals("update: cash(1)=" + PLAYERS.get(1).getCash(), 0, PLAYERS.get(1).getCash());
