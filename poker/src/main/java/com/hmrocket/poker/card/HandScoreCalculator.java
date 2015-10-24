@@ -5,7 +5,6 @@ import com.hmrocket.poker.PokerTools;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -80,6 +79,9 @@ public final class HandScoreCalculator {
         System.arraycopy(hand.getCards(), 0, cards, 0, 2);
         System.arraycopy(sharedCards, 0, cards, 2, sharedCards.length);
 
+		// Sort Card only once (Descending sort)
+		Arrays.sort(cards, Collections.reverseOrder());
+
         // Check Flush
         Rank rank;
         Suit suit;
@@ -153,25 +155,22 @@ public final class HandScoreCalculator {
     /**
      * Search if there is more than 5 consecutive cards (straight)
      *
-     * @param cards
-     * @return the higher card rank of the straight, null otherwise
+	 * @param cards Descending order Card Array
+	 * @return the higher card rank of the straight, null otherwise
      */
     private static Rank checkStraight(Card... cards) {
         // Card implements comparable. Rank Comparative
-		Arrays.sort(cards); // Ascending order (lower Rank first)
-		for (int i = cards.length - 1; i >= 0; i--) {
-            Rank rank = cards[i].getRank();
+		for (int i = 0; i < cards.length; i++) {
+			Rank rank = cards[i].getRank();
             int consecutiveCards = 1;
             int j;
-            for (j = i - 1; j >= 0; j--) {
-                Rank nextCardRank = cards[j].getRank();
-                if (rank.ordinal() - nextCardRank.ordinal() == 0) { // if same rank
-                    continue;
-                } else if (rank.ordinal() - nextCardRank.ordinal() == 1) { // if cards[i] and cards[j] are consecutive
-                    consecutiveCards++;
-                } else {
-                    break;
-                }
+			for (j = i + 1; j < cards.length; j++) {
+				Rank nextCardRank = cards[j].getRank();
+				if (rank.ordinal() - nextCardRank.ordinal() == 1) { // if cards[i] and cards[j] are consecutive
+					consecutiveCards++;
+				} else if (rank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break
+					break;
+				}
             }
             if (consecutiveCards < 4) {
                 // startNewHand the next loop from card j
@@ -179,8 +178,8 @@ public final class HandScoreCalculator {
                 continue;
             } else {
                 boolean straightFrom5to1 = (consecutiveCards == 4
-                        && rank == Rank.FIVE && cards[cards.length - 1].getRank() == Rank.ACE);
-                if (straightFrom5to1)
+						&& rank == Rank.FIVE && cards[0].getRank() == Rank.ACE);
+				if (straightFrom5to1)
                     consecutiveCards++;
                 if (consecutiveCards > 4) return rank;
             }
@@ -188,9 +187,13 @@ public final class HandScoreCalculator {
         return null;
     }
 
-    private static HandScore checkRecurrences(Card... cards) {
-        // sort cards based on cards ranks
-		Arrays.sort(cards, Collections.reverseOrder()); // Sort descending order.(Higher Card first)
+	/**
+	 * Note cards must be ordered
+	 *
+	 * @param cards Ascending/Descending order of a Sorted Card Array (higher Card first/lower Card first)
+	 * @return
+	 */
+	private static HandScore checkRecurrences(Card... cards) {
 		// Card Ranks, occurrence
 		LinkedHashMap<Card, Integer> map = new LinkedHashMap<>();
 		for (int i = 0; i < cards.length; i++) {
@@ -247,12 +250,12 @@ public final class HandScoreCalculator {
 
     /**
      * Search for the first Rank that has value equal to integer
-     *
-     * @param map
-     * @param integer
+	 *
+	 * @param map insertion order should be descending (higer card retrieved first)
+	 * @param integer
 	 * @return the first Card that has value equals to integer
 	 */
-	private static Card searchCardOfthisValue(HashMap<Card, Integer> map, Integer integer) {
+	private static Card searchCardOfthisValue(LinkedHashMap<Card, Integer> map, Integer integer) {
 		Iterator it = map.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<Card, Integer> pair = (Map.Entry<Card, Integer>) it.next();
@@ -264,9 +267,9 @@ public final class HandScoreCalculator {
 
 	/**
 	 * Search for kickers in a Hand<br/>
-	 * ONLY HAND KICKERS ARE RETURNED, WINDOW CARDS are discorded.
+	 * ONLY HAND KICKERS ARE RETURNED, WINDOW CARDS are discarded.
 	 *
-	 * @param hand      represent a map of card and there occurrence in the hand (LinkedHashMap keeps the order of the insertion which is mean it will be ordered too)
+	 * @param hand
 	 * @param handScore
 	 * @return kickers that a Hand has to break a possible tie
 	 */
