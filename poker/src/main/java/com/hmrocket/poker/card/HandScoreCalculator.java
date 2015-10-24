@@ -4,6 +4,7 @@ import com.hmrocket.poker.PokerTools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -157,8 +158,8 @@ public final class HandScoreCalculator {
      */
     private static Rank checkStraight(Card... cards) {
         // Card implements comparable. Rank Comparative
-        Arrays.sort(cards);
-        for (int i = cards.length - 1; i >= 0; i--) {
+		Arrays.sort(cards); // Ascending order (lower Rank first)
+		for (int i = cards.length - 1; i >= 0; i--) {
             Rank rank = cards[i].getRank();
             int consecutiveCards = 1;
             int j;
@@ -189,7 +190,7 @@ public final class HandScoreCalculator {
 
     private static HandScore checkRecurrences(Card... cards) {
         // sort cards based on cards ranks
-        Arrays.sort(cards);
+		Arrays.sort(cards, Collections.reverseOrder()); // Sort descending order.(Higher Card first)
 		// Card Ranks, occurrence
 		LinkedHashMap<Card, Integer> map = new LinkedHashMap<>();
 		for (int i = 0; i < cards.length; i++) {
@@ -276,7 +277,7 @@ public final class HandScoreCalculator {
 		switch (handScore.getHandType()) {
 			case FOUR_OF_A_KIND: // 1 kicker max for this case
 				handCard = hand.getCards();
-				Arrays.sort(handCard);
+				Arrays.sort(handCard, Collections.reverseOrder());
 				for (Card card : handCard)
 					if (card.getRank().compareTo(handScore.getRank()) != 0) {
 						kickers.add(card);
@@ -288,7 +289,7 @@ public final class HandScoreCalculator {
 			case ONE_PAIR: // Best hand is constructed with 3 kickers but only hand kickers are considered Shared cards are discarded (means 2 kickers max)
 			case HIGH_CARD: // Best hand it can be constructed with 4 kickers but here 2 kickers max cause only Hand kickers are considered
 				handCard = hand.getCards();
-				Arrays.sort(handCard);
+				Arrays.sort(handCard, Collections.reverseOrder()); // Descending order (higher Rank first)
 				for (Card card : handCard)
 					if (card.getRank().compareTo(handScore.getRank()) != 0) {
 						kickers.add(card);
