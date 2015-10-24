@@ -32,7 +32,7 @@ public class CommunityCards extends Observable {
 
     public void setFlop(Flop flop) {
         this.flop = flop;
-        notifyObservers();
+        setChangedAndNotify();
     }
 
     public Card getTurn() {
@@ -41,6 +41,11 @@ public class CommunityCards extends Observable {
 
     public void setTurn(Card turn) {
         this.turn = turn;
+        setChangedAndNotify();
+    }
+
+    private void setChangedAndNotify() {
+        setChanged();
         notifyObservers();
     }
 
@@ -50,7 +55,7 @@ public class CommunityCards extends Observable {
 
     public void setRiver(Card river) {
         this.river = river;
-        notifyObservers();
+        setChangedAndNotify();
     }
 
     @Override
