@@ -12,9 +12,9 @@ import java.util.Set;
  */
 public class PokerTools {
 
-    private static final int MIN_BUY_IN_MULTIPLYER = 10;
-    private static final int MAX_BUY_IN_MULTIPLYER = 200;
 	public static final boolean DEBUG = true;
+	private static final int MIN_BUY_IN_MULTIPLYER = 10;
+    private static final int MAX_BUY_IN_MULTIPLYER = 200;
 
 	public static long getMinBuyIn(long minBet) {
 		return minBet * MIN_BUY_IN_MULTIPLYER;
@@ -62,17 +62,27 @@ public class PokerTools {
         Set<Player> potentialWinners = new HashSet<>();
         if (potentialWinnersInTheGame == null || potentialWinnersInTheGame.isEmpty())
             return potentialWinners;
-        else potentialWinnersInTheGame.addAll(potentialWinnersInTheGame);
+		else potentialWinners.addAll(potentialWinnersInTheGame);
 
-        Set<Player> winners = new HashSet<Player>();
-        Player winner = Collections.max(potentialWinners); // find best hand
-        do {
-            winners.add(winner);
-            potentialWinners.remove(winner);
-            winner = Collections.max(potentialWinners); // find the next best hand
-            // if next best hand is equal to best hand, add it to winners
-        } while (winner.compareTo(winners.iterator().next()) == 0);
+		if (potentialWinners.size() == 1)
+			return potentialWinners;
+		else { // there is more than 1 player
+			Set<Player> winners = new HashSet<Player>();
+			Player firstWinner = Collections.max(potentialWinners); // find best hand
+			winners.add(firstWinner);
+			potentialWinners.remove(firstWinner);
+			// look for other winners
+			Player winner;
+			do {
+				winner = Collections.max(potentialWinners); // find other best hand
+				// if next best hand is equal to best hand, add it to winners, if not break
+				if (winner.compareTo(firstWinner) != 0)
+					break;
+				winners.add(winner);
+				potentialWinners.remove(winner);
+			} while (!potentialWinners.isEmpty());
+			return winners;
+		}
 
-        return winners;
     }
 }
