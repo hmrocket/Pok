@@ -63,11 +63,23 @@ public final class HandScoreCalculator {
 		}
 	}
 
-	private static HandScore calculateHandScore(Hand hand, Card... cards) {
-		//cards are null, go through different process
-		if (cards == null || cards.length == 0)
-			return getHandScore(hand);
-		// Check Flush
+    /**
+     * call this only if there more than 2 cards
+     *
+     * @param hand        hand (used to calculate kickers)
+     * @param sharedCards Community Cards (window cards)
+     * @return
+     */
+    private static HandScore calculateHandScore(Hand hand, Card... sharedCards) {
+        //cards are null, go through different process
+        if (sharedCards == null || sharedCards.length == 0)
+            return getHandScore(hand);
+        // all cards
+        Card[] cards = new Card[2 + sharedCards.length];
+        System.arraycopy(cards, 0, hand.getCards(), 0, 2);
+        System.arraycopy(cards, 2, sharedCards, 0, sharedCards.length);
+
+        // Check Flush
         Rank rank;
         Suit suit;
         suit = checkFlush(cards);
