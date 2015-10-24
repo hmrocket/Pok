@@ -4,7 +4,8 @@
 
 ----> App Name
 Poker Cheater (tricheur de poker)
-
+Poker Cheats
+Poker Magic
 
 ----> cheats (12 per level)
 - Note: Play music or have some effect 
@@ -33,4 +34,24 @@ Poker Cheater (tricheur de poker)
 ---->Marketing
 1) Add all Linkedin panding invitaitons
 2) get a picture from tasnim playing poker (prefebly boobs bit naturally showing and naturally playing poker)
+3) Create a facebook page and tweeter for your app
+4) Just lunch it in France & Tunisia & Canada (gradully start with tunisia controlled damage)
+5) put friend faces in the game as bots (your friends will feel compeled to downloaded)
+	Best friends = popular friends
+	- Said Bousnina
+	- Edward the musian
+	Process diagram flow
+	- Start by tell them an information about what are you doing (Salut! Sebastien je develope une application de Poker offline sur Android, J'aurais besoin de volentaire qui seront ravis d'etre des joueurs virtuelle (bots) que l'utilisateur joura contre hehe. J'ai pensé à mes amis geek, je suis certain que quelque un aimeront etre part dans une application Android 
+	- Tell them that you thought about them, and they can be a subject and part of something awesome
+	- Ask them if they like to be part of the cool app ?
+	- Typicly you will have 4 Replies:  No. YES, Maybe-Yes, Maybe-No
+		No: Okay np be profesional
+		Yes: Be happy and appreciate that they accepted (hehe merci !)
+		Maybe-Yes: (I nned to see the app first or my bot)
+
+	- Let me focus on Yes: At this part they own you a service, ask more yes questions (i.e: Are you agrressive or safe Player, From 1-10 1 is safe 10 agressive ? do you bluff often ? Any other specific caracters you would like your second self (bot) to have? )
+	- Manage expectation (Nearly 22% of apps downloaded are never used more than once.): Oh don't expect something crazy Poker bots (Artifical Inteligence) are very hard to get right - Okay I'll try my best to have your style of player set correct
+	- Ask him to do an act of faith (Like my page and Get notified when I launch the app, 
+	- Finish: And if you like it share it haha ;) Thanks you !
+6) Facebook like page and share is a must.
 
