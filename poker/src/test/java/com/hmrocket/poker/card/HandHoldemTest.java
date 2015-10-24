@@ -152,15 +152,15 @@ public class HandHoldemTest extends TestCase {
 		Card river = deck.drawCard();
 		CommunityCards communityCards = new CommunityCards();
 
-		HandHoldem strongHand = new HandHoldem(new Hand(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)), communityCards);
-		HandHoldem weakerHand = new HandHoldem(new Hand(new Card(Rank.KING, Suit.SPADES), new Card(Rank.KING, Suit.HEARTS)), communityCards);
-		assertTrue(strongHand.compareTo(weakerHand) > 0);
+		HandHoldem strongHand = new HandHoldem(new Hand(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.TEN, Suit.CLUBS)), communityCards);
+		HandHoldem weakerHand = new HandHoldem(new Hand(new Card(Rank.TWO, Suit.SPADES), new Card(Rank.KING, Suit.HEARTS)), communityCards);
+		assertTrue(strongHand + " isn't > " + weakerHand, strongHand.compareTo(weakerHand) > 0);
 		communityCards.setFlop(flop);
-		assertTrue(strongHand.compareTo(weakerHand) > 0);
+		assertTrue(strongHand + " isn't > " + weakerHand, strongHand.compareTo(weakerHand) > 0);
 		communityCards.setTurn(turn);
-		assertTrue(strongHand.compareTo(weakerHand) > 0);
+		assertTrue(strongHand + " isn't > " + weakerHand, strongHand.compareTo(weakerHand) > 0);
 		communityCards.setRiver(river);
-		assertTrue(strongHand.compareTo(weakerHand) > 0);
+		assertTrue(strongHand + " isn't > " + weakerHand, strongHand.compareTo(weakerHand) > 0);
 
 	}
 
