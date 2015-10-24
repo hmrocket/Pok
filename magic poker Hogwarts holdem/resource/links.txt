@@ -11,3 +11,10 @@ https://en.wikipedia.org/wiki/Monte_Carlo_method
 http://www.deducer.org/pmwiki/pmwiki.php?n=Main.ArtificialIntelligencePoker
 http://stackoverflow.com/questions/506167/building-a-texas-holdem-playing-ai-from-scratch
 http://cowboyprogramming.com/2007/01/04/programming-poker-ai/
+
+
+------------>Tracking user
+http://info.localytics.com/blog/the-8-mobile-app-metrics-that-matter
+https://www.woopra.com/blog/2014/05/29/mobile-app-tracking-best-practices/
+https://www.quora.com/What-are-the-best-mobile-analytics-tools-for-native-apps
+
