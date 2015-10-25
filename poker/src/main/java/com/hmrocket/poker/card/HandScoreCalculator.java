@@ -90,8 +90,10 @@ public final class HandScoreCalculator {
 		} else if (handScore.getHandType() == HandType.FOUR_OF_A_KIND || handScore.getHandType() == HandType.FULL_HOUSE) {
 			handScore.setKickers(searchKickers(hand, handScore));
 			return handScore;
-		} else if (suit != null || rank != null)
-            return new HandScore(suit != null ? HandType.FLUSH : HandType.STRAIGHT, rank);
+		} else if (suit != null)
+			return new HandScore(HandType.FLUSH, getFlushRank(suit, cards));
+		else if (rank != null)
+			return new HandScore(HandType.STRAIGHT, rank);
 		else { // TWO PAIR or ONE_PAIR or HIGH_CARD
 			handScore.setKickers(searchKickers(hand, handScore));
 			return handScore;
@@ -127,6 +129,26 @@ public final class HandScoreCalculator {
         else if (spades > 4) return Suit.SPADES;
         else return null;
     }
+
+	/**
+	 * Find max Rank of the Flush
+	 *
+	 * @param flushSuit
+	 * @param cards
+	 * @return
+	 */
+	private static Rank getFlushRank(Suit flushSuit, Card... cards) {
+		if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
+		Rank maxRank = cards[0].getRank();
+		for (int i = 1; i < cards.length; i++) {
+			Card card = cards[i];
+			if (!flushSuit.equals(card.getSuit())) continue;
+			if (maxRank.compareTo(card.getRank()) < 0) {
+				maxRank = card.getRank();
+			}
+		}
+		return maxRank;
+	}
 
     /**
      * Search if there is more than 5 consecutive cards (straight)
