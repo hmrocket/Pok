@@ -139,7 +139,7 @@ public final class HandScoreCalculator {
 	 */
 	private static Rank getFlushRank(Suit flushSuit, Card... cards) {
 		if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
-		for (int i = 1; i < cards.length; i++) {
+		for (int i = 0; i < cards.length; i++) {
 			Card card = cards[i];
 			if (card.getSuit() == flushSuit) {
 				return card.getRank();
