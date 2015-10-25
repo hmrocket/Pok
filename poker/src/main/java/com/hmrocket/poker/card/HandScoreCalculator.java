@@ -131,23 +131,21 @@ public final class HandScoreCalculator {
     }
 
 	/**
-	 * Find max Rank of the Flush
+	 * return Rank of the Flush
 	 *
 	 * @param flushSuit
-	 * @param cards
-	 * @return
+	 * @param cards Array of cards ordered descending
+	 * @return return the first found card's rank that much flushSuit
 	 */
 	private static Rank getFlushRank(Suit flushSuit, Card... cards) {
 		if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
-		Rank maxRank = cards[0].getRank();
 		for (int i = 1; i < cards.length; i++) {
 			Card card = cards[i];
-			if (!flushSuit.equals(card.getSuit())) continue;
-			if (maxRank.compareTo(card.getRank()) < 0) {
-				maxRank = card.getRank();
+			if (card.getSuit() == flushSuit) {
+				return card.getRank();
 			}
 		}
-		return maxRank;
+		return null;
 	}
 
     /**
