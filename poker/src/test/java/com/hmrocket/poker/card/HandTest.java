@@ -7,10 +7,8 @@ import junit.framework.TestCase;
  */
 public class HandTest extends TestCase {
 
-	private Hand hand;
 	private final static Card card0;
 	private final static Card card1;
-
 
 	static {
 		Deck deck = new Deck();
@@ -18,6 +16,8 @@ public class HandTest extends TestCase {
 		card1 = deck.drawCard();
 		System.out.println("Setup Hand: " + card0+card1);
 	}
+
+	private Hand hand;
 
 	public void setUp() throws Exception {
 		super.setUp();
@@ -57,7 +57,7 @@ public class HandTest extends TestCase {
 		Hand hand2 = new Hand(deck.drawCard(), deck.drawCard());
 		assertNotSame(hand1, hand2);
 		Hand handB = new Hand(hand1.getCard2(), hand1.getCard1());
-		assertEquals(hand1, handB);
+		assertEquals(hand1, handB); // XXX FAILED: 1
 	}
 
 	public void testHashCode() throws Exception {
@@ -66,7 +66,8 @@ public class HandTest extends TestCase {
 		Hand hand2 = new Hand(deck.drawCard(), deck.drawCard());
 		assertNotSame(hand1.hashCode(), hand2.hashCode());
 		Hand handB = new Hand(hand1.getCard2(), hand1.getCard1());
-		assertEquals(hand1.hashCode(), handB.hashCode());
+		assertEquals("hand1= " + hand1.toString() + " hand2=" + handB.toString(),
+				hand1.hashCode(), handB.hashCode()); // XXX Failed: 1
 	}
 
 	public void testCompareTo() throws Exception {
