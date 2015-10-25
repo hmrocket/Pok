@@ -18,3 +18,7 @@ http://info.localytics.com/blog/the-8-mobile-app-metrics-that-matter
 https://www.woopra.com/blog/2014/05/29/mobile-app-tracking-best-practices/
 https://www.quora.com/What-are-the-best-mobile-analytics-tools-for-native-apps
 
+
+----->App I can copy from
+https://play.google.com/store/apps/details?id=com.bigblueparrot.pokerfriends.
+https://play.google.com/store/apps/details?id=com.playtika.wsop.gp (play anytime anywhere with your friends - OFFLINE)

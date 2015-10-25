@@ -2,10 +2,15 @@
 2) You can cast magic on other player but for you drink potions (potion to protect you from spells 3 tours)
 3) Create a pre-selected or create mutli player game from the begging
 
-----> App Name
-Poker Cheater (tricheur de poker)
-Poker Cheats
-Poker Magic
+----> App Name (two poker games concept)
+1)Poker Cheater (tricheur de poker)
+1)Poker Cheats
+1)Poker Magic
+
+2)Poker with friends - OFFLINE
+2)Poker friends - OFFLINE
+2)Poker Night - OFFLINE
+Description2):
 
 ----> cheats (12 per level)
 - Note: Play music or have some effect 
@@ -54,4 +59,9 @@ Poker Magic
 	- Ask him to do an act of faith (Like my page and Get notified when I launch the app, 
 	- Finish: And if you like it share it haha ;) Thanks you !
 6) Facebook like page and share is a must.
+7) You might want to release a poker app much faster :
+	- Simpler App idea: Keep Poker rules intact and focus on AI bots, You're application will offer
+	A poker game with friends you can play with them offline what you promise users, that if they invite
+	- their friends our Artifical Inteligence system will learn about your friend style, and update you app intelegence 
+	It's like playing against a doppelganges.
 
