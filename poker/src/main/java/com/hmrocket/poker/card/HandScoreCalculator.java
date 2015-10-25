@@ -173,8 +173,8 @@ public final class HandScoreCalculator {
             }
             if (consecutiveCards < 4) {
                 // startNewHand the next loop from card j
-                i = j;
-                continue;
+				i = j - 1;
+				continue;
             } else {
                 boolean straightFrom5to1 = (consecutiveCards == 4
 						&& rank == Rank.FIVE && cards[0].getRank() == Rank.ACE);
