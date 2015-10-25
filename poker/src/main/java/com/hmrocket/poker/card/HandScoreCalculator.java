@@ -1,14 +1,10 @@
 package com.hmrocket.poker.card;
 
-import com.hmrocket.poker.PokerTools;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * poker arnaqueur - poker crook
@@ -133,26 +129,6 @@ public final class HandScoreCalculator {
     }
 
     /**
-     * Find max Rank of the Flush
-     *
-     * @param flushSuit
-     * @param cards
-     * @return
-     */
-    private static Rank getFlushRank(Suit flushSuit, Card... cards) {
-        if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
-        Rank maxRank = cards[0].getRank();
-        for (int i = 1; i < cards.length; i++) {
-            Card card = cards[i];
-            if (!flushSuit.equals(card.getSuit())) continue;
-            if (maxRank.compareTo(card.getRank()) < 0) {
-                maxRank = card.getRank();
-            }
-        }
-        return maxRank;
-    }
-
-    /**
      * Search if there is more than 5 consecutive cards (straight)
      *
 	 * @param cards Descending order Card Array
@@ -196,74 +172,41 @@ public final class HandScoreCalculator {
 	private static HandScore checkRecurrences(Card... cards) {
 		// Card Ranks, occurrence
 		LinkedHashMap<Card, Integer> map = new LinkedHashMap<>();
+		int maxOccurrence = 0; // the most (occurred Rank) value
+		int maxCount = 0; // represent How many ranks has max value
+		Rank max = null; // Higher Rank that have max occurrence.
 		for (int i = 0; i < cards.length; i++) {
-			for (int j = i + 1; j < cards.length; j++) {
-				if (cards[j].compareTo(cards[i]) == 0) { // Equal ranks
-					continue; // Calculating how many occurrences
-				} else {
-					map.put(cards[i], j - i);
-					i = j - 1; // next loop we start from j
-					break;
-				}
+			int occurrence = 1; // occurrence of the rank of the cards[i]
+			int j;
+			for (j = i + 1; j < cards.length; j++) {
+				if (cards[j].compareTo(cards[i]) == 0) occurrence++;
+				else break; // Not Equal ranks
 			}
-        }
 
-		HandType handType;
-		if (map.containsValue(4)) handType = HandType.FOUR_OF_A_KIND;
-		else if (map.containsValue(3))
-            handType = map.containsValue(2) ? HandType.FULL_HOUSE : HandType.THREE_OF_A_KIND;
-        else if (map.containsValue(2))
-            handType = HandType.ONE_PAIR; // HandType can be TWO_PAIRS Also we don't know at this point
-        else handType = HandType.HIGH_CARD;
-
-        Rank rank;
-		Card[] kickers;
-		switch (handType) {
-			case FOUR_OF_A_KIND:
-				rank = searchCardOfthisValue(map, 4).getRank();
-				break;
-			case FULL_HOUSE:
-            case THREE_OF_A_KIND:
-				rank = searchCardOfthisValue(map, 3).getRank();
-				break;
-			case TWO_PAIRS:
-            case ONE_PAIR:
-                // the first rank is the highest rank of the two pair
-				rank = searchCardOfthisValue(map, 2).getRank();
-				if (PokerTools.DEBUG) {
-					map.remove(rank);
-					Rank rank2 = searchCardOfthisValue(map, 2).getRank();
-					if (rank2 != null) {
-						handType = HandType.TWO_PAIRS;
-						if (rank.compareTo(rank2) < 0)
-							throw new IllegalStateException("From my comment algorithm rank1 should be higher than rank2");
-					}
-				}
-				break;
-			case HIGH_CARD:
-            default:
-				rank = searchCardOfthisValue(map, 1).getRank();
-				break;
-        }
-        return new HandScore(handType, rank);
-    }
-
-    /**
-     * Search for the first Rank that has value equal to integer
-	 *
-	 * @param map insertion order should be descending (higer card retrieved first)
-	 * @param integer
-	 * @return the first Card that has value equals to integer
-	 */
-	private static Card searchCardOfthisValue(LinkedHashMap<Card, Integer> map, Integer integer) {
-		Iterator it = map.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Card, Integer> pair = (Map.Entry<Card, Integer>) it.next();
-			if (Integer.compare(pair.getValue(), integer) == 0)
-				return pair.getKey();
+			Card card = cards[i];
+			if (maxOccurrence < occurrence) {
+				maxOccurrence = occurrence;
+				max = card.getRank();
+				maxCount = 1;
+			} else if (maxOccurrence == occurrence) {
+				maxCount++;
+			}
+			map.put(cards[i], occurrence); //// Calculate how many occurrences
+			i = j - 1; // next loop we start from i = j (that why -1)
 		}
-        return null;
-    }
+
+		// Rank frequency is defined now Specify the HandType based on maxOccurrence
+		HandType handType;
+		if (maxOccurrence == 4)
+			handType = HandType.FOUR_OF_A_KIND;
+		else if (maxOccurrence == 3)
+			handType = map.containsValue(2) ? HandType.FULL_HOUSE : HandType.THREE_OF_A_KIND;
+		else if (maxOccurrence == 2)
+			handType = maxCount == 2 ? HandType.TWO_PAIRS : HandType.ONE_PAIR; // using maxCount we will know if there is only one pair or two
+		else handType = HandType.HIGH_CARD;
+
+		return new HandScore(handType, max);
+	}
 
 	/**
 	 * Search for kickers in a Hand<br/>
