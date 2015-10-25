@@ -142,9 +142,10 @@ public final class HandScoreCalculator {
             int j;
 			for (j = i + 1; j < cards.length; j++) {
 				Rank nextCardRank = cards[j].getRank();
-				if (rank.ordinal() - nextCardRank.ordinal() == 1) { // if cards[i] and cards[j] are consecutive
+				if (rank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
 					consecutiveCards++;
-				} else if (rank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break
+					rank = nextCardRank;
+				} else if (rank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break, (straight chain is broken)
 					break;
 				}
             }
@@ -157,8 +158,8 @@ public final class HandScoreCalculator {
 						&& rank == Rank.FIVE && cards[0].getRank() == Rank.ACE);
 				if (straightFrom5to1)
                     consecutiveCards++;
-                if (consecutiveCards > 4) return rank;
-            }
+				if (consecutiveCards > 4) return cards[i].getRank();
+			}
         }
         return null;
     }
