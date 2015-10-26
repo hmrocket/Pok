@@ -132,10 +132,9 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         state = PlayerState.FOLD;
     }
 
-    private long bet(long amount) {
-        cash -= amount;
+	public void addBet(long amount) {
+		cash -= amount;
         bet += amount;
-        return amount;
     }
 
     public void addCash(long amount) {
@@ -147,22 +146,25 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         // bet = 0;
     }
 
-    public long raise(long amount) {
-        amount = bet(amount);
-        state = PlayerState.RAISE;
-        return amount;
+	public void raise(long amount) {
+		long addValue = amount - bet;
+		if (addValue <= 0) return;
+		addBet(amount);
+		state = PlayerState.RAISE;
     }
 
     public void call(long amount) {
-        if (cash > amount) {
-            bet(amount);
-            state = PlayerState.CALL;
+		long addValue = amount - bet;
+		if (addValue <= 0) return;
+		if (cash > addValue) {
+			addBet(addValue);
+			state = PlayerState.CALL;
         } else allIn();
     }
 
     public void allIn() {
-        bet(cash);
-        state = PlayerState.ALL_IN;
+		addBet(cash);
+		state = PlayerState.ALL_IN;
     }
 
     public void check() {
@@ -172,22 +174,28 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
     // DEBUGGING
     public long play(long amountToContinue) {
         Random r = new Random();
-        int action = r.nextInt(3);
-        switch (action) {
+		int action = r.nextInt(amountToContinue == 0 ? 4 : 3);
+		switch (action) {
             case 0:
                 fold();
                 break;
-            case 1:
-                long raiseAmount = r.nextInt((int) cash);
+			case 1: // raise
+				long raiseAmount = r.nextInt((int) cash);
                 if (amountToContinue > raiseAmount) fold();
-                else raise(raiseAmount);
-                break;
-            case 2:
-                long callAmount = r.nextInt((int) cash);
+				else {
+					raise(raiseAmount);
+					amountToContinue = raiseAmount;
+				}
+				break;
+			case 2: // call
+				long callAmount = r.nextInt((int) cash);
                 if (amountToContinue > callAmount) fold();
                 else call(amountToContinue);
                 break;
-        }
+			case 3: //Check
+				check();
+				break;
+		}
         return amountToContinue;
     }
 
