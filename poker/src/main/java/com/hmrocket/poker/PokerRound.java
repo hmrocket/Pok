@@ -61,11 +61,11 @@ public class PokerRound extends Round {
      */
     protected void startGame(Player startPlayer) {
 
-        while (isCompleted() == false) {
-            this.newRound(startPlayer); // new poker round (not super new round )
+		do {
+			this.newRound(startPlayer); // new poker round (not super new round )
 			if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
 			setNextPhase();
-        }
+		} while (isCompleted() == false);
 
     }
 
@@ -86,11 +86,11 @@ public class PokerRound extends Round {
         super.newRound(playerToStart);
         do {
             // FIXME either
-            long addedBet = playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
-            if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
+			playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
+			if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
                 // update calledAmount and Start new raising Round
-                calledAmountByRound[phase.ordinal()] += addedBet;
-                super.newRound(playerToStart); // New Round not Poker Round
+				calledAmountByRound[phase.ordinal()] = playerToStart.getBet();
+				super.newRound(playerToStart); // New Round not Poker Round
                 nextTurn();
             }
             playerToStart = nextTurn();
