@@ -22,7 +22,7 @@ Description2):
 		
 3) The oracle (oracle): See the next card
 4)Color Blind (ninja - sharingan): targeted Player lose the ability to identify the suit on Cards 
-5)Ulusion (ninja - sharingan): make the target see a specific card something else (doesn't apply on the card alread shown)
+5)Ulusion (ninja - sharingan): make the target see a specific card something else (doesn't apply on the card already shown)
 6)what's the odds (oracle): see the odds of he winning this match
 7)Gimi (oracle): see if the player has double cards of the same rank
 8)Roayl ? (oracle): remove any an going effect on you.
@@ -33,35 +33,40 @@ Description2):
 13)The Cosby 2 (human): Throw a sleeping pill in the glass of the player that will take him in a deep sleep on the next hand.
 		Tip: Use this on a blind bet bully to help him to relax ;)
 14) https://en.wikipedia.org/wiki/Cheating_in_poker (human) real cheat
-15) sheep follow (ninja - need sharngan):take controle and order the last one Player to bet (your money from the bank will be used)
+15) sheep follow (ninja - need sharngan):take control and order the last one Player to bet (your money from the bank will be used)
 ----> Levels: Poker player, Poker Cheater, Poker Ninja, Poker Magician, Poker Oracle, 
 
+
+----->Poker Friends (Future Idea)
+	- Train your doppelganger (boast his AI)
+	- Let your doppelganger play against your friends and make money for you while you're away.
+
 ---->Marketing
-1) Add all Linkedin panding invitaitons
-2) get a picture from tasnim playing poker (prefebly boobs bit naturally showing and naturally playing poker)
+1) Add all Linkedin pending invitations
+2) get a picture from tasnim playing poker (preferably boobs bit naturally showing and naturally playing poker)
 3) Create a facebook page and tweeter for your app
-4) Just lunch it in France & Tunisia & Canada (gradully start with tunisia controlled damage)
+4) Just lunch it in France & Tunisia & Canada (gradually start with tunisia controlled damage)
 5) put friend faces in the game as bots (your friends will feel compeled to downloaded)
 	Best friends = popular friends
 	- Said Bousnina
 	- Edward the musian
 	Process diagram flow
-	- Start by tell them an information about what are you doing (Salut! Sebastien je develope une application de Poker offline sur Android, J'aurais besoin de volentaire qui seront ravis d'etre des joueurs virtuelle (bots) que l'utilisateur joura contre hehe. J'ai pensé à mes amis geek, je suis certain que quelque un aimeront etre part dans une application Android 
+	- Start by tell them an information about what are you doing (Salut! Sebastien je develope une application de Poker offline sur Android, J'aurais besoin de volentaire qui seront ravis d'etre des joueurs virtuelle (bots) que l'utilisateur joura contre hehe. J'ai pensï¿½ ï¿½ mes amis geek, je suis certain que quelque un aimeront etre part dans une application Android 
 	- Tell them that you thought about them, and they can be a subject and part of something awesome
 	- Ask them if they like to be part of the cool app ?
 	- Typicly you will have 4 Replies:  No. YES, Maybe-Yes, Maybe-No
-		No: Okay np be profesional
+		No: Okay np be professional
 		Yes: Be happy and appreciate that they accepted (hehe merci !)
 		Maybe-Yes: (I nned to see the app first or my bot)
 
-	- Let me focus on Yes: At this part they own you a service, ask more yes questions (i.e: Are you agrressive or safe Player, From 1-10 1 is safe 10 agressive ? do you bluff often ? Any other specific caracters you would like your second self (bot) to have? )
-	- Manage expectation (Nearly 22% of apps downloaded are never used more than once.): Oh don't expect something crazy Poker bots (Artifical Inteligence) are very hard to get right - Okay I'll try my best to have your style of player set correct
+	- Let me focus on Yes: At this part they own you a service, ask more yes questions (i.e: Are you aggressive or safe Player, From 1-10 1 is safe 10 aggressive ? do you bluff often ? Any other specific caracters you would like your second self (bot) to have? )
+	- Manage expectation (Nearly 22% of apps downloaded are never used more than once.): Oh don't expect something crazy Poker bots (Artificial Intelligence) are very hard to get right - Okay I'll try my best to have your style of player set correct
 	- Ask him to do an act of faith (Like my page and Get notified when I launch the app, 
 	- Finish: And if you like it share it haha ;) Thanks you !
 6) Facebook like page and share is a must.
 7) You might want to release a poker app much faster :
 	- Simpler App idea: Keep Poker rules intact and focus on AI bots, You're application will offer
 	A poker game with friends you can play with them offline what you promise users, that if they invite
-	- their friends our Artifical Inteligence system will learn about your friend style, and update you app intelegence 
-	It's like playing against a doppelganges.
+	- their friends our Artificial Intelligence system will learn about your friend style, and update you app intelligence
+	It's like playing against a doppelganger. (Approved)
 
