@@ -43,7 +43,7 @@ public class Game implements PokerRound.RoundEvent {
 			HandHoldem handHoldem = new HandHoldem(deck.drawCard(), deck.drawCard(), communityCards);
 			player.setHand(handHoldem);
 		}
-		pokerRound = new PokerRound(minBet, players, dealerIndex);
+		pokerRound = new PokerRound(minBet, players, dealerIndex, this);
 		pokerRound.startGame(players.get(dealerIndex));
 	}
 

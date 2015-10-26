@@ -29,9 +29,10 @@ public class PokerRound extends Round {
         super(playersOrderedRightLeft, dealer);
     }
 
-    public PokerRound(long minBet, List<Player> playersOrderedRightLeft, int dealerIndex) {
-        super(playersOrderedRightLeft, dealerIndex);
-        setup(minBet);
+	public PokerRound(long minBet, List<Player> playersOrderedRightLeft, int dealerIndex, RoundEvent roundEvent) {
+		super(playersOrderedRightLeft, dealerIndex);
+		this.roundEvent = roundEvent;
+		setup(minBet);
     }
 
     /**
@@ -62,8 +63,8 @@ public class PokerRound extends Round {
 
         while (isCompleted() == false) {
             this.newRound(startPlayer); // new poker round (not super new round )
-            roundEvent.onRoundFinish(phase, players);
-            setNextPhase();
+			if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
+			setNextPhase();
         }
 
     }
