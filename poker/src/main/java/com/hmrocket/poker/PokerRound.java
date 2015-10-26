@@ -47,12 +47,12 @@ public class PokerRound extends Round {
         calledAmountByRound[phase.ordinal()] = minBet;
 
         Player smallBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-        smallBlindPlayer.raise(minBet / 2);
+		smallBlindPlayer.addBet(minBet / 2);
 
         // big blind is the one to start the game
         Player bigBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-        bigBlindPlayer.raise(minBet);
-        startGame(bigBlindPlayer);
+		bigBlindPlayer.addBet(minBet);
+		startGame(bigBlindPlayer);
     }
 
     /**
@@ -91,11 +91,11 @@ public class PokerRound extends Round {
                 // update calledAmount and Start new raising Round
 				calledAmountByRound[phase.ordinal()] = playerToStart.getBet();
 				super.newRound(playerToStart); // New Round not Poker Round
-                nextTurn();
-            }
+				// nextTurn();
+			}
             playerToStart = nextTurn();
-        } while (super.isCompleted() == false);
-    }
+		} while (playerToStart != null);
+	}
 
     /**
      * @return next Player still in the game
@@ -110,8 +110,26 @@ public class PokerRound extends Round {
         return player;
     }
 
-    @Override
-    void removePlayer(Player player) {
+	private boolean isAllPlayersExceptOneFolded() {
+		int numberOfPlayerNotOut = 0;
+		for (Player player :
+				players) {
+			if (player.isOut() == false) {
+				numberOfPlayerNotOut++;
+				if (numberOfPlayerNotOut > 1) return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean isCompleted() {
+
+		return super.isCompleted() || isAllPlayersExceptOneFolded();
+	}
+
+	@Override
+	void removePlayer(Player player) {
     // The plan was to remove player who folded or quit, now changed (the pot will handle that)
     // Don't remove player
         super.removePlayer(player);
