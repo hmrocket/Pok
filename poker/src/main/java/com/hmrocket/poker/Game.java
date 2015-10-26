@@ -44,7 +44,6 @@ public class Game implements PokerRound.RoundEvent {
 			player.setHand(handHoldem);
 		}
 		pokerRound = new PokerRound(minBet, players, dealerIndex, this);
-		pokerRound.startGame(players.get(dealerIndex));
 	}
 
 	public void removePlayer(Player player) {
@@ -81,8 +80,10 @@ public class Game implements PokerRound.RoundEvent {
 		int numberOfPlayerNotOut = 0;
 		for (Player player :
 				players) {
-			if (player.isOut() == false) numberOfPlayerNotOut++;
-			if (numberOfPlayerNotOut > 1) return false;
+			if (player.isOut() == false) {
+				numberOfPlayerNotOut++;
+				if (numberOfPlayerNotOut > 1) return false;
+			}
 		}
 		return true;
 	}
