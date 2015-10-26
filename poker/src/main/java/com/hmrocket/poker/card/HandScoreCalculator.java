@@ -157,15 +157,15 @@ public final class HandScoreCalculator {
     private static Rank checkStraight(Card... cards) {
         // Card implements comparable. Rank Comparative
 		for (int i = 0; i < cards.length; i++) {
-			Rank rank = cards[i].getRank();
-            int consecutiveCards = 1;
+			Rank currentRank = cards[i].getRank();
+			int consecutiveCards = 1;
             int j;
 			for (j = i + 1; j < cards.length; j++) {
 				Rank nextCardRank = cards[j].getRank();
-				if (rank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
+				if (currentRank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
 					consecutiveCards++;
-					rank = nextCardRank;
-				} else if (rank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break, (straight chain is broken)
+					currentRank = nextCardRank;
+				} else if (currentRank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break, (straight chain is broken)
 					break;
 				}
             }
@@ -175,7 +175,7 @@ public final class HandScoreCalculator {
 				continue;
             } else {
                 boolean straightFrom5to1 = (consecutiveCards == 4
-						&& rank == Rank.FIVE && cards[0].getRank() == Rank.ACE);
+						&& cards[i].getRank() == Rank.FIVE && cards[0].getRank() == Rank.ACE);
 				if (straightFrom5to1)
                     consecutiveCards++;
 				if (consecutiveCards > 4) return cards[i].getRank();
