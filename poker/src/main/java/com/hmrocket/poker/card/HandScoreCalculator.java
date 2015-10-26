@@ -83,11 +83,15 @@ public final class HandScoreCalculator {
         Suit suit;
         suit = checkFlush(cards);
         rank = checkStraight(cards);
-        HandScore handScore = checkRecurrences(cards);
-        if (suit != null && rank != null) {
-            HandType handType = rank.equals(Rank.ACE) ? HandType.ROYAL_FLUSH : HandType.STRAIGHT_FLUSH;
-			return new HandScore(handType, rank); //No kickers for this case
-		} else if (handScore.getHandType() == HandType.FOUR_OF_A_KIND || handScore.getHandType() == HandType.FULL_HOUSE) {
+		HandScore handScore;
+		if (suit != null && rank != null) {
+			// rank.equals(Rank.ACE) ? HandType.ROYAL_FLUSH : HandType.STRAIGHT_FLUSH
+			handScore = checkStraightFlush(cards, rank, suit);
+			if (handScore != null) return handScore; //No kickers for this case
+		}
+		handScore = checkRecurrences(cards);
+
+		if (handScore.getHandType() == HandType.FOUR_OF_A_KIND || handScore.getHandType() == HandType.FULL_HOUSE) {
 			handScore.setKickers(searchKickers(hand, handScore));
 			return handScore;
 		} else if (suit != null)
@@ -100,10 +104,56 @@ public final class HandScoreCalculator {
 		}
 	}
 
-    /**
-     * @param cards
-     * @return {@link Suit} of the flush, null if no flush can be constructed from <code>cards</code>cards
-     */
+	/**
+	 * Call this method if you have straight and flush but you are not sure if it's StraightFlush
+	 *
+	 * @param cards        ordered descending
+	 * @param straightRank rank of the straight
+	 * @param flushSuit    suit of the flush
+	 * @return null if there's no StraightFlush or RoyalFlush, the Hand Score otherwise
+	 */
+	private static HandScore checkStraightFlush(Card[] cards, Rank straightRank, Suit flushSuit) {
+		// it's the same code as straight but we ignore any card that hasn't the same Suit as flushSuit
+		for (int i = 0; i < cards.length; i++) {
+			Card card = cards[i];
+			if (flushSuit.compareTo(card.getSuit()) != 0)
+				continue;
+
+			Rank currentRank = card.getRank();
+			int consecutiveCards = 1;
+			int j;
+			for (j = i + 1; j < cards.length; j++) {
+				Rank nextCardRank = cards[j].getRank();
+				if (currentRank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
+					consecutiveCards++;
+					currentRank = nextCardRank;
+				} else if (currentRank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break, (straight chain is broken)
+					break;
+				}
+			}
+			if (consecutiveCards < 4) {
+				// startNewHand the next loop from card j
+				i = j - 1;
+				continue;
+			} else {
+				boolean straightFrom5to1 = (consecutiveCards == 4
+						&& cards[i].getRank() == Rank.FIVE && cards[0].getRank() == Rank.ACE);
+				if (straightFrom5to1)
+					consecutiveCards++;
+				if (consecutiveCards > 4) {
+					Rank rankStraightFlush = cards[i].getRank();
+					HandType handType = rankStraightFlush == Rank.ACE ? HandType.ROYAL_FLUSH : HandType.STRAIGHT_FLUSH;
+					return new HandScore(handType, rankStraightFlush);
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * @param cards
+	 * @return {@link Suit} of the flush, null if no flush can be constructed from <code>cards</code>cards
+	 */
     private static Suit checkFlush(Card... cards) {
         if (cards == null || cards.length < 5) return null;
         int hearts = 0, clubs = 0, diamonds = 0, spades = 0;
