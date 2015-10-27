@@ -52,12 +52,15 @@ public class HandTest extends TestCase {
 	}
 
 	public void testEquals() throws Exception {
-		Deck deck = new Deck();
-		Hand hand1 = new Hand(deck.drawCard(), deck.drawCard());
-		Hand hand2 = new Hand(deck.drawCard(), deck.drawCard());
-		assertNotSame(hand1, hand2);
-		Hand handB = new Hand(hand1.getCard2(), hand1.getCard1());
-		assertEquals(hand1, handB); // XXX FAILED: 1
+
+		for (int i = 0; i < (int) 1e6; i++) {
+			Deck deck = new Deck();
+			Hand hand1 = new Hand(deck.drawCard(), deck.drawCard());
+			Hand hand2 = new Hand(deck.drawCard(), deck.drawCard());
+			assertNotSame(hand1, hand2);
+			Hand handB = new Hand(hand1.getCard2(), hand1.getCard1());
+			assertEquals(hand1, handB);
+		}
 	}
 
 	public void testHashCode() throws Exception {

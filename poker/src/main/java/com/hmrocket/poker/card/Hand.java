@@ -51,7 +51,10 @@ public class Hand {
 
         Hand hand = (Hand) o;
 
-		return getMax().equals(hand.getMax()) && getMin().equals(hand.getMin());
+		if (isPair()) { //If the Hand is pair then getMax can be actually Min and vice versa
+			return card1.equals(hand.card2) && card2.equals(hand.card1)
+					|| card1.equals(hand.card1) && card2.equals(hand.card2);
+		} else return getMax().equals(hand.getMax()) && getMin().equals(hand.getMin());
 	}
 
 	/* If you override equals, you should also override hashCode: equal instances must have equal hash codes.
