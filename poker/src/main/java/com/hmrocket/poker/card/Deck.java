@@ -5,7 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by hmrocket on 04/10/2015.
+ * The deck of 52 French playing Cards
+ * @author hmrocket
+ * @since 04/10/2015
+ * @see Card
  */
 public class Deck {
 
@@ -13,22 +16,44 @@ public class Deck {
 	private List<Card> cardsRemoved;
 	private int drawn = 0;
 
-    public Deck() {
-        cards = new ArrayList<Card>(52);
-        for (Suit suit : Suit.values()) {
-            for (Rank rank : Rank.values()) {
-                cards.add(new Card(rank, suit));
+	/**
+	 * Create a deck with 52 Cards without JOKER(s)
+	 * Note: you can create a JOKER card and override some of Card methods. (but for sure it will have a major change everywhere)
+	 */
+	public Deck() {
+		cards = new ArrayList<>(52);
+		for (Suit suit : Suit.values()) {
+			for (Rank rank : Rank.values()) {
+				cards.add(new Card(rank, suit));
             }
         }
 		cardsRemoved = new ArrayList<>();
 		Collections.shuffle(cards);
 	}
 
-    public void reset() {
-        drawn = 0;
+	/**
+	 * Reset Deck to 52 Card
+	 */
+	public void reset() {
+		reset(false);
+	}
+
+	private void reset(boolean ignoreBurnedCards) {
+		drawn = 0;
+		if (!ignoreBurnedCards) replaceBurnedCards();
 		Collections.shuffle(cards);
 	}
 
+	/**
+	 * Reset Deck without push back burned Card(s), Deck size will be 52 or less Card
+	 */
+	public void resetIgnoreBurns() {
+		reset(true);
+	}
+
+	/**
+	 * Add burned Card(s) to the bottom of Deck
+	 */
 	public void replaceBurnedCards() {
 		if (!cardsRemoved.isEmpty()) {
 			cards.addAll(cardsRemoved);
@@ -36,6 +61,10 @@ public class Deck {
 		}
 	}
 
+	/**
+	 * Burn a specific Card from the deck
+	 * @param card Card to discard from the Deck
+	 */
 	public void burn(Card card) {
 		int index = cards.indexOf(card);
 		if (index != -1) {
@@ -47,16 +76,22 @@ public class Deck {
 	}
 
 	/**
-	 * @return Top Card in the deck, {@link Card#NO_CARD} if the Deck is empty
+	 * Draw the Top Card
+	 * @return Top Card of the Deck, <code>null</code> if the Deck is empty
 	 */
 	public Card drawCard() {
-        if (drawn == 52) {
-            return Card.NO_CARD;
-        }
-        return cards.get(drawn++);
-    }
+		if (drawn == cards.size()) {
+			return null;
+		}
+		return cards.get(drawn++);
+	}
 
-    public Flop dealFlop() {
-        return new Flop(drawCard(), drawCard(), drawCard());
+	/**
+	 * Deal three Card at once
+	 *
+	 * @return Flop
+	 */
+	public Flop dealFlop() {
+		return new Flop(drawCard(), drawCard(), drawCard());
     }
 }

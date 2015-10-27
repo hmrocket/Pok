@@ -464,7 +464,7 @@ public class HandScoreCalculatorTest extends TestCase {
 			odds[handScore.getHandType().ordinal()][handScore.getRank().ordinal()]++;
 			// System.out.println(handHoldem + handScore.toString());
 			//if (i % handToTestInDeck == 0) {
-			deck.reset();
+			deck.resetIgnoreBurns();
 			//}
 		}
 		System.out.println(hand);
