@@ -53,7 +53,7 @@ public class HandTest extends TestCase {
 
 	public void testEquals() throws Exception {
 
-		for (int i = 0; i < (int) 1e6; i++) {
+		for (int i = 0; i < (int) 1e2; i++) {
 			Deck deck = new Deck();
 			Hand hand1 = new Hand(deck.drawCard(), deck.drawCard());
 			Hand hand2 = new Hand(deck.drawCard(), deck.drawCard());
@@ -64,13 +64,16 @@ public class HandTest extends TestCase {
 	}
 
 	public void testHashCode() throws Exception {
-		Deck deck = new Deck();
-		Hand hand1 = new Hand(deck.drawCard(), deck.drawCard());
-		Hand hand2 = new Hand(deck.drawCard(), deck.drawCard());
-		assertNotSame(hand1.hashCode(), hand2.hashCode());
-		Hand handB = new Hand(hand1.getCard2(), hand1.getCard1());
-		assertEquals("hand1= " + hand1.toString() + " hand2=" + handB.toString(),
-				hand1.hashCode(), handB.hashCode()); // XXX Failed: 1
+
+		for (int i = 0; i < (int) 1e2; i++) {
+			Deck deck = new Deck();
+			Hand hand1 = new Hand(deck.drawCard(), deck.drawCard());
+			Hand hand2 = new Hand(deck.drawCard(), deck.drawCard());
+			assertNotSame(hand1.hashCode(), hand2.hashCode());
+			Hand handB = new Hand(hand1.getCard2(), hand1.getCard1());
+			assertEquals("hand1= " + hand1.toString() + " hand2=" + handB.toString(),
+					hand1.hashCode(), handB.hashCode());
+		}
 	}
 
 	public void testCompareTo() throws Exception {

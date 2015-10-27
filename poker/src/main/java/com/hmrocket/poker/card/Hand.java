@@ -51,7 +51,8 @@ public class Hand {
 
         Hand hand = (Hand) o;
 
-		if (isPair()) { //If the Hand is pair then getMax can be actually Min and vice versa
+		//If the Hand is pair then getMax can be actually Min and vice versa
+		if (isPair()) {
 			return card1.equals(hand.card2) && card2.equals(hand.card1)
 					|| card1.equals(hand.card1) && card2.equals(hand.card2);
 		} else return getMax().equals(hand.getMax()) && getMin().equals(hand.getMin());
@@ -63,10 +64,22 @@ public class Hand {
 	 */
 	@Override
 	public int hashCode() {
-        int result = getMax().hashCode();
-        result = 31 * result + getMin().hashCode();
-        return result;
-    }
+		int result;
+		//If the Hand is pair then getMax can be actually Min and vice versa
+		if (isPair()) {
+			if (card1.getSuit().ordinal() < card2.getSuit().ordinal()) {
+				result = card2.hashCode();
+				result = 31 * result + card1.hashCode();
+			} else {
+				result = card1.hashCode();
+				result = 31 * result + card2.hashCode();
+			}
+		} else {
+			result = getMax().hashCode();
+			result = 31 * result + getMin().hashCode();
+		}
+		return result;
+	}
 
     /**
 	 * Compare two hands against each other without including other cards.
