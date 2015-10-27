@@ -439,6 +439,42 @@ public class HandScoreCalculatorTest extends TestCase {
 	public void testRandom() throws Exception {
 		// using a lib to test my library
 		// generate random hands and test
+		Deck deck = new Deck();
+		int handToTestInDeck = 52 / 5;
+		int totalHandToTest = 1112220; // tested 1M hands in .3s
+		CommunityCards communityCards = new CommunityCards();
+		Card c1 = new Card(Rank.KING, Suit.HEARTS);
+		Card c2 = new Card(Rank.ACE, Suit.HEARTS);
+		Hand hand = new Hand(c1, c2);
+		deck.burn(c1);
+		deck.burn(c2);
+		HandHoldem handHoldem = new HandHoldem(hand, communityCards);
+		int[][] odds = new int[HandType.ROYAL_FLUSH.ordinal() + 1][Rank.ACE.ordinal() + 1];
+		HandScore handScore;
+		for (int i = 1; i < totalHandToTest; i++) {
+			communityCards.setFlop(deck.dealFlop());
+			communityCards.setTurn(deck.drawCard());
+			communityCards.setRiver(deck.drawCard());
+			handScore = handHoldem.getHandScore();
+			if (handScore.getHandType() == HandType.STRAIGHT_FLUSH && handScore.getRank() == Rank.FOUR) {
+				Card river = communityCards.getRiver();
+				communityCards.setRiver(river);
+				handHoldem.getHandScore();
+			}
+			odds[handScore.getHandType().ordinal()][handScore.getRank().ordinal()]++;
+			// System.out.println(handHoldem + handScore.toString());
+			//if (i % handToTestInDeck == 0) {
+			deck.reset();
+			//}
+		}
+		System.out.println(hand);
+		int i = 0;
+		for (int[] table : odds) {
+			System.out.print(HandType.values()[i++].name() + ": ");
+			for (int odd : table)
+				System.out.print(odd + ", ");
+			System.out.println();
+		}
 
 	}
 }

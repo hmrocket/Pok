@@ -10,7 +10,8 @@ import java.util.List;
 public class Deck {
 
     private List<Card> cards;
-    private int drawn = 0;
+	private List<Card> cardsRemoved;
+	private int drawn = 0;
 
     public Deck() {
         cards = new ArrayList<Card>(52);
@@ -19,13 +20,31 @@ public class Deck {
                 cards.add(new Card(rank, suit));
             }
         }
-        Collections.shuffle(cards);
-    }
+		cardsRemoved = new ArrayList<>();
+		Collections.shuffle(cards);
+	}
 
     public void reset() {
         drawn = 0;
-        Collections.shuffle(cards);
-    }
+		Collections.shuffle(cards);
+	}
+
+	public void replaceBurnedCards() {
+		if (!cardsRemoved.isEmpty()) {
+			cards.addAll(cardsRemoved);
+			cardsRemoved.clear();
+		}
+	}
+
+	public void burn(Card card) {
+		int index = cards.indexOf(card);
+		if (index != -1) {
+			cardsRemoved.add(card);
+			cards.remove(index);
+			if (index < drawn) drawn--; // if the card was draw already.
+
+		}
+	}
 
 	/**
 	 * @return Top Card in the deck, {@link Card#NO_CARD} if the Deck is empty
