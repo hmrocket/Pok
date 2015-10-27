@@ -1,0 +1,5 @@
+#Facebook Page Info
+
+Name: Poker App
+Description: An offline Poker game. Like this page before the app is out and have your own (bot) customized to your Poker playing style.
+URL: ?
