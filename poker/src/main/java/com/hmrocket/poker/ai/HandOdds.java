@@ -30,5 +30,30 @@ public class HandOdds {
 		return odds[handType.ordinal()][rank.ordinal()];
 	}
 
+	public float getOdds(HandType handType) {
+		if (handType == HandType.ROYAL_FLUSH) {
+			handType = HandType.STRAIGHT_FLUSH;
+		}
+		float strength = 0;
+		float[] table = odds[handType.ordinal()];
+		int rankCount = table.length;
+		for (int rank = 0; rank < rankCount; rank++) {
+			float odd = table[rank];
+			strength += odd * (handType.ordinal() * rankCount + rank + 1);
+		}
+		return strength;
+	}
 
+	public float getHandStrength() {
+		float strength = 0;
+		for (int handType = 0; handType < odds.length; handType++) {
+			float[] table = odds[handType];
+			int length = table.length;
+			for (int rank = 0; rank < length; rank++) {
+				float odd = table[rank];
+				strength += odd * (handType * length + rank + 1);
+			}
+		}
+		return strength;
+	}
 }

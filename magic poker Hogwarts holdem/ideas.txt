@@ -1,4 +1,4 @@
-1) You can cast not only on people but also the deck (liek altering the next comming card)
+﻿1) You can cast not only on people but also the deck (liek altering the next comming card)
 2) You can cast magic on other player but for you drink potions (potion to protect you from spells 3 tours)
 3) Create a pre-selected or create mutli player game from the begging
 
@@ -8,9 +8,12 @@
 1)Poker Magic
 
 2)Poker with friends - OFFLINE
-2)Poker friends - OFFLINE
+2)Poker friends - OFFLINE (more trending)
 2)Poker Night - OFFLINE
-Description2):
+2)Poker pal - OFFLINE
+
+Description2): just play against your friends image
+
 
 ----> cheats (12 per level)
 - Note: Play music or have some effect 
