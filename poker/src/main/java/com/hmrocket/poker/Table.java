@@ -17,7 +17,13 @@ public class Table implements Game.GameEvent {
     private Game game;
     private long minBet;
 
-    public Table(int capacity, long minBet) {
+	/**
+	 * Create a poker Table
+	 *
+	 * @param capacity number of Seat the table has
+	 * @param minBet   the smallest bet amount allowed
+	 */
+	public Table(int capacity, long minBet) {
         this.players = new ArrayList<Player>(capacity);
         this.seats = new ArrayList<Seat>(capacity);
         for (int i = 0; i < capacity; i++) {
@@ -27,8 +33,12 @@ public class Table implements Game.GameEvent {
         this.seatsAvailable = capacity;
         this.minBet = minBet;
         this.game = new Game(this);
-    }
+	}
 
+	/**
+	 * Increment the dealer
+	 * @return a Player who became a dealer
+	 */
 	protected Player nextDealer() {
 		int currentDealer = dealer;
 
@@ -52,7 +62,12 @@ public class Table implements Game.GameEvent {
 		return null;
 	}
 
-    public void addPlayer(Player player, int seatId) {
+	/**
+	 * Add a new Player to Table
+	 * @param player Player to add to the Table
+	 * @param seatId Player's picked Seat id (position on the table not the game)
+	 */
+	public void addPlayer(Player player, int seatId) {
 		if (seatId >= seats.size() || seatId < 0) {
 			throw new IllegalArgumentException("No seat available at index " + seatId);
 		} else if (player == null)
@@ -70,7 +85,11 @@ public class Table implements Game.GameEvent {
 		}
 	}
 
-    public void removePlayer(Player player) {
+	/**
+	 * Remove a Player from the Table
+	 * @param player to remove
+	 */
+	public void removePlayer(Player player) {
         int seatIndex;
 		if (players != null && (seatIndex = players.indexOf(player)) != -1) {
 			seatsAvailable++;
@@ -78,16 +97,23 @@ public class Table implements Game.GameEvent {
             players.set(seatIndex, null);
             // TODO if player is active must inform the game
             // game.removePlayer()
-        }
-    }
+		}
+	}
 
-    public void startGame() {
+	/**
+	 * Start new poker Game
+	 */
+	public void startGame() {
 		Player PlayerDealer = nextDealer();
 		List<Player> playersInTheGame = getPlayers();
 		game.startNewHand(minBet, playersInTheGame, playersInTheGame.indexOf(PlayerDealer));
 
-    }
+	}
 
+	/**
+	 * Get Players on the Table
+	 * @return list of added Players (ordered from right to left)
+	 */
 	public List<Player> getPlayers() {
 		List<Player> playersInGame = new ArrayList<>(players);
 		Iterator<Player> iterator = playersInGame.iterator();

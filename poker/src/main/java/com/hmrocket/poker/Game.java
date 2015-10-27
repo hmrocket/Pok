@@ -54,7 +54,7 @@ public class Game implements PokerRound.RoundEvent {
 	 * Poker Round only ends when (1) only one player is left or
 	 * (2) all remaining players have matched the highest total bet made during the round.
 	 */
-	@Override // TODO Game should check win
+	@Override // TODO Optimize isAllPlayersExceptOneFolded isn't needed t
 	public void onRoundFinish(RoundPhase phase, List<Player> players) {
 		pot.update();
 
