@@ -49,7 +49,7 @@ public class DeckTest extends TestCase {
 			cardDeckOrder.add(card);
 		}
 		//assert no more card available
-		assertEquals(deck.drawCard(), Card.NO_CARD);
+		assertEquals(deck.drawCard(), null);
 
 		return cardDeckOrder;
 	}
