@@ -132,7 +132,8 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         state = PlayerState.FOLD;
     }
 
-	public void addBet(long amount) {
+	private void addBet(long amount) {
+		//not protected from any of this situation (amount > cash or amount < 0)
 		cash -= amount;
         bet += amount;
     }
@@ -149,9 +150,13 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
 	public void raise(long amount) {
 		long addValue = amount - bet;
 		if (addValue <= 0) return;
-		addBet(amount);
-		state = PlayerState.RAISE;
-    }
+		if (addValue >= cash) {
+			allIn();
+		} else {
+			addBet(amount);
+			state = PlayerState.RAISE;
+		}
+	}
 
     public void call(long amount) {
 		long addValue = amount - bet;
@@ -197,7 +202,17 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
 				break;
 		}
         return amountToContinue;
-    }
+	}
+
+	@Override
+	public String toString() {
+		return name + "{" +
+				hand +
+				", cash=" + cash +
+				", bet=" + bet +
+				", state=" + state +
+				'}';
+	}
 
     public enum PlayerState {
         INACTIVE,

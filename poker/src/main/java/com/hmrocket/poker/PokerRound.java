@@ -49,13 +49,11 @@ public class PokerRound extends Round {
 		calledAmountByRound[phase.ordinal()] = minBet;
 
         Player smallBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-		// FIXME Sometime players dosen't have minBet / 2
-		smallBlindPlayer.addBet(minBet / 2); // XXX Failed: 1 (nullpointer)
+		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 1 (nullpointer)
 
         // big blind is the one to start the game
         Player bigBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-		// FIXME Sometime players dosen't have minBet so cash will be negative
-		bigBlindPlayer.addBet(minBet);
+		bigBlindPlayer.raise(minBet);
 		startGame(bigBlindPlayer);
     }
 
