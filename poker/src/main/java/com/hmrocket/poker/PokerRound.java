@@ -33,7 +33,9 @@ public class PokerRound extends Round {
 		super(playersOrderedRightLeft, dealerIndex);
 		this.roundEvent = roundEvent;
 		setup(minBet);
-    }
+		if (PokerTools.DEBUG)
+			System.out.println("minBet=" + minBet + ", dealerIndex=" + dealerIndex);
+	}
 
     /**
      * 1) setup round and called amount in that round
@@ -43,14 +45,16 @@ public class PokerRound extends Round {
      */
     private void setup(long minBet) {
         phase = RoundPhase.PRE_FLOP;
-        calledAmountByRound = new long[RoundPhase.getCount()];
-        calledAmountByRound[phase.ordinal()] = minBet;
+		calledAmountByRound = new long[RoundPhase.getBetRoundsCount()];
+		calledAmountByRound[phase.ordinal()] = minBet;
 
         Player smallBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-		smallBlindPlayer.addBet(minBet / 2);
+		// FIXME Sometime players dosen't have minBet / 2
+		smallBlindPlayer.addBet(minBet / 2); // XXX Failed: 1 (nullpointer)
 
         // big blind is the one to start the game
         Player bigBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
+		// FIXME Sometime players dosen't have minBet so cash will be negative
 		bigBlindPlayer.addBet(minBet);
 		startGame(bigBlindPlayer);
     }
@@ -62,15 +66,17 @@ public class PokerRound extends Round {
     protected void startGame(Player startPlayer) {
 
 		do {
+			if (PokerTools.DEBUG) System.out.println("Start: " + phase);
 			this.newRound(startPlayer); // new poker round (not super new round )
 			if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
-			setNextPhase();
+			nextPhase();
+
 		} while (isCompleted() == false);
 
     }
 
-    private void setNextPhase() {
-        if (phase != RoundPhase.RIVER)
+	private void nextPhase() {
+		if (phase != RoundPhase.RIVER)
             phase =  RoundPhase.values()[phase.ordinal() + 1];
         else System.out.println("Next Round called at River");
     }
@@ -87,11 +93,13 @@ public class PokerRound extends Round {
         do {
             // FIXME either
 			playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
+			if (PokerTools.DEBUG) System.out.println(playerToStart);
 			if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
                 // update calledAmount and Start new raising Round
 				calledAmountByRound[phase.ordinal()] = playerToStart.getBet();
 				super.newRound(playerToStart); // New Round not Poker Round
 				// nextTurn();
+				if (PokerTools.DEBUG) System.out.println("--new Round--");
 			}
             playerToStart = nextTurn();
 		} while (playerToStart != null);
@@ -125,7 +133,7 @@ public class PokerRound extends Round {
 	@Override
 	protected boolean isCompleted() {
 
-		return super.isCompleted() || isAllPlayersExceptOneFolded();
+		return phase == RoundPhase.SHOWDOWN || isAllPlayersExceptOneFolded();
 	}
 
 	@Override
