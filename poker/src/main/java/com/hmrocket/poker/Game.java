@@ -42,6 +42,7 @@ public class Game implements PokerRound.RoundEvent {
 			player.setState(Player.PlayerState.ACTIVE);
 			HandHoldem handHoldem = new HandHoldem(deck.drawCard(), deck.drawCard(), communityCards);
 			player.setHand(handHoldem);
+			if (PokerTools.DEBUG) System.out.println(player);
 		}
 		pokerRound = new PokerRound(minBet, players, dealerIndex, this);
 	}
@@ -94,7 +95,7 @@ public class Game implements PokerRound.RoundEvent {
 	private void endGame() {
 		Set<Player> busted = pot.distributeToWinners();
 		if (gameEventListener != null) {
-			gameEventListener.playerBusted(busted);
+			if (!busted.isEmpty()) gameEventListener.playerBusted(busted);
 			gameEventListener.gameEnded();
 		}
 	}
