@@ -147,17 +147,24 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         // bet = 0;
     }
 
-	public void raise(long amount) {
+    /**
+     * @param amount over all amount to bet (Not the amount to add to your bet
+     */
+    public void raise(long amount) {
 		long addValue = amount - bet;
 		if (addValue <= 0) return;
 		if (addValue >= cash) {
 			allIn();
-		} else {
-			addBet(amount);
-			state = PlayerState.RAISE;
-		}
-	}
+        } else if (amount != bet) {
+            addBet(addValue);
+            state = PlayerState.RAISE;
+        } else
+            call(amount);
+    }
 
+    /**
+     * @param amount Total amount to bet to continue
+     */
     public void call(long amount) {
 		long addValue = amount - bet;
 		if (addValue <= 0) return;
@@ -185,7 +192,7 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
                 fold();
                 break;
 			case 1: // raise
-				long raiseAmount = r.nextInt((int) cash);
+                long raiseAmount = r.nextInt((int) (cash + bet));
                 if (amountToContinue > raiseAmount) fold();
 				else {
 					raise(raiseAmount);
