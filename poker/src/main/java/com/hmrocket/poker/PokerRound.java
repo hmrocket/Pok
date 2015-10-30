@@ -165,8 +165,8 @@ class Round {
      * Active {@link Player} in this round. Turn direction may varies
      */
     protected List<Player> players;
-    private int playerTurn; // current turn
-    private int turnLeft; //
+    protected int playerTurn; // current turn
+    protected int turnLeft; //
     private int turnStart;
     private int turnIncrement = 1;
 
@@ -210,7 +210,7 @@ class Round {
             throw new InvalidParameterException("Invalid player starter");
         this.players = playersOrderedRightLeft;
         playerTurn = turnStart = playerToStart;
-        turnLeft = playersOrderedRightLeft.size();
+        turnLeft = playersOrderedRightLeft.size() - 1;
         turnIncrement = rightToLeft ? 1 : -1;
     }
 
@@ -274,7 +274,7 @@ class Round {
     }
 
     private void reset() {
-        turnLeft = players.size();
+        turnLeft = players.size() - 1;
         playerTurn = turnStart;
     }
 
