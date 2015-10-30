@@ -117,21 +117,28 @@ public class PokerRound extends Round {
      */
     @Override
     public Player nextTurn() {
-        Player player = null;
-        while ((player = super.nextTurn()) != null &&
-                player.isPlaying() == false) {
-            // loop until you find a player active
-        }
-        return player;
+        Player nextPlayer = null;
+        do {
+			// loop until you find a player active
+			Player player = super.nextTurn();
+			if (player == null)
+			break;
+			else if (player.isPlaying()) {
+				nextPlayer = player;
+				break;
+			}
+			// while Round not finished continue
+        } while (super.isCompleted() == false);
+        return nextPlayer;
     }
 
-	private boolean isAllPlayersExceptOneFolded() {
-		int numberOfPlayerNotOut = 0;
+	private boolean isAllPlayersNotPlayingExceptOne() {
+		int numberOfPlayerPlaying = 0;
 		for (Player player :
 				players) {
-			if (player.isOut() == false) {
-				numberOfPlayerNotOut++;
-				if (numberOfPlayerNotOut > 1) return false;
+			if (player.isPlaying()) {
+				numberOfPlayerPlaying++;
+				if (numberOfPlayerPlaying > 1) return false;
 			}
 		}
 		return true;
@@ -140,7 +147,7 @@ public class PokerRound extends Round {
 	@Override
 	protected boolean isCompleted() {
 
-		return phase == RoundPhase.SHOWDOWN || isAllPlayersExceptOneFolded();
+		return super.isCompleted() || phase == RoundPhase.SHOWDOWN || isAllPlayersNotPlayingExceptOne();
 	}
 
 	@Override
