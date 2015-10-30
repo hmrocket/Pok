@@ -32,7 +32,7 @@ public class PokerRound extends Round {
 	public PokerRound(long minBet, List<Player> playersOrderedRightLeft, int dealerIndex, RoundEvent roundEvent) {
 		super(playersOrderedRightLeft, dealerIndex);
 		this.roundEvent = roundEvent;
-		setup(minBet);
+		setup(minBet, playersOrderedRightLeft.get(dealerIndex));
 		if (PokerTools.DEBUG)
 			System.out.println("minBet=" + minBet + ", dealerIndex=" + dealerIndex);
 	}
@@ -42,34 +42,41 @@ public class PokerRound extends Round {
      * 2) Handle the first bets
      * Add small blind and big blind before Round start
      * Note: the dealer isn't the one to start first is the big blind player
-     */
-    private void setup(long minBet) {
-        phase = RoundPhase.PRE_FLOP;
+	 * @param minBet
+	 * @param dealer
+	 */
+	private void setup(long minBet, Player dealer) {
+		phase = RoundPhase.PRE_FLOP;
 		calledAmountByRound = new long[RoundPhase.getBetRoundsCount()];
 		calledAmountByRound[phase.ordinal()] = minBet;
 
-        Player smallBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
-		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 1 (nullpointer)
+        Player smallBlindPlayer = nextTurn(); // I prefer using super rather this for no reason
+		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 2 (nullpointer)
 
         // big blind is the one to start the game
-        Player bigBlindPlayer = super.nextTurn(); // I prefer using super rather this for no reason
+        Player bigBlindPlayer = nextTurn(); // I prefer using super rather this for no reason
 		bigBlindPlayer.raise(minBet);
-		startGame(bigBlindPlayer);
-    }
+		startGame(dealer, bigBlindPlayer);
+	}
 
     /**
      * Play all Poker Rounds until showdown or until all player folded except one
-     * @param startPlayer b
-     */
-    protected void startGame(Player startPlayer) {
+	 * @param button button or dealer is the Player to act last (last position)
+	 */
+	protected void startGame(Player button, Player bigBlind) {
+		// on the PRE_FLOP big blind Player is the
+		if (PokerTools.DEBUG) System.out.println("Start: " + phase);
+		this.newRound(bigBlind);
+		if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
+		nextPhase();
 
-		do {
+		while (phase != RoundPhase.SHOWDOWN && !isAllPlayersNotPlayingExceptOne()) {
 			if (PokerTools.DEBUG) System.out.println("Start: " + phase);
-			this.newRound(startPlayer); // new poker round (not super new round )
+			this.newRound(button); // new poker round (not super new round )
 			if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
 			nextPhase();
 
-		} while (isCompleted() == false);
+		}
 
     }
 
@@ -83,12 +90,14 @@ public class PokerRound extends Round {
      * Poker Round only ends when (1) only one player is left or
      * (2) all remaining players have matched the highest total bet made during the round.
      *
-     * @param playerToStart first Player to start this Round
-     */
-    @Override
-    protected void newRound(Player playerToStart) {
-        super.newRound(playerToStart);
-        do {
+	 * @param button  the player who acts last on that Round
+	 */
+	@Override
+	protected void newRound(Player button) {
+		super.newRound(button);
+		Player playerToStart = nextTurn();
+		super.newRound(playerToStart);
+		do {
             // FIXME either
 			playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
