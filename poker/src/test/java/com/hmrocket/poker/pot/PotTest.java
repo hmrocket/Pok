@@ -181,4 +181,10 @@ public class PotTest extends TestCase {
 
     }
 
+
+	public void testReturnBustedPlayer() throws Exception {
+		// TODO implement busted player test method to check if the distrubuiteToWinner return a correct
+		// list of the busted players
+
+	}
 }

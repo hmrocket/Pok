@@ -119,7 +119,7 @@ public class Pot {
 			// every SidePot - check if there is busted players
 			// (players went all among and lost)
 			for (Player player : sidePot.getAllInPlayers()) {
-				if (levelWinners.contains(player))
+				if (!levelWinners.contains(player))
 					busted.add(player);
 			}
 		}
