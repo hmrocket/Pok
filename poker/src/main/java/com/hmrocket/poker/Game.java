@@ -59,7 +59,9 @@ public class Game implements PokerRound.RoundEvent {
 	public void onRoundFinish(RoundPhase phase, List<Player> players) {
 		pot.update();
 
+		// distinct two case end game and showdown
 		if (isAllPlayersExceptOneFolded(players)) endGame();
+		else if (isAllPlayersNotPlayingExceptOne(players)) showdown();
 		else
 			switch (phase) {
 				case PRE_FLOP:
@@ -89,6 +91,18 @@ public class Game implements PokerRound.RoundEvent {
 		return true;
 	}
 
+	// TODO reuse the code see PokerRound
+	protected boolean isAllPlayersNotPlayingExceptOne(List<Player> players) {
+		int numberOfPlayerPlaying = 0;
+		for (Player player : players) {
+			if (player.isPlaying()) {
+				numberOfPlayerPlaying++;
+				if (numberOfPlayerPlaying > 1) return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * when
 	 */
@@ -97,10 +111,14 @@ public class Game implements PokerRound.RoundEvent {
 		if (gameEventListener != null) {
 			if (!busted.isEmpty()) gameEventListener.playerBusted(busted);
 			gameEventListener.gameEnded();
+		} else {
+			if (PokerTools.DEBUG)
+				System.out.println("listener is null");
 		}
 	}
 
 	private void showdown() {
+		// TODO implement method
 		endGame();
 	}
 

@@ -76,8 +76,9 @@ public class PokerRound extends Round {
 			nextPhase();
 
 		}
-
-    }
+		// TODO it will be better to call end Of game here after all this is start game method
+		// and this is where it end.
+	}
 
 	private void nextPhase() {
 		if (phase != RoundPhase.RIVER)
@@ -131,7 +132,7 @@ public class PokerRound extends Round {
         return nextPlayer;
     }
 
-	private boolean isAllPlayersNotPlayingExceptOne() {
+	protected boolean isAllPlayersNotPlayingExceptOne() {
 		int numberOfPlayerPlaying = 0;
 		for (Player player :
 				players) {
