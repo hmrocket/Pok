@@ -130,6 +130,35 @@ public class PokerRound extends Round {
         return nextPlayer;
     }
 
+	/**
+	 * Get left <u>not out Player</u>
+	 *
+	 * @param player
+	 * @return Get left Playing player or simply next turn without incrementing the turn
+	 */
+	@Override
+	public Player getLeftPlayer(Player player) {
+		return getLeftPlayer(player, 0);
+	}
+
+	/**
+	 * The <u>Playing</u> Player on the left of <code>player</code> without incrementing the turn
+	 * or considering if the Round was completed or not
+	 *
+	 * @param player
+	 * @param skippedPlayers positive number (can be zero) represent the number of player skipped
+	 *                       after <code>player</code>
+	 * @return The Playing Player on the left of <code>player</code> after skipping n players
+	 */
+	@Override
+	public Player getLeftPlayer(Player player, int skippedPlayers) {
+		Player nextPlayingPlayer = super.getLeftPlayer(player, skippedPlayers);
+		while (nextPlayingPlayer.isPlaying() == false) {
+			nextPlayingPlayer = super.getLeftPlayer(nextPlayingPlayer);
+		}
+		return nextPlayingPlayer;
+	}
+
 	protected boolean isAllPlayersNotPlayingExceptOne() {
 		int numberOfPlayerPlaying = 0;
 		for (Player player :
