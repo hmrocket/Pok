@@ -197,6 +197,8 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
 			case 1: // raise
                 long raiseAmount = r.nextInt((int) (cash + bet));
                 if (amountToContinue > raiseAmount) fold();
+				else if (amountToContinue == raiseAmount)
+					call(amountToContinue);
 				else {
 					raise(raiseAmount);
 					amountToContinue = raiseAmount;
