@@ -49,12 +49,11 @@ public class PokerRound extends Round {
 		calledAmountByRound = new long[RoundPhase.getBetRoundsCount()];
 		calledAmountByRound[phase.ordinal()] = minBet;
 
-        Player smallBlindPlayer = nextTurn(); // I prefer using super rather this for no reason
+		Player smallBlindPlayer = getLeftPlayer(dealer);
 		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 2 (nullpointer)
-		// reset Round to avoid null pointer when the game has two player
-		super.newRound(smallBlindPlayer);
-		// big blind is the one to start the game
-        Player bigBlindPlayer = nextTurn(); // I prefer using super rather this for no reason
+
+		// big blind is the last one to finish first round (only first round after it's the dealer)
+		Player bigBlindPlayer = getLeftPlayer(smallBlindPlayer);
 		bigBlindPlayer.raise(minBet);
 		startGame(dealer, bigBlindPlayer);
 	}
@@ -95,11 +94,9 @@ public class PokerRound extends Round {
 	 */
 	@Override
 	protected void newRound(Player button) {
-		super.newRound(button);
-		Player playerToStart = nextTurn();
+		Player playerToStart = getLeftPlayer(button);
 		super.newRound(playerToStart);
 		do {
-            // FIXME either
 			playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
 			if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
