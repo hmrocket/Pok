@@ -123,7 +123,8 @@ public class Pot {
 					busted.add(player);
 			}
 		}
-
+		// reset pot after it distribution
+		reset();
 		return busted;
 	}
 
