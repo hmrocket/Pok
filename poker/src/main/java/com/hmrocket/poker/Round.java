@@ -42,17 +42,19 @@ public class Round {
 	 *
 	 * @param players must be ordered from right to left
 	 * @param player
+	 * @param skippedPlayers positive int represent the number of player skipped before returning left Player
 	 * @return Player on the left of <code>player</code>
 	 */
-	protected static Player getLeftPlayer(List<Player> players, Player player) {
+	protected static Player getLeftPlayer(List<Player> players, Player player, int skippedPlayers) {
 		if (players == null || players.isEmpty())
 			return null;
 
-		int nextPlayerIndex = players.indexOf(player) + 1;
-		if (nextPlayerIndex == 0) //player doesn't exist in the list (index = -1)
+		skippedPlayers %= players.size(); // skipped player without extra complete Rounds
+		int nextPlayerIndex = players.indexOf(player) + 1 + skippedPlayers;
+		if (nextPlayerIndex == skippedPlayers) //player doesn't exist in the list (index = -1)
 			return null;
-		else if (nextPlayerIndex == players.size()) // player is in the end, left player is the first of list
-			return players.get(0);
+		else if (nextPlayerIndex >= players.size()) // player is in the end, left player is the first of list
+			return players.get(skippedPlayers);
 		else return players.get(nextPlayerIndex);
 	}
 
@@ -73,6 +75,26 @@ public class Round {
 			increment();
 			return players.get(playerTurn);
 		}
+	}
+
+	/**
+	 * The Player on the left of <code>player</code> without incrementing the turn
+	 * or considering if the Round was completed or not
+	 *
+	 * @return The Player on the left of <code>player</code>
+	 */
+	public Player getLeftPlayer(Player player) {
+		return getLeftPlayer(player, 0);
+	}
+
+	/**
+	 * @param player
+	 * @param skippedPlayers positive number (can be zero) represent the number of player skipped
+	 *                       after <code>player</code>
+	 * @return The Player on the left of <code>player</code> after skipping n players
+	 */
+	public Player getLeftPlayer(Player player, int skippedPlayers) {
+		return Round.getLeftPlayer(players, player, skippedPlayers);
 	}
 
 	private void increment() {
