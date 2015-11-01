@@ -152,8 +152,9 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
      */
     public void raise(long amount) {
 		long addValue = amount - bet;
-		if (addValue <= 0) return;
-		if (addValue >= cash) {
+		if (addValue < 0) return;
+		if (addValue == 0) check();
+		else if (addValue >= cash) {
 			allIn();
         } else if (amount != bet) {
             addBet(addValue);
@@ -167,8 +168,10 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
      */
     public void call(long amount) {
 		long addValue = amount - bet;
-		if (addValue <= 0) return;
-		if (cash > addValue) {
+		if (addValue < 0) return;
+		if (addValue == 0) {
+			check();
+		} else if (cash > addValue) {
 			addBet(addValue);
 			state = PlayerState.CALL;
         } else allIn();
