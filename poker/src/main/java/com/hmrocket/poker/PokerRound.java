@@ -51,8 +51,9 @@ public class PokerRound extends Round {
 
         Player smallBlindPlayer = nextTurn(); // I prefer using super rather this for no reason
 		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 2 (nullpointer)
-
-        // big blind is the one to start the game
+		// reset Round to avoid null pointer when the game has two player
+		super.newRound(smallBlindPlayer);
+		// big blind is the one to start the game
         Player bigBlindPlayer = nextTurn(); // I prefer using super rather this for no reason
 		bigBlindPlayer.raise(minBet);
 		startGame(dealer, bigBlindPlayer);
