@@ -81,10 +81,10 @@ public class PokerRound extends Round {
 	}
 
 	private void nextPhase() {
-		if (phase != RoundPhase.RIVER)
-            phase =  RoundPhase.values()[phase.ordinal() + 1];
-        else System.out.println("Next Round called at River");
-    }
+		if (phase != RoundPhase.SHOWDOWN)
+			phase =  RoundPhase.values()[phase.ordinal() + 1];
+		else System.out.println("Next Round called at Showdown");
+	}
 
     /**
      * Poker Round only ends when (1) only one player is left or
