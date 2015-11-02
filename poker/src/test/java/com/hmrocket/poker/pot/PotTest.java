@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by hmrocket on 21/10/2015.
@@ -20,10 +21,7 @@ import java.util.Random;
 public class PotTest extends TestCase {
 
     private Pot pot;
-
-
     private List<Player> PLAYERS;
-
 
     public void setUp() throws Exception {
         super.setUp();
@@ -42,12 +40,28 @@ public class PotTest extends TestCase {
     }
 
     public void testReset() throws Exception {
-        // No need to test
-    }
+		// No need to test extensively
+		List<Player> players = new ArrayList<>();
+		players.add(PLAYERS.get(0));
+		players.add(PLAYERS.get(1));
+		players.add(PLAYERS.get(4));
+		players.get(0).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(1).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(2).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		pot.setup(players);
+		players.get(0).allIn();
+		players.get(1).allIn();
+		players.get(2).allIn();
+		pot.update();
+
+		pot.reset();
+
+		assertEquals(0, pot.getValue());
+	}
 
     public void testSetup() throws Exception {
-        // No need to test
-    }
+		// No need to test, setup is like a constructor
+	}
 
     public void testGetValue() throws Exception {
         // XXX Assert value is 0 at the begging
@@ -185,8 +199,45 @@ public class PotTest extends TestCase {
 
 
 	public void testReturnBustedPlayer() throws Exception {
-		// TODO implement busted player test method to check if the distrubuiteToWinner return a correct
 		// list of the busted players
+		List<Player> players = new ArrayList<>();
+		players.add(PLAYERS.get(0));
+		players.add(PLAYERS.get(1));
+		players.add(PLAYERS.get(4));
+		players.get(0).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(1).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(2).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		pot.setup(players);
+		players.get(0).allIn();
+		players.get(1).allIn();
+		players.get(2).allIn();
+		pot.update();
+		Set<Player> busted = pot.distributeToWinners();
+		assertEquals("not the correct number of busted Player", 0, busted.size());
+		for (Player player : busted) {
+			assertTrue(player.getName() + " wasn't really busted", player.getCash() == 0);
+		}
+
+		// second senario
+		players.clear();
+		players.add(PLAYERS.get(0));
+		players.add(PLAYERS.get(1));
+		players.add(PLAYERS.get(4));
+		players.get(0).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(1).setHand(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(2).setHand(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		pot.setup(players);
+		players.get(0).allIn();
+		players.get(1).allIn();
+		players.get(2).allIn();
+		pot.update();
+		busted = pot.distributeToWinners();
+		assertEquals("not the correct number of busted Player", 2, busted.size());
+		for (Player player : busted) {
+			assertTrue(player.getName() + " wasn't really busted", player.getCash() == 0);
+		}
+
+
 
 	}
 }
