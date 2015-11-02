@@ -97,9 +97,9 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		else
 			communityCardsWeakReference = "";
 		String handScore = this.getHandScore().toString();
-		return "hand=" + hand +
-				", communityCards=" + communityCardsWeakReference +
-				", handScore=" + handScore +
+		return "{hand=" + hand +
+				communityCardsWeakReference +
+				handScore +
 				'}';
 	}
 }
