@@ -1,5 +1,7 @@
 package com.hmrocket.poker;
 
+import com.hmrocket.poker.ai.bot.RandBot;
+
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
@@ -17,15 +19,15 @@ public class GameTest extends TestCase implements Game.GameEvent {
 
 	private static final boolean DEBUG = false;
 
-	private static final List<Player> PLAYERS = new ArrayList(Arrays.asList(new Player("Kais", (long) 72e6, (long) 100), //1
-			new Player("Mhamed", (long) 13e6, (long) 150), //2
-			new Player("Kevin", 450633L, (long) 200),//3
-			new Player("Itachi", (long) 10e6, 200),//4
-			new Player("Yassin", (long) 4e6, 200),//5
-			new Player("San", (long) 1e6, 50),//6
-			new Player("Elhem", (long) 480e3, 100),//7
-			new Player("Sof", (long) 100e3, 200),//8
-			new Player("M", (long) 100e3, 200)//9
+	private static final List<Player> PLAYERS = new ArrayList(Arrays.asList(new RandBot("Kais", (long) 72e6, (long) 100), //1
+			new RandBot("Mhamed", (long) 13e6, (long) 150), //2
+			new RandBot("Kevin", 450633L, (long) 200),//3
+			new RandBot("Itachi", (long) 10e6, 200),//4
+			new RandBot("Yassin", (long) 4e6, 200),//5
+			new RandBot("San", (long) 1e6, 50),//6
+			new RandBot("Elhem", (long) 480e3, 100),//7
+			new RandBot("Sof", (long) 100e3, 200),//8
+			new RandBot("M", (long) 100e3, 200)//9
 	));
 
 	private boolean gameEndedCalled = false;

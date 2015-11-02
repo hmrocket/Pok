@@ -1,5 +1,7 @@
 package com.hmrocket.poker;
 
+import com.hmrocket.poker.ai.bot.RandBot;
+
 import junit.framework.TestCase;
 
 import java.lang.reflect.Field;
@@ -12,33 +14,22 @@ import java.util.Random;
  */
 public class TableTest extends TestCase {
 
-	Table table;
-	private List<Player> tablePlayers;
-	private int tableSeatsAvailable;
-	private List<Seat> tableSeats;
-	private int tableDealer;
-	private Game tableGame;
-	private long tableMinBet;
-
-
 	private static final int PLAYERS_COUNT;
 	private static final int SEATS_COUNT;
 	private static final int DEALER;
 	private static final long MIN_BET;
 	private static final Random R;
-
 	private static final List<Player> PLAYERS = Arrays.asList(new Player[]{
-			new Player("Kais", (long) 72e6, (long) 2e6), //1
-			new Player("Mhamed", (long) 13e6, (long) 2e6), //2
-			new Player("Kevin", 450633L, (long) 1e6),//3
-			new Player("Itachi", (long) 10e6, 182000L),//4
-			new Player("Yassin", (long) 4e6, 100000L),//5
-			new Player("San", (long) 1e6, 100000L),//6
-			new Player("Elhem", (long) 480e3, 100000L),//7
-			new Player("Sof", (long) 100e3, 100000L),//8
-			new Player("M", (long) 100e3, 100000L)//9
+			new RandBot("Kais", (long) 72e6, (long) 2e6), //1
+			new RandBot("Mhamed", (long) 13e6, (long) 2e6), //2
+			new RandBot("Kevin", 450633L, (long) 1e6),//3
+			new RandBot("Itachi", (long) 10e6, 182000L),//4
+			new RandBot("Yassin", (long) 4e6, 100000L),//5
+			new RandBot("San", (long) 1e6, 100000L),//6
+			new RandBot("Elhem", (long) 480e3, 100000L),//7
+			new RandBot("Sof", (long) 100e3, 100000L),//8
+			new RandBot("M", (long) 100e3, 100000L) //9
 	});
-
 	private static final List<Integer> PLAYERS_FAVORITE_SEAT = Arrays.asList(new Integer[]{
 			0, //PLAYERS[0]
 			3, //PLAYERS[1]
@@ -64,6 +55,13 @@ public class TableTest extends TestCase {
 		System.out.println("MIN_BUY-IN = " + PokerTools.getMinBuyIn(MIN_BET));
 	}
 
+	Table table;
+	private List<Player> tablePlayers;
+	private int tableSeatsAvailable;
+	private List<Seat> tableSeats;
+	private int tableDealer;
+	private Game tableGame;
+	private long tableMinBet;
 
 	@Override
 	public void setUp() throws Exception {
@@ -140,19 +138,19 @@ public class TableTest extends TestCase {
 		table = new Table(seatCount, buyIn);
 		Player player;
 		// test player with no cash
-		player = new Player("no money", 1000, 0);
+		player = new RandBot("no money", 1000, 0);
 		table.addPlayer(player, 0);
 		assertFalse(table.getPlayers().contains(player));
 		// test player with not enough buy in
-		player = new Player("no buy-in", 1000, R.nextInt((int) passBuyIn));
+		player = new RandBot("no buy-in", 1000, R.nextInt((int) passBuyIn));
 		table.addPlayer(player, seatCount - 1);
 		assertFalse(table.getPlayers().contains(player));
 		// test player with just enough buy in
-		player = new Player("=buy-in", 1000, passBuyIn);
+		player = new RandBot("=buy-in", 1000, passBuyIn);
 		table.addPlayer(player, 0);
 		assertTrue(getPlayersField().contains(player));
 		// test player with more than enough to buy in
-		player = new Player("super buy-in", 1000, Math.abs(R.nextInt()) + passBuyIn);
+		player = new RandBot("super buy-in", 1000, Math.abs(R.nextInt()) + passBuyIn);
 		table.addPlayer(player, 1);
 		assertTrue(getPlayersField().contains(player));
 		// test player null player
@@ -178,7 +176,7 @@ public class TableTest extends TestCase {
 		table.addPlayer(player, 3);
 		assertTrue(seatsAvailableBefore == getSeatsAvailable());
 		// test occupied seat
-		player = new Player(" ", 1000, Math.abs(R.nextInt()) + passBuyIn);
+		player = new RandBot(" ", 1000, Math.abs(R.nextInt()) + passBuyIn);
 		table.addPlayer(player, 0);
 		assertFalse(getPlayersField().contains(player));
 
@@ -190,14 +188,14 @@ public class TableTest extends TestCase {
 		long buyIn = 100;
 		long passBuyIn = PokerTools.getMinBuyIn(buyIn);
 		table = new Table(seatCount, passBuyIn);
-		Player player = new Player("removePlayer", passBuyIn, passBuyIn);
+		Player player = new RandBot("removePlayer", passBuyIn, passBuyIn);
 		table.addPlayer(player, R.nextInt(seatCount));
 		table.removePlayer(player);
 		getPlayersField();
 		assertFalse(player.getName() + " still on the table at Seat:" + tablePlayers.indexOf(player), tablePlayers.contains(player));
 		//Remove a player doesn't exist
 		int count = table.getPlayers().size();
-		table.removePlayer(new Player("NOBODY", passBuyIn, passBuyIn));
+		table.removePlayer(new RandBot("NOBODY", passBuyIn, passBuyIn));
 		assertTrue(count == table.getPlayers().size());
 
 	}

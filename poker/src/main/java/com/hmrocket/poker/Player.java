@@ -3,18 +3,17 @@ package com.hmrocket.poker;
 import com.hmrocket.poker.card.HandHoldem;
 
 import java.util.Comparator;
-import java.util.Random;
 
 /**
  * Created by hmrocket on 04/10/2015.
  */
-public class Player implements Comparable<Player> { //TODO what's the needed attribute that player need
-    private HandHoldem hand;
-    private String name;
-    private long bankBalance;
-    private long cash;
-    /**
-     * Player cash Comparator, Useful to determine all-in amount
+public abstract class Player implements Comparable<Player> { //TODO what's the needed attribute that player need
+	protected HandHoldem hand;
+	protected String name;
+	protected long bankBalance;
+	protected long cash;
+	/**
+	 * Player cash Comparator, Useful to determine all-in amount
      */
     public static Comparator<Player> CASH_COMPARATOR = new Comparator<Player>() {
         @Override
@@ -30,8 +29,8 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
             }
         }
     };
-    private long bet;
-    /**
+	protected long bet;
+	/**
      * Player Bet Comparator
      */
     public static Comparator<Player> BET_COMPARATOR = new Comparator<Player>() {
@@ -186,35 +185,12 @@ public class Player implements Comparable<Player> { //TODO what's the needed att
         state = PlayerState.CHECK;
     }
 
-    // DEBUGGING
-    public long play(long amountToContinue) {
-        Random r = new Random();
-		int action = r.nextInt(amountToContinue == 0 ? 4 : 3);
-		switch (action) {
-            case 0:
-                fold();
-                break;
-			case 1: // raise
-                long raiseAmount = r.nextInt((int) (cash + bet));
-                if (amountToContinue > raiseAmount) fold();
-				else if (amountToContinue == raiseAmount)
-					call(amountToContinue);
-				else {
-					raise(raiseAmount);
-					amountToContinue = raiseAmount;
-				}
-				break;
-			case 2: // call
-				long callAmount = r.nextInt((int) cash);
-                if (amountToContinue > callAmount) fold();
-                else call(amountToContinue);
-                break;
-			case 3: //Check
-				check();
-				break;
-		}
-        return amountToContinue;
-	}
+	/**
+	 * Request an Action
+	 *
+	 * @param amountToContinue the amount a player must bet to continue
+	 */
+	public abstract void play(long amountToContinue);
 
 	@Override
 	public String toString() {

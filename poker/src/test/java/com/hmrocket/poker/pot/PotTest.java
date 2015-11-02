@@ -1,6 +1,7 @@
 package com.hmrocket.poker.pot;
 
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.ai.bot.RandBot;
 import com.hmrocket.poker.card.Card;
 import com.hmrocket.poker.card.HandHoldem;
 import com.hmrocket.poker.card.Rank;
@@ -28,16 +29,16 @@ public class PotTest extends TestCase {
         super.setUp();
         pot = new Pot();
         PLAYERS = Arrays.asList(new Player[]{
-                new Player("Kais", (long) 72e6, (long) 2e6), //1
-                new Player("Mhamed", (long) 13e6, (long) 2e6), //2
-                new Player("Kevin", 450633L, (long) 1e6),//3
-                new Player("Itachi", (long) 10e6, 182000L),//4
-                new Player("Yassin", (long) 4e6, 100000L),//5
-                new Player("San", (long) 1e6, 100000L),//6
-                new Player("Elhem", (long) 480e3, 100000L),//7
-                new Player("Sof", (long) 100e3, 100000L),//8
-                new Player("M", (long) 100e3, 100000L)//9
-        });
+				new RandBot("Kais", (long) 72e6, (long) 2e6), //1
+				new RandBot("Mhamed", (long) 13e6, (long) 2e6), //2
+				new RandBot("Kevin", 450633L, (long) 1e6),//3
+				new RandBot("Itachi", (long) 10e6, 182000L),//4
+				new RandBot("Yassin", (long) 4e6, 100000L),//5
+				new RandBot("San", (long) 1e6, 100000L),//6
+				new RandBot("Elhem", (long) 480e3, 100000L),//7
+				new RandBot("Sof", (long) 100e3, 100000L),//8
+				new RandBot("M", (long) 100e3, 100000L)//9
+		});
     }
 
     public void testReset() throws Exception {
@@ -68,9 +69,9 @@ public class PotTest extends TestCase {
         // XXX assert total bet with all in situations
         players = new ArrayList<>();
         Player allin0, allin1, allin2;
-        allin0 = new Player("0", 1000, 100);
-        allin1 = new Player("1", 1000, 80);
-        allin2 = new Player("2", 1000, 20);
+		allin0 = new RandBot("0", 1000, 100);
+		allin1 = new RandBot("1", 1000, 80);
+		allin2 = new RandBot("2", 1000, 20);
 
         players.add(allin0);
         players.add(allin1);
@@ -88,10 +89,10 @@ public class PotTest extends TestCase {
         assertEquals("pot: " + pot.getValue(), 200L, pot.getValue());
         //Same example but they all got allin at once
         players = new ArrayList<>();
-        allin0 = new Player("0", 1000, 100);
-        allin1 = new Player("1", 1000, 80);
-        allin2 = new Player("2", 1000, 20);
-        players.add(allin0);
+		allin0 = new RandBot("0", 1000, 100);
+		allin1 = new RandBot("1", 1000, 80);
+		allin2 = new RandBot("2", 1000, 20);
+		players.add(allin0);
         players.add(allin1);
         players.add(allin2);
         pot.setup(players);
@@ -112,8 +113,9 @@ public class PotTest extends TestCase {
         long amountCalled = Math.abs(r.nextInt());
         long potValue = 0;
         for (Player player : players) {
-            amountCalled = player.play(amountCalled);
-            if (player.isOut() == false)
+			player.play(amountCalled);
+			amountCalled = player.getBet();
+			if (player.isOut() == false)
                 potValue += amountCalled;
 
         }
