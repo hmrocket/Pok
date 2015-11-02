@@ -72,4 +72,5 @@ Description2): just play against your friends image
 	A poker game with friends you can play with them offline what you promise users, that if they invite
 	- their friends our Artificial Intelligence system will learn about your friend style, and update you app intelligence
 	It's like playing against a doppelganger. (Approved)
-
+8] add an easter egg to remove ads
+9] Collect emails using gmail API ;) but create new account
