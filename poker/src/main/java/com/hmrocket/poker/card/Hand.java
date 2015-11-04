@@ -40,24 +40,6 @@ public class Hand {
         return new Card[]{card1, card2};
     }
 
-	/*
-	equal and compareTO ARE TO DIFFERENT THINGS
-	http://developer.android.com/reference/java/lang/Object.html
-	 */
-	@Override
-	public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Hand hand = (Hand) o;
-
-		//If the Hand is pair then getMax can be actually Min and vice versa
-		if (isPair()) {
-			return card1.equals(hand.card2) && card2.equals(hand.card1)
-					|| card1.equals(hand.card1) && card2.equals(hand.card2);
-		} else return getMax().equals(hand.getMax()) && getMin().equals(hand.getMin());
-	}
-
 	/* If you override equals, you should also override hashCode: equal instances must have equal hash codes.
 	For every compared attribute in equal, include a hashCode of that object
 	http://developer.android.com/reference/java/lang/Object.html
@@ -81,34 +63,27 @@ public class Hand {
 		return result;
 	}
 
-    /**
-	 * Compare two hands against each other without including other cards.
-	 *
-	 * @param o hand of two cards
-     * @return 1 if the frist hand have a higher odds to win, -1 if the second.
-     * 0 if both card has the same chance of winning
-     */
-    public int compareTo(Hand o) {
-        if (isPair()) {
-            if (o.isPair()) {
-                return this.card1.compareTo(o.card1);
-            } else {
-                return 1;
-            }
-        } else {
-            if (o.isPair()) {
-                return -1;
-            } else {
-                int result = getMax().compareTo(o.getMax());
-                if (result == 0) {
-                    return getMin().compareTo(o.getMin());
-                } else {
-                    return result;
-                }
-            }
-        }
+	/*
+	equal and compareTO ARE TO DIFFERENT THINGS
+	http://developer.android.com/reference/java/lang/Object.html
+	 */
+	@Override
+	public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    }
+        Hand hand = (Hand) o;
+
+		//If the Hand is pair then getMax can be actually Min and vice versa
+		if (isPair()) {
+			return card1.equals(hand.card2) && card2.equals(hand.card1)
+					|| card1.equals(hand.card1) && card2.equals(hand.card2);
+		} else return getMax().equals(hand.getMax()) && getMin().equals(hand.getMin());
+	}
+
+	public boolean isPair() {
+		return card1.getRank() == card2.getRank();
+	}
 
     /**
      * @return the high ranked card
@@ -132,12 +107,41 @@ public class Hand {
         }
     }
 
-    public boolean isPair() {
-        return card1.getRank() == card2.getRank();
-    }
-
 	@Override
 	public String toString() {
 		return card1 + ":" + card2;
+	}
+
+	/**
+	 * Compare two hands against each other without including other cards.
+	 *
+	 * @param o hand of two cards
+	 * @return 1 if the frist hand have a higher odds to win, -1 if the second.
+	 * 0 if both card has the same chance of winning
+	 */
+	public int compareTo(Hand o) {
+		if (isPair()) {
+			if (o.isPair()) {
+				return this.card1.compareTo(o.card1);
+			} else {
+				return 1;
+			}
+		} else {
+			if (o.isPair()) {
+				return -1;
+			} else {
+				int result = getMax().compareTo(o.getMax());
+				if (result == 0) {
+					return getMin().compareTo(o.getMin());
+				} else {
+					return result;
+				}
+			}
+		}
+
+	}
+
+	public boolean isSuited() {
+		return card1.equalSuit(card2);
 	}
 }
