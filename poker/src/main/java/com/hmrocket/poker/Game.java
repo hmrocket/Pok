@@ -41,7 +41,7 @@ public class Game implements PokerRound.RoundEvent {
 		for (Player player : players) {
 			player.setState(Player.PlayerState.ACTIVE);
 			HandHoldem handHoldem = new HandHoldem(deck.drawCard(), deck.drawCard(), communityCards);
-			player.setHand(handHoldem);
+			player.setHandHoldem(handHoldem);
 			if (PokerTools.DEBUG) System.out.println(player);
 		}
 		pokerRound = new PokerRound(minBet, players, dealerIndex, this);
@@ -91,18 +91,6 @@ public class Game implements PokerRound.RoundEvent {
 		return true;
 	}
 
-	// TODO reuse the code see PokerRound
-	protected boolean isAllPlayersNotPlayingExceptOne(List<Player> players) {
-		int numberOfPlayerPlaying = 0;
-		for (Player player : players) {
-			if (player.isPlaying()) {
-				numberOfPlayerPlaying++;
-				if (numberOfPlayerPlaying > 1) return false;
-			}
-		}
-		return true;
-	}
-
 	/**
 	 * when
 	 */
@@ -115,6 +103,18 @@ public class Game implements PokerRound.RoundEvent {
 			if (PokerTools.DEBUG)
 				System.out.println("listener is null");
 		}
+	}
+
+	// TODO reuse the code see PokerRound
+	protected boolean isAllPlayersNotPlayingExceptOne(List<Player> players) {
+		int numberOfPlayerPlaying = 0;
+		for (Player player : players) {
+			if (player.isPlaying()) {
+				numberOfPlayerPlaying++;
+				if (numberOfPlayerPlaying > 1) return false;
+			}
+		}
+		return true;
 	}
 
 	private void showdown() {

@@ -43,6 +43,10 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		}
 	}
 
+	public Hand getHand() {
+		return hand;
+	}
+
 	public Flop getFlop() { // No setter cause this is a reference
 		CommunityCards communityCards = communityCardsWeakReference.get();
 		return communityCards == null ? null : this.communityCardsWeakReference.get().getFlop();
@@ -62,6 +66,15 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		throw new OperationNotSupportedException();
 	}
 
+	@Override
+	public int compareTo(HandHoldem o) {
+		// compareTo should throw a nullPointerException if o is null
+//		if (o == null)
+//			return 1;
+//		else
+		return getHandScore().compareTo(o.getHandScore());
+	}
+
 	public HandScore getHandScore() {
 		if (handScore == null) // Lazy getter (Calculate the score when needed)
 			if (communityCardsWeakReference == null)
@@ -69,15 +82,6 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 			else
 				handScore = HandScoreCalculator.getHandScore(hand, communityCardsWeakReference.get());
 		return handScore;
-	}
-
-	@Override
-	public int compareTo(HandHoldem o) {
-		// compareTo should throw a nullPointerException if o is null
-//		if (o == null)
-//			return 1;
-//		else
-			return getHandScore().compareTo(o.getHandScore());
 	}
 
 	@Override

@@ -45,9 +45,9 @@ public class PotTest extends TestCase {
 		players.add(PLAYERS.get(0));
 		players.add(PLAYERS.get(1));
 		players.add(PLAYERS.get(4));
-		players.get(0).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
-		players.get(1).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
-		players.get(2).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(0).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(1).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(2).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
 		pot.setup(players);
 		players.get(0).allIn();
 		players.get(1).allIn();
@@ -161,9 +161,9 @@ public class PotTest extends TestCase {
         players.add(PLAYERS.get(1));
         players.add(PLAYERS.get(2));
         pot.setup(players);
-        PLAYERS.get(0).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
-        PLAYERS.get(1).setHand(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.KING, Suit.DIAMONDS)));
-        PLAYERS.get(2).setHand(new HandHoldem(new Card(Rank.QUEEN, Suit.CLUBS), new Card(Rank.QUEEN, Suit.DIAMONDS)));
+        PLAYERS.get(0).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+        PLAYERS.get(1).setHandHoldem(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.KING, Suit.DIAMONDS)));
+        PLAYERS.get(2).setHandHoldem(new HandHoldem(new Card(Rank.QUEEN, Suit.CLUBS), new Card(Rank.QUEEN, Suit.DIAMONDS)));
 
         long cash[] = new long[3];
 
@@ -204,9 +204,9 @@ public class PotTest extends TestCase {
 		players.add(PLAYERS.get(0));
 		players.add(PLAYERS.get(1));
 		players.add(PLAYERS.get(4));
-		players.get(0).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
-		players.get(1).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
-		players.get(2).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(0).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(1).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(2).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
 		pot.setup(players);
 		players.get(0).allIn();
 		players.get(1).allIn();
@@ -223,9 +223,9 @@ public class PotTest extends TestCase {
 		players.add(PLAYERS.get(0));
 		players.add(PLAYERS.get(1));
 		players.add(PLAYERS.get(4));
-		players.get(0).setHand(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
-		players.get(1).setHand(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
-		players.get(2).setHand(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(0).setHandHoldem(new HandHoldem(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(1).setHandHoldem(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
+		players.get(2).setHandHoldem(new HandHoldem(new Card(Rank.KING, Suit.CLUBS), new Card(Rank.ACE, Suit.DIAMONDS)));
 		pot.setup(players);
 		players.get(0).allIn();
 		players.get(1).allIn();

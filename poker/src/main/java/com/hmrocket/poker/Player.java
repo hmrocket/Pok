@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Created by hmrocket on 04/10/2015.
  */
 public abstract class Player implements Comparable<Player> { //TODO what's the needed attribute that player need
-	protected HandHoldem hand;
+	protected HandHoldem handHoldem;
 	protected String name;
 	protected long bankBalance;
 	protected long cash;
@@ -57,14 +57,21 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
 
     @Override
     public int compareTo(Player o) {
-        if (hand == null && o.hand == null || isOut() && o.isOut())
-            return 0; // return 0 if both player has not hands or both of them folded
+		if (handHoldem == null && o.handHoldem == null || isOut() && o.isOut())
+			return 0; // return 0 if both player has not hands or both of them folded
         else if (this.isOut()) // lose automatically if he folded
             return -1;
         else if (o.isOut()) // lose automatically if he folded
             return 1;
-        return hand.compareTo(o.hand);
-    }
+		return handHoldem.compareTo(o.handHoldem);
+	}
+
+	/**
+	 * @return true if the player has folded or inactive
+	 */
+	public boolean isOut() {
+		return state == PlayerState.FOLD || state == PlayerState.INACTIVE || state == PlayerState.Zzz;
+	}
 
     public long getCash() {
         return cash;
@@ -96,13 +103,6 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
     }
 
     /**
-     * @return true if the player has folded or inactive
-     */
-    public boolean isOut() {
-        return state == PlayerState.FOLD || state == PlayerState.INACTIVE || state == PlayerState.Zzz;
-    }
-
-    /**
      *
      * @param calledAmount called amount so far not just in the current Round
      * @return true if the player raised the bet
@@ -119,32 +119,26 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
         this.state = state;
     }
 
-    public HandHoldem getHand() {
-        return hand;
-    }
+	public HandHoldem getHandHoldem() {
+		return handHoldem;
+	}
 
-    public void setHand(HandHoldem hand) {
-        this.hand = hand;
-    }
+	public void setHandHoldem(HandHoldem handHoldem) {
+		this.handHoldem = handHoldem;
+	}
 
     public void fold() {
         state = PlayerState.FOLD;
     }
 
-	private void addBet(long amount) {
-		//not protected from any of this situation (amount > cash or amount < 0)
-		cash -= amount;
-        bet += amount;
-    }
-
-    public void addCash(long amount) {
-        if (amount < 0) {
-            System.out.println("Amount can be negative");
-            return;
-        }
-        cash += amount;
-        // bet = 0;
-    }
+	public void addCash(long amount) {
+		if (amount < 0) {
+			System.out.println("Amount can be negative");
+			return;
+		}
+		cash += amount;
+		// bet = 0;
+	}
 
     /**
      * @param amount over all amount to bet (Not the amount to add to your bet
@@ -160,12 +154,27 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
             state = PlayerState.RAISE;
         } else
             call(amount);
-    }
+	}
 
-    /**
-     * @param amount Total amount to bet to continue
-     */
-    public void call(long amount) {
+	public void check() {
+		state = PlayerState.CHECK;
+	}
+
+	public void allIn() {
+		addBet(cash);
+		state = PlayerState.ALL_IN;
+	}
+
+	private void addBet(long amount) {
+		//not protected from any of this situation (amount > cash or amount < 0)
+		cash -= amount;
+		bet += amount;
+	}
+
+	/**
+	 * @param amount Total amount to bet to continue
+	 */
+	public void call(long amount) {
 		long addValue = amount - bet;
 		if (addValue < 0) return;
 		if (addValue == 0) {
@@ -173,17 +182,8 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
 		} else if (cash > addValue) {
 			addBet(addValue);
 			state = PlayerState.CALL;
-        } else allIn();
-    }
-
-    public void allIn() {
-		addBet(cash);
-		state = PlayerState.ALL_IN;
-    }
-
-    public void check() {
-        state = PlayerState.CHECK;
-    }
+		} else allIn();
+	}
 
 	/**
 	 * Request an Action
@@ -195,7 +195,7 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
 	@Override
 	public String toString() {
 		return name + "{" +
-				hand +
+				handHoldem +
 				", cash=" + cash +
 				", bet=" + bet +
 				", state=" + state +
