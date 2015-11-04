@@ -81,6 +81,11 @@ public class Hand {
 		} else return getMax().equals(hand.getMax()) && getMin().equals(hand.getMin());
 	}
 
+	@Override
+	public String toString() {
+		return card1 + ":" + card2;
+	}
+
 	public boolean isPair() {
 		return card1.getRank() == card2.getRank();
 	}
@@ -106,11 +111,6 @@ public class Hand {
             return card1;
         }
     }
-
-	@Override
-	public String toString() {
-		return card1 + ":" + card2;
-	}
 
 	/**
 	 * Compare two hands against each other without including other cards.
@@ -143,5 +143,12 @@ public class Hand {
 
 	public boolean isSuited() {
 		return card1.equalSuit(card2);
+	}
+
+	/**
+	 * @return true if the maxCard1.rank.ordinal - minCard.rank.ordinal == 1 , false otherwise
+	 */
+	public boolean isConnector() {
+		return getMax().getRank().ordinal() - getMin().getRank().ordinal() == 1;
 	}
 }
