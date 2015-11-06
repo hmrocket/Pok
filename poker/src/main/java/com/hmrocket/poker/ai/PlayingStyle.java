@@ -12,4 +12,12 @@ public class PlayingStyle {
 		this.aggressive = aggressive;
 		this.tight = tight;
 	}
+
+	public float getAggressive() {
+		return aggressive;
+	}
+
+	public float getTight() {
+		return tight;
+	}
 }

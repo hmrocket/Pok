@@ -18,6 +18,10 @@ public class Turn {
 	 */
 	private long amountToContinue;
 	/**
+	 * the min amount to bet
+	 */
+	private long minBet;
+	/**
 	 * position of the player from 0 -> playerCount -1
 	 * This position represent the position in the Game and not for a specific Round
 	 * for specific Player, while playing a Hand the position should be always the same,
@@ -44,6 +48,14 @@ public class Turn {
 	 * Number of player went folded on this Round
 	 */
 	private int roundPlayerRaised;
+	/**
+	 * pot current value
+	 */
+	private long potValue;
+	/**
+	 * money will be added to the pot
+	 */
+	private long moneyOnTable;
 	/**
 	 * this is very important info, user folded => speedup the game, raised => the bot might react
 	 */
@@ -126,6 +138,10 @@ public class Turn {
 		return playerCount;
 	}
 
+	public long getMoneyOnTable() {
+		return moneyOnTable;
+	}
+
 	/**
 	 * Check if has been a re-raise after you in this phase.
 	 *
@@ -146,5 +162,9 @@ public class Turn {
 
 	public boolean isEveryoneFoldOnPreflop() {
 		return playersFolded == roundRally;
+	}
+
+	public long getPotValue() {
+		return potValue;
 	}
 }
