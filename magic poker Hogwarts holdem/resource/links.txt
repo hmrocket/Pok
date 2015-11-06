@@ -12,6 +12,10 @@ http://www.deducer.org/pmwiki/pmwiki.php?n=Main.ArtificialIntelligencePoker
 http://stackoverflow.com/questions/506167/building-a-texas-holdem-playing-ai-from-scratch
 http://cowboyprogramming.com/2007/01/04/programming-poker-ai/
 
+-----------> Pre Flop
+http://www.pokerstrategy.com/strategy/bss/1535/1/
+https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
+
 
 ------------>Tracking user
 http://info.localytics.com/blog/the-8-mobile-app-metrics-that-matter

@@ -19,3 +19,7 @@
 5) potion list
 	- fragment gride list with potions (some locked, other not)
 	- pop-up ingrediant needed or buy it.
+
+4) Poker bible
+	- stuff the user can read about bot learning curve
+	- poker stuff
