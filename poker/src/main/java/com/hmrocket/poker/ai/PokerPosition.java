@@ -10,11 +10,12 @@ public enum PokerPosition {
 	BLINDS;
 
 	/**
-	 * On pre-flop phase, Determine the PokerPosition of a player basing on his position in the game and players count
-	 *
+	 * On pre-flop phase, Determine the PokerPosition of a player basing on his position in the game and players count</br>
+	 *<code>if(playersCount == 2) return position == 0 ? MID_POSITION : BLINDS; </code>
 	 * @param playersCount
 	 * @param position
-	 * @return PokerPosition
+	 * @return PokerPosition (just the last 2 players On PRE_FLOP are BLINDS the rest fallow the same
+	 * 				rule as {@link #getPosition(int, int)
 	 */
 	public static PokerPosition getPositionOnPreFlop(int playersCount, int position) {
 		if (playersCount == position)
@@ -36,7 +37,9 @@ public enum PokerPosition {
 	 *
 	 * @param playersCount
 	 * @param position
-	 * @return PokerPosition
+	 * @return PokerPosition if <code>playersCount % 3 ==0</code> all position group should contains
+	 * 						same number of Player, otherwise we will prioritize the
+	 * 					MID_POSITION then EARLY
 	 */
 	public static PokerPosition getPosition(int playersCount, int position) {
 		if (playersCount == position)
