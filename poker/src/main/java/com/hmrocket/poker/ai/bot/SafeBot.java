@@ -27,7 +27,8 @@ public final class SafeBot extends Player {
 
 	// Credit: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
 	void preflopStrategy(Turn turn) {
-		// TODO here where PlayingStyle.tight will have an effect
+		// here where PlayingStyle.tight will have an effect
+		// but SafeBot play very tight
 		if (getHandHoldem().getHand().isPair()) {
 			switch (getHandHoldem().getHand().getCard1().getRank()) {
 				case ACE: // AA
@@ -175,8 +176,9 @@ public final class SafeBot extends Player {
 	}
 
 	private long calculateRaise(Turn turn) {
-		// TODO here where aggressive attribute will play role
-		return turn.getAmountToContinue() * 3;
+		// here where aggressive attribute will play role
+		// but SafeBot has aggression 0
+		return Math.max(turn.getAmountToContinue() * 4, turn.getPotValue() / 4);
 	}
 
 	/**
@@ -195,99 +197,6 @@ public final class SafeBot extends Player {
 	private boolean isSuitedConnectors() {
 		return handHoldem.getHand().isSuited() && handHoldem.getHand().isConnector()
 				&& handHoldem.getHand().getMax().getRank().compareTo(Rank.THREE) > 0;
-	}
-
-	/**
-	 * we add some randomness to the bot raise, 85% raise, 14% call (passive), 1% fold (stupid play)
-	 * these values will change depending on bot level
-	 *
-	 * @param turn
-	 */
-	public void botRaise(Turn turn) {
-		int percentage = random.nextInt(100);
-		// mistake gap 30% for level 1; 0% for level 100
-		int mistake = calculateMistakeGap(level);
-		// 85% ==> 100 - 85 = 15 higher or equal to 15 it's a raise
-		// mistake reduce the % of getting raise ==> it mean higher threshold
-		int raisePercentageTHold = 15 + mistake;
-		// mistake will make the rang of getting call or fold higher by mistake/2 for each
-		int callPercentageTHold = 1 + mistake / 2;
-		if (percentage >= raisePercentageTHold) {
-			// 85% raise if mistake = 0, (85 - mistake/2)%
-			super.raise(calculateRaise(turn));
-		} else if (percentage >= callPercentageTHold) {
-			// 14% call if mistake = 0 (14 + mistake/2)%
-			super.call(turn.getAmountToContinue());
-		} else {
-			// 1% fold if mistake = 0, (1 + mistake/2)%
-			super.fold();
-		}
-	}
-
-	/**
-	 * 0% - 30% mistake chance
-	 *
-	 * @param botLevel the higher the level the less the bot will make a mistake
-	 * @return
-	 */
-	private int calculateMistakeGap(int botLevel) {
-		//int maxBotLevel = 100; maxBotLevel / 4 to be in rang 0 - 1
-		// level bot start 0 and can reach 100
-		return (int) (30 * Math.cos(Math.PI * botLevel / 200));
-	}
-
-	/**
-	 * we add some randomness to the bot call, 10% raise, 85% call, 5% fold
-	 *
-	 * @param turn
-	 * @param amount
-	 */
-	public void botCall(Turn turn, long amount) {
-		int percentage = random.nextInt(100);
-		// mistake chance 30%
-		int mistake = calculateMistakeGap(level);
-		// 85% ==> 100 - 85 = 15 higher or equal than 15 it's a call
-		int callPercentageTHold = 15 + mistake;
-		// 10 % ==> 100 - 85 - 10 = 5, higher or equal to 5 it's a raise
-		int raisePercentageTHold = 5 + mistake / 2;
-		if (percentage >= callPercentageTHold) {
-			// 85% raise if mistake = 0, (85 - mistake/2)%
-			super.call(turn.getAmountToContinue());
-		} else if (percentage >= raisePercentageTHold) {
-			// 14% call if mistake = 0 (14 + mistake/2)%
-			super.raise(calculateRaise(turn));
-		} else {
-			// 5% ==> 100 - 85 - 10 - 5 = 0, higher or equal to 0 it's a fold
-			// 5% fold if mistake = 0, (5 + mistake/2)%
-			super.fold();
-		}
-	}
-
-	/**
-	 * we add some randomness to the bot call, 5% raise (bluff stupidly), 1% call, 94% fold
-	 *
-	 * @param turn
-	 * @param amount
-	 */
-	public void botFold(Turn turn, long amount) {
-		int percentage = random.nextInt(100);
-		// mistake gap 30% for level 1; 0% for level 100
-		int mistake = calculateMistakeGap(level);
-		// 94% ==> 100 - 94 = 6 higher or equal to 6 it's a fold
-		// mistake reduce the % of getting fold ==> it mean higher threshold
-		int foldPercentageTHold = 6 + mistake;
-		// mistake will make the rang of getting call or fold higher by mistake/2 for each
-		int raisePercentageTHold = 1 + mistake / 2;
-		if (percentage >= foldPercentageTHold) {
-			// 94% fold if mistake = 0, (94 - mistake/2)%
-			super.fold();
-		} else if (percentage >= raisePercentageTHold) {
-			// 5% raise if mistake = 0 (5 + mistake/2)%
-			super.raise(calculateRaise(turn));
-		} else {
-			// 1% call if mistake = 0, (1 + mistake/2)%
-			super.call(turn.getAmountToContinue());
-		}
 	}
 
 }
