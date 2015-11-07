@@ -2,6 +2,8 @@ package com.hmrocket.poker.ai;
 
 import com.hmrocket.poker.card.HandType;
 
+import java.util.Arrays;
+
 /**
  * Holder of winning percentages
  * Created by hmrocket on 26/10/2015.
@@ -52,5 +54,21 @@ public class HandOdds {
 			strength += oddsCount;
 		}
 		return strength / n;
+	}
+
+	/**
+	 * Reset the odds
+	 */
+	public void reset() {
+		Arrays.fill(odds, 0);
+	}
+
+	/**
+	 * Increment odds of winning with this HandTye
+	 *
+	 * @param handType winning hand type
+	 */
+	public void wins(HandType handType) {
+		odds[handType.ordinal()] += 1;
 	}
 }

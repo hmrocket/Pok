@@ -1,5 +1,7 @@
 package com.hmrocket.poker;
 
+import com.hmrocket.poker.card.HandHoldem;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -85,4 +87,25 @@ public class PokerTools {
 		}
 
     }
+
+	/**
+	 * @param handHoldemList list of Hands Holdem
+	 * @return Winners hands
+	 */
+	public static List<HandHoldem> getBestHands(List<HandHoldem> handHoldemList) {
+		if (handHoldemList == null || handHoldemList.isEmpty()) {
+			return null;
+		}
+
+		ArrayList<HandHoldem> winners = new ArrayList<>();
+		HandHoldem winner = Collections.max(winners); // find best hand
+		do {
+			winners.add(winner);
+			handHoldemList.remove(winner);
+			winner = Collections.max(handHoldemList); // find the next best hand
+			// if next best hand is equal to best hand, add it to winners
+		} while (winner.compareTo(winners.get(0)) == 0);
+
+		return winners;
+	}
 }

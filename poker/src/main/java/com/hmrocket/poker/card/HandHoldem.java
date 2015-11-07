@@ -66,6 +66,10 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		return communityCardsWeakReference.get();
 	}
 
+	public void setCommunityCards(CommunityCards communityCards) {
+		this.communityCardsWeakReference = new WeakReference<>(communityCards);
+	}
+
 	public int winPercentage() throws OperationNotSupportedException {
 		throw new OperationNotSupportedException();
 	}
