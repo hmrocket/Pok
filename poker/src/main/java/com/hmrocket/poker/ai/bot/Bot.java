@@ -3,6 +3,8 @@ package com.hmrocket.poker.ai.bot;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Turn;
+import com.hmrocket.poker.ai.HandOdds;
+import com.hmrocket.poker.ai.HandOddsCalculator;
 import com.hmrocket.poker.ai.PlayingStyle;
 import com.hmrocket.poker.ai.Strategy;
 import com.hmrocket.poker.card.HandHoldem;
@@ -17,12 +19,15 @@ public class Bot extends Player {
 
 	private final PlayingStyle playingStyle;
 	private final Random random = new Random();
+	private final HandOddsCalculator handOddsCalculator;
 	private int level;
 	private Strategy strategy;
 
-	public Bot(String name, long bankBalance, long cash) {
+	public Bot(String name, int level, long bankBalance, long cash) {
 		super(name, bankBalance, cash);
+		this.level = level;
 		playingStyle = new PlayingStyle(random.nextFloat(), random.nextFloat());
+		handOddsCalculator = new HandOddsCalculator(level * 100);
 	}
 
 	@Override
@@ -33,6 +38,7 @@ public class Bot extends Player {
 	public void play(Turn turn) {
 		if (turn.getPhase() == RoundPhase.FLOP) { // actually it's pre flop
 			preflopStrategy(turn);
+			return;
 		} else {
 			int useBluffStrategy = random.nextInt(100);
 			if (useBluffStrategy >= 90)
@@ -48,10 +54,10 @@ public class Bot extends Player {
 			handHoldemStrategy = strategy.getHandStrategic();
 		}
 
-		// TODO calculate hand odd using handHoldemStrategy
-		float handStrength = .5f;
+		// calculate hand odd using handHoldemStrategy
+		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldemStrategy);
 		// if we do have a strategy our handStrength will be different ==> we will act differently
-		makeMove(turn, handStrength, calculateRaiseStyle(turn.getAmountToContinue()));
+		makeMove(turn, handStrength.getHandStrength(), calculateRaiseStyle(turn.getAmountToContinue()));
 	}
 
 	/**

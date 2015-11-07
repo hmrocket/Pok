@@ -118,26 +118,6 @@ public class Turn {
 		return pokerPosition;
 	}
 
-	public int getPlayersFolded() {
-		return playersFolded;
-	}
-
-	public void setPlayersFolded(int playersFolded) {
-		this.playersFolded = playersFolded;
-	}
-
-	public int getPlayersAllIn() {
-		return playersAllIn;
-	}
-
-	public void setPlayersAllIn(int playersAllIn) {
-		this.playersAllIn = playersAllIn;
-	}
-
-	public int getPlayerCount() {
-		return playerCount;
-	}
-
 	public long getMoneyOnTable() {
 		return moneyOnTable;
 	}
@@ -166,5 +146,33 @@ public class Turn {
 
 	public long getPotValue() {
 		return potValue;
+	}
+
+	/**
+	 * get the number of player will play in this Round
+	 * @return the number of player that are supposed to be playing this PokerRound
+	 */
+	public int getPokerRoundTurnsCount() {
+		return getPlayerCount() - getPlayersFolded() - getPlayersAllIn() + roundPlayersAllIn;
+	}
+
+	public int getPlayerCount() {
+		return playerCount;
+	}
+
+	public int getPlayersFolded() {
+		return playersFolded;
+	}
+
+	public void setPlayersFolded(int playersFolded) {
+		this.playersFolded = playersFolded;
+	}
+
+	public int getPlayersAllIn() {
+		return playersAllIn;
+	}
+
+	public void setPlayersAllIn(int playersAllIn) {
+		this.playersAllIn = playersAllIn;
 	}
 }
