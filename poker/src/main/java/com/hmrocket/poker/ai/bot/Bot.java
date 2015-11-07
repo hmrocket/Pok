@@ -74,12 +74,27 @@ public class Bot extends Player {
 //		If RR <1.3 the 0% fold, 60% call, 40% raise
 //		Else (RR >= 1.3) 0% fold, 30% call, 70% raise
 //		If fold and amount to call is zero, then call.
-		// TODO implement make move
-//		if (percentage < foldPercentage) {
-//			botFold(turn);
-//		} else if (percentage < callFoldPercentage) {
-//			botCall(turn);
-//		} else botRaise(turn);
+		// TODO implement more customizable move (ror thresholds should change depending on the player)
+		// ror take care in consideration the number of players left
+		// ror take in consideration the return value and the risk
+		int per = random.nextInt(100);
+		if (ror < 0.8) {
+			if (per < 95)
+				botFold(turn);
+			else botRaise(turn, BetType.BLUFF);
+		} else if (ror < 1.0) {
+			if (ror < 80)
+				botFold(turn);
+			else if (ror < 85)
+				botCall(turn);
+			else botRaise(turn, BetType.BLUFF);
+		} else if (ror < 1.3) {
+			if (ror < 60) botCall(turn);
+			else botRaise(turn, BetType.FOR_VALUE);
+		} else {
+			if (ror < 30) botCall(turn);
+			else botRaise(turn, BetType.BEST_HAND);
+		}
 	}
 
 	// Credit: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
@@ -89,7 +104,7 @@ public class Bot extends Player {
 			switch (getHandHoldem().getHand().getCard1().getRank()) {
 				case ACE: // AA
 				case KING: // KK
-					raise(calculateRawRaise(turn, BetType.BEST_HAND) + bet);
+					botRaise(turn, BetType.BEST_HAND);
 					break;
 				case QUEEN: // QQ
 					if (turn.isRaisedAfter()) {
