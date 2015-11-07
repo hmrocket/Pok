@@ -255,18 +255,43 @@ public class Bot extends Player {
 	 * @return
 	 */
 	private long calculateRawRaise(Turn turn, BetType betType) {
-		// TODO determine the rawBet,
-		return (long) (turn.getAmountToContinue() * 2 + turn.getMoneyOnTable() * playingStyle.getAggressive());
+		// determine the rawBet,
+		long bet1 = 0;
+		long bet2 = 0;
+
+		switch (betType) {
+			case BEST_HAND:
+				// you should make your bets between 75% - 100% of the size of the pot
+				// or 75% - 100% money on the table
+				float perB = random.nextFloat() / 4 + .75f;
+				bet1 = (long) (turn.getAmountToContinue() + turn.getPotValue() * perB);
+				bet2 = (long) (turn.getAmountToContinue() + turn.getMoneyOnTable() * perB);
+				break;
+			case FOR_VALUE:
+			case BLUFF:
+				// bet (3-4)BB +limpers*BB
+				bet1 = Math.max(turn.getAmountToContinue(), (random.nextInt(2) + 3) * turn.getMinBet());
+				bet1 += turn.getMoneyOnTable();
+				//or bets between 25% - 50% of the size of the pot
+				bet2 = (long) (turn.getPotValue() * (.25f + random.nextFloat() / 4));
+				break;
+			case STEAL:
+				// bet (1-6)BB
+				bet1 = (random.nextInt(7) + 1) * turn.getMinBet();
+				bet2 = turn.getAmountToContinue() + turn.getMinBet();
+				break;
+		}
+		return Math.max(bet1, bet2);
 	}
 
 	/**
 	 * @param rawBet represent the bet without taking account of bot aggressive character
-	 * @return bet taking careof the agressive character
+	 * @return bet taking care of the agressive character
 	 */
 	private long calculateRaiseStyle(long rawBet) {
-		// TODO here where aggressive attribute will play role
-		// generate a formula that use aggressive playingStyle
-		return rawBet;
+		// here where aggressive attribute will play role
+		// XXX generate a formula that use aggressive playingStyle
+		return (long) (rawBet * (playingStyle.getAggressive() + 1));
 	}
 
 	private float calculatePotOdds(Turn turn, long addedBet) {

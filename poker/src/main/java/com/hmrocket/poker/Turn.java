@@ -175,4 +175,8 @@ public class Turn {
 	public void setPlayersAllIn(int playersAllIn) {
 		this.playersAllIn = playersAllIn;
 	}
+
+	public long getMinBet() {
+		return minBet;
+	}
 }
