@@ -18,12 +18,20 @@ public final class HandOddsCalculator {
 	private final Deck deck;
 	private final HandOdds handOdds;
 
+	/**
+	 * @param precisionLevel iterations count
+	 */
 	public HandOddsCalculator(int precisionLevel) {
 		this.precisionLevel = precisionLevel;
 		this.deck = new Deck();
 		this.handOdds = new HandOdds(precisionLevel);
 	}
 
+	/**
+	 * @param playersCount total players (including you)
+	 * @param handHoldem your hand
+	 * @return the odds of your hand wins against <code>playersCount - 1</code> others Hands
+	 */
 	public HandOdds getHandOdds(int playersCount, HandHoldem handHoldem) {
 		// if the hand is null just return HandOdds init to 0 (means 0 winning chances)
 		if (handHoldem == null)
@@ -33,15 +41,21 @@ public final class HandOddsCalculator {
 	}
 
 	/**
-	 * @param playersCount
-	 * @param hand           NotNull
+	 * @param playersCount total players (including you)
+	 * @param hand @NotNull
 	 * @param communityCards
-	 * @return
+	 * @return the odds of your hand wins against <code>playersCount - 1</code> others Hands
 	 */
 	public HandOdds getHandOdds(int playersCount, Hand hand, CommunityCards communityCards) {
 		return calculateHandOdds(playersCount, new HandHoldem(hand, communityCards));
 	}
 
+	/**
+	 *
+	 * @param playersCount number of players Playing (you included)
+	 * @param handHoldem your hand
+	 * @return the odds your hand will win against the <code>playersCount - 1</code> other players Hand
+	 */
 	private HandOdds calculateHandOdds(int playersCount, HandHoldem handHoldem) {
 		handOdds.reset();
 		// new deck (full card available
@@ -65,13 +79,15 @@ public final class HandOddsCalculator {
 			if (handHoldem.getCommunityCards().getRiver() != null)
 				deck.burn(handHoldem.getCommunityCards().getRiver());
 		}
-		List<HandHoldem> handHoldemList = new ArrayList<>(playersCount + 1);
+		List<HandHoldem> handHoldemList = new ArrayList<>(playersCount);
 		//Credit: http://cowboyprogramming.com/2007/01/04/programming-poker-ai/
 		//simulate the progress of the game a very large number of time, and count the number of those times you win.
 		for (int i = 0; i < precisionLevel; i++) {
 			handHoldemList.clear();
+			// you hands first
+			handHoldemList.add(handHoldem);
 			// Deal your opponent's hole cards, and the remaining community cards
-			for (int j = 0; j < playersCount; j++) {
+			for (int j = 1; j < playersCount; j++) {
 				HandHoldem handHoldemOppent = new HandHoldem(deck.drawCard(), deck.drawCard(), handHoldem.getCommunityCards());
 				handHoldemList.add(handHoldemOppent);
 			}
@@ -96,6 +112,12 @@ public final class HandOddsCalculator {
 		return handOdds;
 	}
 
+	/**
+	 *
+	 * @param playersCount total players (including you)
+	 * @param hand your hand
+	 * @return the odds of your hand wins against <code>playersCount - 1</code> others Hands
+	 */
 	public HandOdds getHandOdds(int playersCount, Hand hand) {
 		return calculateHandOdds(playersCount, new HandHoldem(hand, null));
 	}
