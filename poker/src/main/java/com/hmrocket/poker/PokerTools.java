@@ -99,10 +99,13 @@ public class PokerTools {
 			return handHoldemList;
 
 		ArrayList<HandHoldem> winners = new ArrayList<>();
-		HandHoldem winner = Collections.max(winners); // find best hand
+		HandHoldem winner = Collections.max(handHoldemList); // find best hand
 		do {
 			winners.add(winner);
 			handHoldemList.remove(winner);
+			if (handHoldemList.isEmpty()) {
+				break;
+			}
 			winner = Collections.max(handHoldemList); // find the next best hand
 			// if next best hand is equal to best hand, add it to winners
 		} while (winner.compareTo(winners.get(0)) == 0);
