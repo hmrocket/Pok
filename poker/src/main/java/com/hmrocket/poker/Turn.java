@@ -7,7 +7,7 @@ import com.hmrocket.poker.ai.PokerPosition;
  */
 public class Turn {
 
-	private final int playerCount;
+	private int playerCount;
 	private RoundPhase phase;
 	/***
 	 * Represent how many player played so far in this Round == playersPlayed
@@ -45,6 +45,10 @@ public class Turn {
 	 */
 	private int roundPlayersAllIn;
 	/**
+	 * Number of player Folded in this Round
+	 */
+	private int roundPlayersFolded;
+	/**
 	 * Number of player went folded on this Round
 	 */
 	private int roundPlayerRaised;
@@ -53,20 +57,35 @@ public class Turn {
 	 */
 	private long potValue;
 	/**
-	 * money will be added to the pot
+	 * money will be added to the pot minus yours
+	 * c.a.d money on the table excluded you bet
 	 */
 	private long moneyOnTable;
 	/**
 	 * this is very important info, user folded => speedup the game, raised => the bot might react
 	 */
-	private Player.PlayerState humanState;
+	private Player.PlayerState humanState; // TODO implement this when you create HumanPlayer
 
 	public Turn(long minBet, int playerCount) {
+		reset(minBet, playerCount);
+	}
+
+	/**
+	 * Reset Turn Stat
+	 *
+	 * @param minBet
+	 * @param playerCount
+	 */
+	public void reset(long minBet, int playerCount) {
 		this.playerCount = playerCount;
 		phase = RoundPhase.PRE_FLOP;
+		this.minBet = minBet;
 		amountToContinue = minBet;
 		setPosition(0);
-
+		roundRally = playersFolded = playersAllIn = 0;
+		roundPlayersAllIn = roundPlayerRaised = 0;
+		potValue = moneyOnTable = 0;
+		humanState = null;
 	}
 
 	private void setPokerPosition() {
@@ -93,11 +112,6 @@ public class Turn {
 		setPokerPosition();
 	}
 
-	public void incrementPosition() {
-		this.position++;
-		setPokerPosition();
-	}
-
 	public RoundPhase getPhase() {
 		return phase;
 	}
@@ -107,11 +121,16 @@ public class Turn {
 		resetRoundTurn();
 	}
 
+	/**
+	 * Reset the Round variables
+	 */
 	private void resetRoundTurn() {
 		amountToContinue = 0;
-		roundPlayersAllIn = 0;
+		roundPlayersAllIn = roundPlayerRaised = roundRally = 0;
+		potValue = moneyOnTable;
+		moneyOnTable = 0;
 		humanState = null;
-		position = 0;
+		setPosition(0);
 	}
 
 	public PokerPosition getPokerPosition() {
@@ -123,12 +142,30 @@ public class Turn {
 	}
 
 	/**
+	 * track the money on the table
+	 *
+	 * @param money money a player will add to the table
+	 */
+	public void addMoneyOnTable(long money) {
+		moneyOnTable += money;
+	}
+
+	/**
+	 * remove a money from the table
+	 *
+	 * @param money amount ot be removed
+	 */
+	public void subMoneyOnTable(long money) {
+		moneyOnTable -= money;
+	}
+
+	/**
 	 * Check if has been a re-raise after you in this phase.
 	 *
 	 * @return true if the player is actually playing again on the same RoundPhase, false otherwise
 	 */
 	public boolean isRaisedAfter() {
-		return playerCount - playersFolded - playersAllIn <= roundRally;
+		return playerCount - playersFolded - playersAllIn <= roundRally - roundPlayersFolded - roundPlayersAllIn;
 	}
 
 	/**
@@ -149,33 +186,61 @@ public class Turn {
 	}
 
 	/**
-	 * get the number of player will play in this Round
-	 * @return the number of player that are supposed to be playing this PokerRound
+	 * Number of players will or might enter the pot (everyone who fold in this round is excluded of this count)
+	 * @return number of player that are supposed to be playing this PokerRound except the one who folded
+	 * 				In this Round
 	 */
 	public int getPokerRoundTurnsCount() {
 		return getPlayerCount() - getPlayersFolded() - getPlayersAllIn() + roundPlayersAllIn;
 	}
 
+	/**
+	 * @return total Player number
+	 */
 	public int getPlayerCount() {
 		return playerCount;
 	}
 
+	/**
+	 * @return Total number of player folded
+	 */
 	public int getPlayersFolded() {
 		return playersFolded;
 	}
 
-	public void setPlayersFolded(int playersFolded) {
-		this.playersFolded = playersFolded;
-	}
-
+	/**
+	 * @return total allIN Players
+	 */
 	public int getPlayersAllIn() {
 		return playersAllIn;
 	}
 
-	public void setPlayersAllIn(int playersAllIn) {
-		this.playersAllIn = playersAllIn;
+	/**
+	 * Increment the number of player folded in this RoundPhase and in total
+	 */
+	public void incrementPlayersFolded() {
+		roundPlayersFolded++;
+		this.playersFolded++;
 	}
 
+	/**
+	 * Increment the number of player ALL-IN in this RoundPhase and in total
+	 */
+	public void incrementPlayersAllIn() {
+		roundPlayersAllIn++;
+		this.playersAllIn++;
+	}
+
+	/**
+	 * Increment the number of Raise in this RoundPhase
+	 */
+	public void incrementRoundRaise() {
+		roundPlayerRaised++;
+	}
+
+	/**
+	 * @return BB
+	 */
 	public long getMinBet() {
 		return minBet;
 	}

@@ -33,6 +33,11 @@ public final class Strategy {
 		this.handStrategic = perfectHandScenario;
 	}
 
+	/**
+	 * @param handHoldem
+	 * @param turn
+	 * @return a possible strategy (mainly a fake Hand that the bot will use as a reference for his bets)
+	 */
 	public static Strategy getPossibleStrategy(HandHoldem handHoldem, Turn turn) {
 		// my favorite one is STEAL I use it often
 		// when no one has raised but there is a possible Flush or straight at the begging
