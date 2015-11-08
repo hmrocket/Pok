@@ -19,28 +19,28 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	public HandHoldem(Hand hand) {
 		this.hand = hand;
+		communityCardsWeakReference = new WeakReference<CommunityCards>(null);
 	}
 
 	public HandHoldem(Card card1, Card card2) {
 		this.hand = new Hand(card1, card2);
+		communityCardsWeakReference = new WeakReference<CommunityCards>(null);
 	}
 
 	public HandHoldem(Card card1, Card card2, CommunityCards communityCards) {
 		this.hand = new Hand(card1, card2);
 		if (communityCards != null) {
 			communityCards.addObserver(this);
-			// FIXME you might just getting a copy of the object and you and up referring to nothing
 			this.communityCardsWeakReference = new WeakReference<CommunityCards>(communityCards);
-		}
+		} else communityCardsWeakReference = new WeakReference<CommunityCards>(null);
 	}
 
 	public HandHoldem(Hand hand, CommunityCards communityCards) {
 		this.hand = hand;
 		if (communityCards != null) {
 			communityCards.addObserver(this);
-			// FIXME you might just getting a copy of the object and you end up referring to nothing
 			this.communityCardsWeakReference = new WeakReference<CommunityCards>(communityCards);
-		}
+		} else communityCardsWeakReference = new WeakReference<CommunityCards>(null);
 	}
 
 	public Hand getHand() {
@@ -85,10 +85,7 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	public HandScore getHandScore() {
 		if (handScore == null) // Lazy getter (Calculate the score when needed)
-			if (communityCardsWeakReference == null)
-				handScore = HandScoreCalculator.getHandScore(hand);
-			else
-				handScore = HandScoreCalculator.getHandScore(hand, communityCardsWeakReference.get());
+			handScore = HandScoreCalculator.getHandScore(hand, communityCardsWeakReference.get());
 		return handScore;
 	}
 
@@ -104,7 +101,7 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 	public String toString() {
 		String hand = this.hand.toString();
 		String communityCardsWeakReference;
-		if (this.communityCardsWeakReference != null)
+		if (this.communityCardsWeakReference.get() != null)
 			communityCardsWeakReference = this.communityCardsWeakReference.get().toString();
 		else
 			communityCardsWeakReference = "";
