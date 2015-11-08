@@ -95,7 +95,8 @@ public class PokerTools {
 	public static List<HandHoldem> getBestHands(List<HandHoldem> handHoldemList) {
 		if (handHoldemList == null || handHoldemList.isEmpty()) {
 			return null;
-		}
+		} else if (handHoldemList.size() == 1)
+			return handHoldemList;
 
 		ArrayList<HandHoldem> winners = new ArrayList<>();
 		HandHoldem winner = Collections.max(winners); // find best hand
