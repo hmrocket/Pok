@@ -18,6 +18,7 @@ public class PokerRound extends Round {
     private RoundPhase phase;
     private RoundEvent roundEvent;
 	private Turn turn;
+	private int dealerIndex;
 
     // Only table or game should create this if we will pass this object to the player
     public PokerRound(List<Player> playersOrderedRightLeft, Player dealer) {
@@ -32,6 +33,7 @@ public class PokerRound extends Round {
 		super(playersOrderedRightLeft, dealerIndex);
 		this.roundEvent = roundEvent;
 		this.turn = new Turn(minBet, playersOrderedRightLeft.size());
+		this.dealerIndex = dealerIndex;
 		setup(minBet, playersOrderedRightLeft.get(dealerIndex));
 		if (PokerTools.DEBUG)
 			System.out.println("minBet=" + minBet + ", dealerIndex=" + dealerIndex);
@@ -97,6 +99,26 @@ public class PokerRound extends Round {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Using the dealer's left player as baseline, get playing position of player in the game.
+	 *
+	 * @param players     list of player ordered from right to left (clock wise)
+	 * @param player      current player
+	 * @param dealerIndex last player index
+	 * @return get the position of a Player in the game
+	 */
+	protected static int getPosition(List<Player> players, Player player, int dealerIndex) {
+		int indexOf = players.indexOf(player);
+		if (indexOf == -1)
+			throw new IllegalArgumentException("The player doesn't exist in the list");
+		else {
+			int positionFromDealer = indexOf - dealerIndex;
+			// -1 it because deale risn't the one who start but the one who finish last
+			return positionFromDealer > 0 ? positionFromDealer - 1 : players.size() - 1 + positionFromDealer;
+
+		}
 	}
 
     /**
@@ -174,7 +196,10 @@ public class PokerRound extends Round {
 		Player playerToStart = getLeftPlayer(button);
 		super.newRound(playerToStart);
 		do {
-			turn.turnStarted(playerToStart, super.playerTurn);
+			// get the position of the player in this game
+			// we use dealerIndex and not Button cause button might be bigBlind at first not dealer
+			int playerPosition = getPosition(players, playerToStart, dealerIndex);
+			turn.turnStarted(playerToStart, playerPosition);
 			playerToStart.play(turn.getAmountToContinue()); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
 			if (playerToStart.didRaise(turn.getAmountToContinue())) {
