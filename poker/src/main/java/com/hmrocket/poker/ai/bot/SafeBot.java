@@ -1,6 +1,7 @@
 package com.hmrocket.poker.ai.bot;
 
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.PokerTools;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Turn;
 import com.hmrocket.poker.ai.HandOdds;
@@ -196,7 +197,7 @@ public final class SafeBot extends Player {
 	 * @param minBetToAdd     cost of a contemplated call (min bet must be Added to continue)
 	 */
 	protected void makeMove(Turn turn, float winPercentage, long minBetToAdd) {
-		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, minBetToAdd));
+		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, minBetToAdd);
 		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
 //		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
 //		If RR <1.3 the 0% fold, 60% call, 40% raise
@@ -247,19 +248,6 @@ public final class SafeBot extends Player {
 	private boolean isSuitedConnectors() {
 		return handHoldem.getHand().isSuited() && handHoldem.getHand().isConnector()
 				&& handHoldem.getHand().getMax().getRank().compareTo(Rank.THREE) > 0;
-	}
-
-	private float calculateRateOfReturn(float handStrength, float potOdds) {
-		return handStrength / potOdds;
-	}
-
-	private float calculatePotOdds(Turn turn, long addedBet) {
-		// pots odds = (value you will add to the pot) / (pot value after your add)
-		// when potOdds get closer to 0.5 you mean you're put lot of money
-		// XXX I got divide by zero exception
-		//FIXME moneyOnTHe table is missing my bet !
-		// FIXME pot value should simply return the total
-		return addedBet / (addedBet + turn.getPotValue() + turn.getMoneyOnTable());
 	}
 
 }

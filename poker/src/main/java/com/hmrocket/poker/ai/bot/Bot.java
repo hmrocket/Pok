@@ -1,6 +1,7 @@
 package com.hmrocket.poker.ai.bot;
 
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.PokerTools;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Turn;
 import com.hmrocket.poker.ai.HandOdds;
@@ -65,7 +66,7 @@ public class Bot extends Player {
 	 */
 	protected void makeMove(Turn turn, float winPercentage, long minToAdd) {
 		// FIXME create a method when the addBet is 0 (just check)
-		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, minToAdd));
+		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, minToAdd);
 		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
 //		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
 //		If RR <1.3 the 0% fold, 60% call, 40% raise
@@ -289,16 +290,6 @@ public class Bot extends Player {
 		// here where aggressive attribute will play role
 		// XXX generate a formula that use aggressive playingStyle
 		return (long) (rawBet * (playingStyle.getAggressive() + 1));
-	}
-
-	private float calculatePotOdds(Turn turn, long addedBet) {
-		// pots odds = (value you will add to the pot) / (pot value after your add)
-		// when potOdds get closer to 0.5 you mean you're put lot of money
-		return addedBet / (addedBet + turn.getPotValue());
-	}
-
-	private float calculateRateOfReturn(float handStrength, float potOdds) {
-		return handStrength / potOdds;
 	}
 
 	/**

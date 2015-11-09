@@ -112,4 +112,22 @@ public class PokerTools {
 
 		return winners;
 	}
+
+	public static float calculateRateOfReturn(float handStrength, Turn turn, long addedBet) {
+		return calculateRateOfReturn(handStrength, calculatePotOdds(turn, addedBet));
+	}
+
+	public static float calculateRateOfReturn(float handStrength, float potOdds) {
+		return handStrength / potOdds;
+	}
+
+	public static float calculatePotOdds(Turn turn, long addedBet) {
+		// pots odds = (value you will add to the pot) / (pot value after your add)
+		// when potOdds get closer to 0.5 you mean you're put lot of money
+		// XXX I got divide by zero exception
+		//FIXME moneyOnTHe table is missing my bet !
+		// FIXME pot value should simply return the total
+		return addedBet / (addedBet + turn.getPotValue() + turn.getMoneyOnTable());
+	}
+
 }
