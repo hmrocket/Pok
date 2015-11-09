@@ -1,4 +1,4 @@
-1) splash screen (activity)
+1) splash screen (activity) #36313a
 2) Home screen (activity) 
 	- play (Show as magic wand image )
 	- item Shop (Big pot)
