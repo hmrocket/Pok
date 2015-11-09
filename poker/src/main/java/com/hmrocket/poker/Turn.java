@@ -215,13 +215,16 @@ public class Turn {
 
 	/**
 	 * Call this before calling Player.play()
-	 *
-	 * @param player         playerTurn
+	 * @param player playing player
+	 * @param playerPosition player position in the game (not on the table or list)
 	 */
-	public void turnStarted(Player player, int PlayerPosition) {
+	public void turnStarted(Player player, int playerPosition) {
 		if (turnState == START)
 			turnState = END;
 		else throw new IllegalStateException("Call End after starting a turn");
+
+		// set player position
+		setPosition(playerPosition);
 
 		// remove play money for the table so the player should always look
 		// to the money he might gain
