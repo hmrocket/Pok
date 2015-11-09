@@ -31,10 +31,6 @@ public class Bot extends Player {
 	}
 
 	@Override
-	public void play(long amountToContinue) {
-
-	}
-
 	public void play(Turn turn) {
 		if (turn.getPhase() == RoundPhase.FLOP) { // actually it's pre flop
 			preflopStrategy(turn);

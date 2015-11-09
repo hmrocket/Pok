@@ -200,7 +200,7 @@ public class PokerRound extends Round {
 			// we use dealerIndex and not Button cause button might be bigBlind at first not dealer
 			int playerPosition = getPosition(players, playerToStart, dealerIndex);
 			turn.turnStarted(playerToStart, playerPosition);
-			playerToStart.play(turn.getAmountToContinue()); // player play a move
+			playerToStart.play(turn); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
 			if (playerToStart.didRaise(turn.getAmountToContinue())) {
 				super.newRound(playerToStart); // New Round not Poker Round

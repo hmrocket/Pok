@@ -1,6 +1,7 @@
 package com.hmrocket.poker.ai.bot;
 
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.Turn;
 
 import java.util.Random;
 
@@ -16,14 +17,14 @@ public class RaiseBot extends Player {
 	}
 
 	@Override
-	public void play(long amountToContinue) {
-		long maxAddBet = (cash + bet) - amountToContinue;
+	public void play(Turn turn) {
+		long maxAddBet = (cash + bet) - turn.getAmountToContinue();
 		// bot raise whenever possible, fold otherwise
 		if (maxAddBet <= 0) {
 			fold();
 		} else {
 			long betAdd = random.nextInt((int) maxAddBet) + 1;
-			raise(betAdd + amountToContinue);
+			raise(betAdd + turn.getAmountToContinue());
 		}
 	}
 }

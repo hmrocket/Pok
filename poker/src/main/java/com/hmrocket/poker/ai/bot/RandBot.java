@@ -1,6 +1,7 @@
 package com.hmrocket.poker.ai.bot;
 
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.Turn;
 
 import java.util.Random;
 
@@ -14,7 +15,8 @@ public class RandBot extends Player {
 	}
 
 	@Override
-	public void play(long amountToContinue) {
+	public void play(Turn turn) {
+		long amountToContinue = turn.getAmountToContinue();
 		Random r = new Random();
 		int action = r.nextInt(amountToContinue == 0 ? 4 : 3);
 		switch (action) {

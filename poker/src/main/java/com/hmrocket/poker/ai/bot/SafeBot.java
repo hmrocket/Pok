@@ -21,7 +21,7 @@ public final class SafeBot extends Player {
 	}
 
 	@Override
-	public void play(long amountToContinue) {
+	public void play(Turn turn) {
 
 	}
 

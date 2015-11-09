@@ -1,6 +1,7 @@
 package com.hmrocket.poker.pot;
 
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.Turn;
 import com.hmrocket.poker.ai.bot.RandBot;
 import com.hmrocket.poker.card.Card;
 import com.hmrocket.poker.card.HandHoldem;
@@ -125,9 +126,10 @@ public class PotTest extends TestCase {
             players.add(player);
         pot.setup(players);
         long amountCalled = Math.abs(r.nextInt());
-        long potValue = 0;
+		Turn turn = new Turn(amountCalled, players.size());
+		long potValue = 0;
         for (Player player : players) {
-			player.play(amountCalled);
+			player.play(turn);
 			amountCalled = player.getBet();
 			if (player.isOut() == false)
                 potValue += amountCalled;

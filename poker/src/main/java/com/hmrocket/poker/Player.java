@@ -188,9 +188,9 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
 	/**
 	 * Request an Action
 	 *
-	 * @param amountToContinue the amount a player must bet to continue
+	 * @param turn game stats and info related to the turn
 	 */
-	public abstract void play(long amountToContinue);
+	public abstract void play(Turn turn);
 
 	@Override
 	public String toString() {
