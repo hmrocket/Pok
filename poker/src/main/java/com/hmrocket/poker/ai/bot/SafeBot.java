@@ -1,7 +1,10 @@
 package com.hmrocket.poker.ai.bot;
 
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Turn;
+import com.hmrocket.poker.ai.HandOdds;
+import com.hmrocket.poker.ai.HandOddsCalculator;
 import com.hmrocket.poker.ai.PlayingStyle;
 import com.hmrocket.poker.card.Rank;
 
@@ -14,68 +17,25 @@ public final class SafeBot extends Player {
 
 	private static final PlayingStyle playingStyle = new PlayingStyle(0, 1);
 	private final Random random = new Random();
-	private int level;
+	private final HandOddsCalculator handOddsCalculator;
+	private int level = 1;
 
 	public SafeBot(String name, long bankBalance, long cash) {
 		super(name, bankBalance, cash);
+		handOddsCalculator = new HandOddsCalculator(level * 100);
 	}
 
 	@Override
 	public void play(Turn turn) {
-
-	}
-
-	/**
-	 * based on the hand percentage and the amount to continue (added bet = calculateRaiseStyle)
-	 *
-	 * @param turn
-	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
-	 * @param addedBet      bet to add to the pot
-	 */
-	protected void makeMove(Turn turn, float winPercentage, long addedBet) {
-		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, addedBet));
-		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
-//		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
-//		If RR <1.3 the 0% fold, 60% call, 40% raise
-//		Else (RR >= 1.3) 0% fold, 30% call, 70% raise
-//		If fold and amount to call is zero, then call.
-		// TODO implement more customizable move (ror thresholds should change depending on the player)
-		// ror take care in consideration the number of players left
-		// ror take in consideration the return value and the risk
-		int per = random.nextInt(100);
-		if (ror < 0.8) {
-			if (per < 95)
-				fold();
-			else raise(calculateRaise(turn));
-		} else if (ror < 1.0) {
-			if (ror < 80)
-				fold();
-			else if (ror < 85)
-				call(turn.getAmountToContinue());
-			else raise(calculateRaise(turn));
-		} else if (ror < 1.3) {
-			if (ror < 60) call(turn.getAmountToContinue());
-			else raise(calculateRaise(turn));
-		} else {
-			if (ror < 30) call(turn.getAmountToContinue());
-			else raise(calculateRaise(turn));
+		if (turn.getPhase() == RoundPhase.FLOP) { // actually it's pre flop
+			preflopStrategy(turn);
+			return;
 		}
-	}
 
-	private float calculateRateOfReturn(float handStrength, float potOdds) {
-		return handStrength / potOdds;
-	}
+		// calculate hand odd, based on your hand
+		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldem);
 
-	private float calculatePotOdds(Turn turn, long addedBet) {
-		// pots odds = (value you will add to the pot) / (pot value after your add)
-		// when potOdds get closer to 0.5 you mean you're put lot of money
-		return addedBet / (addedBet + turn.getPotValue());
-	}
-
-	private long calculateRaise(Turn turn) {
-		// here where aggressive attribute will play role
-		// but SafeBot has aggression 0
-		return Math.max(turn.getAmountToContinue() * 4, turn.getPotValue() / 4);
+		makeMove(turn, handStrength.getHandStrength(), calculateRaise(turn));
 	}
 
 	// Credit: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
@@ -229,6 +189,49 @@ public final class SafeBot extends Player {
 	}
 
 	/**
+	 * based on the hand percentage and the amount to continue (added bet = calculateRaiseStyle)
+	 *
+	 * @param turn
+	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
+	 * @param addedBet      bet to add to the pot
+	 */
+	protected void makeMove(Turn turn, float winPercentage, long addedBet) {
+		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, addedBet));
+		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
+//		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
+//		If RR <1.3 the 0% fold, 60% call, 40% raise
+//		Else (RR >= 1.3) 0% fold, 30% call, 70% raise
+//		If fold and amount to call is zero, then call.
+		// TODO implement more customizable move (ror thresholds should change depending on the player)
+		// ror take care in consideration the number of players left
+		// ror take in consideration the return value and the risk
+		int per = random.nextInt(100);
+		if (ror < 0.8) {
+			if (per < 95)
+				fold();
+			else raise(calculateRaise(turn));
+		} else if (ror < 1.0) {
+			if (ror < 80)
+				fold();
+			else if (ror < 85)
+				call(turn.getAmountToContinue());
+			else raise(calculateRaise(turn));
+		} else if (ror < 1.3) {
+			if (ror < 60) call(turn.getAmountToContinue());
+			else raise(calculateRaise(turn));
+		} else {
+			if (ror < 30) call(turn.getAmountToContinue());
+			else raise(calculateRaise(turn));
+		}
+	}
+
+	private long calculateRaise(Turn turn) {
+		// here where aggressive attribute will play role
+		// but SafeBot has aggression 0
+		return Math.max(turn.getAmountToContinue() * 4, turn.getPotValue() / 4);
+	}
+
+	/**
 	 * @return true if hand equal to KQ, KJ, KT, QJ, QT, JT, false otherwise
 	 */
 	private boolean isFaceCards() {
@@ -244,6 +247,16 @@ public final class SafeBot extends Player {
 	private boolean isSuitedConnectors() {
 		return handHoldem.getHand().isSuited() && handHoldem.getHand().isConnector()
 				&& handHoldem.getHand().getMax().getRank().compareTo(Rank.THREE) > 0;
+	}
+
+	private float calculateRateOfReturn(float handStrength, float potOdds) {
+		return handStrength / potOdds;
+	}
+
+	private float calculatePotOdds(Turn turn, long addedBet) {
+		// pots odds = (value you will add to the pot) / (pot value after your add)
+		// when potOdds get closer to 0.5 you mean you're put lot of money
+		return addedBet / (addedBet + turn.getPotValue());
 	}
 
 }
