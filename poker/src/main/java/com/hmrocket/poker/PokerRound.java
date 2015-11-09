@@ -15,8 +15,6 @@ import java.util.List;
  */
 public class PokerRound extends Round {
 
-
-    private long[] calledAmountByRound;
     private RoundPhase phase;
     private RoundEvent roundEvent;
 	private Turn turn;
@@ -49,8 +47,6 @@ public class PokerRound extends Round {
 	 */
 	private void setup(long minBet, Player dealer) {
 		phase = RoundPhase.PRE_FLOP;
-		calledAmountByRound = new long[RoundPhase.getBetRoundsCount()];
-		calledAmountByRound[phase.ordinal()] = minBet;
 
 		Player smallBlindPlayer = getLeftPlayer(dealer);
 		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 2 (nullpointer)
@@ -179,16 +175,15 @@ public class PokerRound extends Round {
 		super.newRound(playerToStart);
 		do {
 			turn.turnStarted(playerToStart, super.playerTurn);
-			playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
-			turn.turnEnded(playerToStart);
+			playerToStart.play(turn.getAmountToContinue()); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
-			if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
-				// update calledAmount and Start new raising Round
-				calledAmountByRound[phase.ordinal()] = playerToStart.getBet();
+			if (playerToStart.didRaise(turn.getAmountToContinue())) {
 				super.newRound(playerToStart); // New Round not Poker Round
 				// nextTurn();
 				if (PokerTools.DEBUG) System.out.println("--new Round--");
 			}
+			// update calledAmount and Start new raising Round
+			turn.turnEnded(playerToStart);
 			playerToStart = nextTurn();
 		} while (playerToStart != null);
 	}
