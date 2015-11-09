@@ -93,7 +93,7 @@ public class Turn {
 		roundPlayersAllIn = roundPlayerRaised = 0;
 		potValue = moneyOnTable = 0;
 		humanState = null;
-		turnState = END;
+		turnState = START;
 	}
 
 	private void setPokerPosition() {
@@ -219,9 +219,8 @@ public class Turn {
 	 * @param playerPosition player position in the game (not on the table or list)
 	 */
 	public void turnStarted(Player player, int playerPosition) {
-		if (turnState == START)
-			turnState = END;
-		else throw new IllegalStateException("Call End after starting a turn");
+		if (turnState != START)
+			throw new IllegalStateException("Call End after starting a turn");
 
 		// set player position
 		setPosition(playerPosition);
@@ -229,6 +228,8 @@ public class Turn {
 		// remove play money for the table so the player should always look
 		// to the money he might gain
 		subMoneyOnTable(player.getBet());
+		// change state to end
+		turnState = END;
 	}
 
 	/**
@@ -247,9 +248,8 @@ public class Turn {
 	 * @param player player
 	 */
 	public void turnEnded(Player player) {
-		if (turnState == END)
-			turnState = START;
-		else throw new IllegalStateException("Call start before ending a turn");
+		if (turnState != END)
+			throw new IllegalStateException("Call start before ending a turn");
 
 		switch (player.getState()) {
 			case ALL_IN:
@@ -271,6 +271,8 @@ public class Turn {
 		roundRally++;
 		// increment the money on the table (or place back)
 		addMoneyOnTable(player.getBet());
+		// next state
+		turnState = START;
 	}
 
 	/**
