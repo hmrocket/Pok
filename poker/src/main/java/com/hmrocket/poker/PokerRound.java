@@ -19,6 +19,8 @@ public class PokerRound extends Round {
     private long[] calledAmountByRound;
     private RoundPhase phase;
     private RoundEvent roundEvent;
+	private Turn turn;
+
     // Only table or game should create this if we will pass this object to the player
     public PokerRound(List<Player> playersOrderedRightLeft, Player dealer) {
         super(playersOrderedRightLeft, dealer);
@@ -31,6 +33,7 @@ public class PokerRound extends Round {
 	public PokerRound(long minBet, List<Player> playersOrderedRightLeft, int dealerIndex, RoundEvent roundEvent) {
 		super(playersOrderedRightLeft, dealerIndex);
 		this.roundEvent = roundEvent;
+		this.turn = new Turn(minBet, playersOrderedRightLeft.size());
 		setup(minBet, playersOrderedRightLeft.get(dealerIndex));
 		if (PokerTools.DEBUG)
 			System.out.println("minBet=" + minBet + ", dealerIndex=" + dealerIndex);
@@ -81,33 +84,23 @@ public class PokerRound extends Round {
 	}
 
 	private void nextPhase() {
-		if (phase != RoundPhase.SHOWDOWN)
+		if (phase != RoundPhase.SHOWDOWN) {
 			phase =  RoundPhase.values()[phase.ordinal() + 1];
+			turn.setPhase(phase);
+		}
 		else System.out.println("Next Round called at Showdown");
 	}
 
-    /**
-     * Poker Round only ends when (1) only one player is left or
-     * (2) all remaining players have matched the highest total bet made during the round.
-     *
-	 * @param button  the player who acts last on that Round
-	 */
-	@Override
-	protected void newRound(Player button) {
-		Player playerToStart = getLeftPlayer(button);
-		super.newRound(playerToStart);
-		do {
-			playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
-			if (PokerTools.DEBUG) System.out.println(playerToStart);
-			if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
-                // update calledAmount and Start new raising Round
-				calledAmountByRound[phase.ordinal()] = playerToStart.getBet();
-				super.newRound(playerToStart); // New Round not Poker Round
-				// nextTurn();
-				if (PokerTools.DEBUG) System.out.println("--new Round--");
+	protected boolean isAllPlayersNotPlayingExceptOne() {
+		int numberOfPlayerPlaying = 0;
+		for (Player player :
+				players) {
+			if (player.isPlaying()) {
+				numberOfPlayerPlaying++;
+				if (numberOfPlayerPlaying > 1) return false;
 			}
-            playerToStart = nextTurn();
-		} while (playerToStart != null);
+		}
+		return true;
 	}
 
     /**
@@ -159,18 +152,6 @@ public class PokerRound extends Round {
 		return nextPlayingPlayer;
 	}
 
-	protected boolean isAllPlayersNotPlayingExceptOne() {
-		int numberOfPlayerPlaying = 0;
-		for (Player player :
-				players) {
-			if (player.isPlaying()) {
-				numberOfPlayerPlaying++;
-				if (numberOfPlayerPlaying > 1) return false;
-			}
-		}
-		return true;
-	}
-
 	@Override
 	protected boolean isCompleted() {
 
@@ -179,12 +160,38 @@ public class PokerRound extends Round {
 
 	@Override
 	void removePlayer(Player player) {
-    // The plan was to remove player who folded or quit, now changed (the pot will handle that)
-    // Don't remove player
-        super.removePlayer(player);
-        // If I remove folded player... bet where should it go - should I even remove it ?
-        // bets.remove(player);
-    }
+		// The plan was to remove player who folded or quit, now changed (the pot will handle that)
+		// Don't remove player
+		super.removePlayer(player);
+		// If I remove folded player... bet where should it go - should I even remove it ?
+		// bets.remove(player);
+	}
+
+	/**
+	 * Poker Round only ends when (1) only one player is left or
+	 * (2) all remaining players have matched the highest total bet made during the round.
+	 *
+	 * @param button the player who acts last on that Round
+	 */
+	@Override
+	protected void newRound(Player button) {
+		Player playerToStart = getLeftPlayer(button);
+		super.newRound(playerToStart);
+		do {
+			turn.turnStarted(playerToStart, super.playerTurn);
+			playerToStart.play(calledAmountByRound[phase.ordinal()]); // player play a move
+			turn.turnEnded(playerToStart);
+			if (PokerTools.DEBUG) System.out.println(playerToStart);
+			if (playerToStart.didRaise(calledAmountByRound[phase.ordinal()])) {
+				// update calledAmount and Start new raising Round
+				calledAmountByRound[phase.ordinal()] = playerToStart.getBet();
+				super.newRound(playerToStart); // New Round not Poker Round
+				// nextTurn();
+				if (PokerTools.DEBUG) System.out.println("--new Round--");
+			}
+			playerToStart = nextTurn();
+		} while (playerToStart != null);
+	}
 
     protected interface RoundEvent {
         public void onRoundFinish(RoundPhase phase, List<Player> players);

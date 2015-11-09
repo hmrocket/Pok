@@ -7,10 +7,17 @@ import com.hmrocket.poker.ai.PokerPosition;
  */
 public class Turn {
 
+	private static final int START = 0;
+	private static final int END = 1;
+	/**
+	 * represent the state of the turn used only at start/end turn
+	 */
+	private int turnState;
 	private int playerCount;
 	private RoundPhase phase;
 	/***
 	 * Represent how many player played so far in this Round == playersPlayed
+	 * c.a.d playersPlayedBefore me
 	 */
 	private int roundRally;
 	/**
@@ -86,6 +93,7 @@ public class Turn {
 		roundPlayersAllIn = roundPlayerRaised = 0;
 		potValue = moneyOnTable = 0;
 		humanState = null;
+		turnState = END;
 	}
 
 	private void setPokerPosition() {
@@ -142,24 +150,6 @@ public class Turn {
 	}
 
 	/**
-	 * track the money on the table
-	 *
-	 * @param money money a player will add to the table
-	 */
-	public void addMoneyOnTable(long money) {
-		moneyOnTable += money;
-	}
-
-	/**
-	 * remove a money from the table
-	 *
-	 * @param money amount ot be removed
-	 */
-	public void subMoneyOnTable(long money) {
-		moneyOnTable -= money;
-	}
-
-	/**
 	 * Check if has been a re-raise after you in this phase.
 	 *
 	 * @return true if the player is actually playing again on the same RoundPhase, false otherwise
@@ -187,8 +177,9 @@ public class Turn {
 
 	/**
 	 * Number of players will or might enter the pot (everyone who fold in this round is excluded of this count)
+	 *
 	 * @return number of player that are supposed to be playing this PokerRound except the one who folded
-	 * 				In this Round
+	 * In this Round
 	 */
 	public int getPokerRoundTurnsCount() {
 		return getPlayerCount() - getPlayersFolded() - getPlayersAllIn() + roundPlayersAllIn;
@@ -216,11 +207,67 @@ public class Turn {
 	}
 
 	/**
-	 * Increment the number of player folded in this RoundPhase and in total
+	 * @return BB
 	 */
-	public void incrementPlayersFolded() {
-		roundPlayersFolded++;
-		this.playersFolded++;
+	public long getMinBet() {
+		return minBet;
+	}
+
+	/**
+	 * Call this before calling Player.play()
+	 *
+	 * @param player         playerTurn
+	 */
+	public void turnStarted(Player player, int PlayerPosition) {
+		if (turnState == START)
+			turnState = END;
+		else throw new IllegalStateException("Call End after starting a turn");
+
+		// remove play money for the table so the player should always look
+		// to the money he might gain
+		subMoneyOnTable(player.getBet());
+	}
+
+	/**
+	 * remove a money from the table
+	 *
+	 * @param money amount ot be removed
+	 */
+	protected void subMoneyOnTable(long money) {
+		moneyOnTable -= money;
+	}
+
+	/**
+	 * After a player plays use this method to refresh Turn object
+	 * update teh stats about players Folded, AllIn, Raised
+	 *
+	 * @param player player
+	 */
+	public void turnEnded(Player player) {
+		if (turnState == END)
+			turnState = START;
+		else throw new IllegalStateException("Call start before ending a turn");
+
+		switch (player.getState()) {
+			case ALL_IN:
+				incrementPlayersAllIn();
+				if (player.didRaise(amountToContinue)) setAmountToContinue(player.getBet());
+				break;
+			case FOLD:
+				incrementPlayersFolded();
+				break;
+			case RAISE:
+				incrementRoundRaise();
+				setAmountToContinue(player.getBet());
+				break;
+			case CALL:
+			case CHECK:
+				break;
+		}
+		// increment number of player played
+		roundRally++;
+		// increment the money on the table (or place back)
+		addMoneyOnTable(player.getBet());
 	}
 
 	/**
@@ -232,6 +279,14 @@ public class Turn {
 	}
 
 	/**
+	 * Increment the number of player folded in this RoundPhase and in total
+	 */
+	public void incrementPlayersFolded() {
+		roundPlayersFolded++;
+		this.playersFolded++;
+	}
+
+	/**
 	 * Increment the number of Raise in this RoundPhase
 	 */
 	public void incrementRoundRaise() {
@@ -239,9 +294,11 @@ public class Turn {
 	}
 
 	/**
-	 * @return BB
+	 * track the money on the table
+	 *
+	 * @param money money a player will add to the table
 	 */
-	public long getMinBet() {
-		return minBet;
+	protected void addMoneyOnTable(long money) {
+		moneyOnTable += money;
 	}
 }
