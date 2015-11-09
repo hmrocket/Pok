@@ -53,7 +53,7 @@ public class Bot extends Player {
 		// calculate hand odd using handHoldemStrategy
 		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldemStrategy);
 		// if we do have a strategy our handStrength will be different ==> we will act differently
-		makeMove(turn, handStrength.getHandStrength(), calculateRaiseStyle(turn.getAmountToContinue()));
+		makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
 	}
 
 	/**
@@ -61,10 +61,11 @@ public class Bot extends Player {
 	 *
 	 * @param turn
 	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
-	 * @param addedBet      bet to add to the pot
+	 * @param minToAdd      min bet must be added to the pot to Continue
 	 */
-	protected void makeMove(Turn turn, float winPercentage, long addedBet) {
-		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, addedBet));
+	protected void makeMove(Turn turn, float winPercentage, long minToAdd) {
+		// FIXME create a method when the addBet is 0 (just check)
+		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, minToAdd));
 		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
 //		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
 //		If RR <1.3 the 0% fold, 60% call, 40% raise

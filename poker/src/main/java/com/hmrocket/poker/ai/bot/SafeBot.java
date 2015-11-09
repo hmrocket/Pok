@@ -35,7 +35,7 @@ public final class SafeBot extends Player {
 		// calculate hand odd, based on your hand
 		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldem);
 
-		makeMove(turn, handStrength.getHandStrength(), calculateRaise(turn));
+		makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
 	}
 
 	// Credit: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
@@ -193,10 +193,10 @@ public final class SafeBot extends Player {
 	 *
 	 * @param turn
 	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
-	 * @param addedBet      bet to add to the pot
+	 * @param minBetToAdd     cost of a contemplated call (min bet must be Added to continue)
 	 */
-	protected void makeMove(Turn turn, float winPercentage, long addedBet) {
-		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, addedBet));
+	protected void makeMove(Turn turn, float winPercentage, long minBetToAdd) {
+		float ror = calculateRateOfReturn(winPercentage, calculatePotOdds(turn, minBetToAdd));
 		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
 //		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
 //		If RR <1.3 the 0% fold, 60% call, 40% raise
@@ -256,7 +256,10 @@ public final class SafeBot extends Player {
 	private float calculatePotOdds(Turn turn, long addedBet) {
 		// pots odds = (value you will add to the pot) / (pot value after your add)
 		// when potOdds get closer to 0.5 you mean you're put lot of money
-		return addedBet / (addedBet + turn.getPotValue());
+		// XXX I got divide by zero exception
+		//FIXME moneyOnTHe table is missing my bet !
+		// FIXME pot value should simply return the total
+		return addedBet / (addedBet + turn.getPotValue() + turn.getMoneyOnTable());
 	}
 
 }
