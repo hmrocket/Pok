@@ -56,6 +56,7 @@ public class PokerRound extends Round {
 		// big blind is the last one to finish first round (only first round after it's the dealer)
 		Player bigBlindPlayer = getLeftPlayer(smallBlindPlayer);
 		bigBlindPlayer.raise(minBet);
+		turn.addMoneyOnTable(smallBlindPlayer.getBet() + bigBlindPlayer.getBet());
 		startGame(dealer, bigBlindPlayer);
 	}
 

@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class PokerTools {
 
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	private static final int MIN_BUY_IN_MULTIPLYER = 10;
     private static final int MAX_BUY_IN_MULTIPLYER = 200;
 
@@ -124,7 +124,6 @@ public class PokerTools {
 	public static float calculatePotOdds(Turn turn, long addedBet) {
 		// pots odds = (value you will add to the pot) / (pot value after your add)
 		// when potOdds get closer to 0.5 you mean you're put lot of money
-		// XXX I got divide by zero exception
 		//FIXME moneyOnTHe table is missing my bet !
 		// FIXME pot value should simply return the total
 		return addedBet / (addedBet + turn.getPotValue() + turn.getMoneyOnTable());
