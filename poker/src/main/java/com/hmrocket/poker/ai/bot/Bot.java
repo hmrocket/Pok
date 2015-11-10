@@ -33,7 +33,7 @@ public class Bot extends Player {
 
 	@Override
 	public void play(Turn turn) {
-		if (turn.getPhase() == RoundPhase.FLOP) { // actually it's pre flop
+		if (turn.getPhase() == RoundPhase.PRE_FLOP) { // actually it's pre flop
 			preflopStrategy(turn);
 			return;
 		} else {
