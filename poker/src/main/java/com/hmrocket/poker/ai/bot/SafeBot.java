@@ -14,11 +14,11 @@ import java.util.Random;
 /**
  * Created by hmrocket on 02/11/2015.
  */
-public final class SafeBot extends Player {
+public class SafeBot extends Player {
 
 	private static final PlayingStyle playingStyle = new PlayingStyle(0, 1);
+	protected final HandOddsCalculator handOddsCalculator;
 	private final Random random = new Random();
-	private final HandOddsCalculator handOddsCalculator;
 	private int level = 1;
 
 	public SafeBot(String name, long bankBalance, long cash) {
@@ -255,7 +255,7 @@ public final class SafeBot extends Player {
 		}
 	}
 
-	private long calculateRaise(Turn turn) {
+	protected long calculateRaise(Turn turn) {
 		// here where aggressive attribute will play role
 		// but SafeBot has aggression 0
 		return Math.max(turn.getAmountToContinue() * 4, turn.getPotValue() / 4);
@@ -264,7 +264,7 @@ public final class SafeBot extends Player {
 	/**
 	 * @return true if hand equal to KQ, KJ, KT, QJ, QT, JT, false otherwise
 	 */
-	private boolean isFaceCards() {
+	protected boolean isFaceCards() {
 		return handHoldem.getHand().getMax().getRank().compareTo(Rank.TEN) > 0 &&
 				handHoldem.getHand().getMin().getRank().compareTo(Rank.NINE) > 0;
 	}
@@ -274,7 +274,7 @@ public final class SafeBot extends Player {
 	 *
 	 * @return true if the hand is suited Connector and min higher than 3, false otherwise
 	 */
-	private boolean isSuitedConnectors() {
+	protected boolean isSuitedConnectors() {
 		return handHoldem.getHand().isSuited() && handHoldem.getHand().isConnector()
 				&& handHoldem.getHand().getMax().getRank().compareTo(Rank.THREE) > 0;
 	}
