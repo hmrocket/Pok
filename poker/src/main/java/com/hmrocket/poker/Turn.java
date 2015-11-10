@@ -306,4 +306,8 @@ public class Turn {
 	protected void addMoneyOnTable(long money) {
 		moneyOnTable += money;
 	}
+
+	public int getRoundPlayerRaised() {
+		return roundPlayerRaised;
+	}
 }
