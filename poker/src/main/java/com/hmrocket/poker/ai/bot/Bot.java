@@ -54,7 +54,39 @@ public class Bot extends Player {
 		// calculate hand odd using handHoldemStrategy
 		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldemStrategy);
 		// if we do have a strategy our handStrength will be different ==> we will act differently
-		makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
+		if (turn.isRaisedBefore() || turn.isRaisedAfter())
+			makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
+		else makeMove(turn, handStrength);
+	}
+
+
+	/**
+	 * call this method when the minBetToAdd is 0 (not raise, amount to continue is 0)
+	 *
+	 * @param turn
+	 * @param handStrength
+	 */
+	protected void makeMove(Turn turn, HandOdds handStrength) {
+		float strength = handStrength.getHandStrength();
+
+		int per = random.nextInt(100);
+		if (strength < 0.1) { // weak hand
+			if (per < 95)
+				check();
+			else botRaise(turn, BetType.BLUFF);
+		} else if (strength < 0.4) { // not bad
+			if (per < 80)
+				check();
+			else if (per < 85)
+				check();
+			else botRaise(turn, BetType.STEAL);
+		} else if (strength < 0.6) {
+			if (per < 60) check();
+			else botRaise(turn, BetType.FOR_VALUE);
+		} else {
+			if (per < 30) check();
+			else botRaise(turn, BetType.BEST_HAND);
+		}
 	}
 
 	/**
@@ -81,16 +113,16 @@ public class Bot extends Player {
 				botFold(turn);
 			else botRaise(turn, BetType.BLUFF);
 		} else if (ror < 1.0) {
-			if (ror < 80)
+			if (per < 80)
 				botFold(turn);
-			else if (ror < 85)
+			else if (per < 85)
 				botCall(turn);
 			else botRaise(turn, BetType.BLUFF);
 		} else if (ror < 1.3) {
-			if (ror < 60) botCall(turn);
+			if (per < 60) botCall(turn);
 			else botRaise(turn, BetType.FOR_VALUE);
 		} else {
-			if (ror < 30) botCall(turn);
+			if (per < 30) botCall(turn);
 			else botRaise(turn, BetType.BEST_HAND);
 		}
 	}

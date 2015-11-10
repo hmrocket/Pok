@@ -35,8 +35,9 @@ public final class SafeBot extends Player {
 
 		// calculate hand odd, based on your hand
 		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldem);
-
-		makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
+		if (turn.isRaisedBefore() || turn.isRaisedAfter())
+			makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
+		else makeMove(turn, handStrength);
 	}
 
 	// Credit: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
@@ -194,7 +195,7 @@ public final class SafeBot extends Player {
 	 *
 	 * @param turn
 	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
-	 * @param minBetToAdd     cost of a contemplated call (min bet must be Added to continue)
+	 * @param minBetToAdd   cost of a contemplated call (min bet must be Added to continue)
 	 */
 	protected void makeMove(Turn turn, float winPercentage, long minBetToAdd) {
 		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, minBetToAdd);
@@ -212,16 +213,44 @@ public final class SafeBot extends Player {
 				fold();
 			else raise(calculateRaise(turn));
 		} else if (ror < 1.0) {
-			if (ror < 80)
+			if (per < 80)
 				fold();
-			else if (ror < 85)
+			else if (per < 85)
 				call(turn.getAmountToContinue());
 			else raise(calculateRaise(turn));
 		} else if (ror < 1.3) {
-			if (ror < 60) call(turn.getAmountToContinue());
+			if (per < 60) call(turn.getAmountToContinue());
 			else raise(calculateRaise(turn));
 		} else {
-			if (ror < 30) call(turn.getAmountToContinue());
+			if (per < 30) call(turn.getAmountToContinue());
+			else raise(calculateRaise(turn));
+		}
+	}
+
+	/**
+	 * call this method when the minBetToAdd is 0 (not raise, amount to continue is 0)
+	 * @param turn
+	 * @param handStrength
+	 */
+	protected void makeMove(Turn turn, HandOdds handStrength) {
+		float strength = handStrength.getHandStrength();
+
+		int per = random.nextInt(100);
+		if (strength < 0.1) { // weak hand
+			if (per < 95)
+				check();
+			else raise(calculateRaise(turn));
+		} else if (strength < 0.4) { // not bad
+			if (per < 80)
+				check();
+			else if (per < 85)
+				check();
+			else raise(calculateRaise(turn));
+		} else if (strength < 0.6) {
+			if (per < 60) check();
+			else raise(calculateRaise(turn));
+		} else {
+			if (per < 30) check();
 			else raise(calculateRaise(turn));
 		}
 	}
