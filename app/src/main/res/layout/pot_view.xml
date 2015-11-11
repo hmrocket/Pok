@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/pot_bck"
+	android:orientation="horizontal"
+	android:layout_gravity="center"
+	tools:context=".view.PotView">
+
+	<com.hmrocket.magicpoker.view.ChipView
+		android:id="@+id/chipsView_Pot"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="start|center_vertical"
+		android:layout_marginLeft="2.0dip"
+		android:src="@mipmap/chip"
+		android:background="@drawable/chip_bkg"/>
+
+	<TextView
+		android:id="@+id/tx_PotAmount"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:layout_marginRight="14dp"
+		android:layout_marginLeft="14dp"
+		android:text="100"
+		android:textColor="@android:color/white"
+		android:textSize="13dp"
+		android:textStyle="bold"/>
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical|end"
+		android:layout_marginRight="14dp"
+		android:text="@string/currency"
+		android:textColor="@android:color/white"
+		android:textSize="13dp"
+		android:textStyle="bold"/>
+</FrameLayout>
