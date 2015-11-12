@@ -95,7 +95,8 @@ public final class HandScoreCalculator {
 			handScore.setKickers(searchKickers(hand, handScore));
 			return handScore;
 		} else if (suit != null)
-			return new HandScore(HandType.FLUSH, getFlushRank(suit, cards));
+			// get Flush Rank and Kickers
+			return getFlushHandScore(suit, hand, cards);
 		else if (rank != null)
 			return new HandScore(HandType.STRAIGHT, rank);
 		else { // TWO PAIR or ONE_PAIR or HIGH_CARD
@@ -181,18 +182,27 @@ public final class HandScoreCalculator {
     }
 
 	/**
-	 * return Rank of the Flush
-	 *
+	 * Get the Flush Rank and kickers
+	 * It turns out there's kickers in Flush:
+	 * Credit: http://poker.stackexchange.com/questions/1501/does-the-top-5-cards-rule-apply-to-a-flush/
 	 * @param flushSuit
-	 * @param cards Array of cards ordered descending
-	 * @return return the first found card's rank that much flushSuit
+	 * @param hand
+	 * @param ordCards
+	 * @return a HandScore specific for Flush HandType
 	 */
-	private static Rank getFlushRank(Suit flushSuit, Card... cards) {
+	private static HandScore getFlushHandScore(Suit flushSuit, Hand hand, Card... ordCards) {
 		if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
-		for (int i = 0; i < cards.length; i++) {
-			Card card = cards[i];
+		Rank flushRank = null;
+		int cardsCount = 0;
+
+		List<Card> kickers = new ArrayList<>(2);
+		for (Card card : ordCards) {
+			// save max flush (Represent the rank)
 			if (card.getSuit() == flushSuit) {
-				return card.getRank();
+				if (flushRank == null) flushRank = card.getRank();
+				else if (hand.contains(card)) kickers.add(card);
+				cardsCount++;
+				if (cardsCount == 5) return new HandScore(HandType.FLUSH, flushRank, kickers);
 			}
 		}
 		return null;

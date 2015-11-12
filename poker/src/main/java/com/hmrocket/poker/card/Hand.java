@@ -151,4 +151,11 @@ public class Hand {
 	public boolean isConnector() {
 		return getMax().getRank().ordinal() - getMin().getRank().ordinal() == 1;
 	}
+
+	/**
+	 * @return true if one of hand's cards is equal to card, false otherwise
+	 */
+	public boolean contains(Card card) {
+		return card1.equals(card) || card2.equals(card);
+	}
 }
