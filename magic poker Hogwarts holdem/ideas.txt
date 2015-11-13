@@ -1,4 +1,4 @@
-﻿1) You can cast not only on people but also the deck (liek altering the next comming card)
+1) You can cast not only on people but also the deck (liek altering the next comming card)
 2) You can cast magic on other player but for you drink potions (potion to protect you from spells 3 tours)
 3) Create a pre-selected or create mutli player game from the begging
 
@@ -14,6 +14,7 @@
 
 Description2): just play against your friends image
 
+3) Poker offline - texas holdem
 
 ----> cheats (12 per level)
 - Note: Play music or have some effect 
@@ -48,6 +49,10 @@ Description2): just play against your friends image
 ----->Poker Friends (Future Idea)
 	- Train your doppelganger (boast his AI)
 	- Let your doppelganger play against your friends and make money for you while you're away.
+	- join your doppelganger online
+
+———>3) 
+	- (Pro) Create a screen to personalize table and deck
 
 ---->Marketing
 1) Add all Linkedin pending invitations
