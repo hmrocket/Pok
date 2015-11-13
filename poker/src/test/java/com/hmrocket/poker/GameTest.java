@@ -81,6 +81,7 @@ public class GameTest extends TestCase implements Game.GameEvent {
 		}
 		if (DEBUG) System.out.println();
 		// if number of winner is 1, the amount should be the same
+		// there's some cases where money is divided amount two player or more but there's ony one winner
 		if (winnersCount == 1) {
 			assertEquals(this.moneyTotal, moneyTotal); // XXX FAILED: money got increased 1
 		} else {

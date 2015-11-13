@@ -71,7 +71,7 @@ public class HandScoreCalculatorTest extends TestCase {
 		// Flush
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.CLUBS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
-		handScore = new HandScore(HandType.FLUSH, Rank.JACK);
+		handScore = new HandScore(HandType.FLUSH, Rank.JACK, Arrays.asList(hand.getCard2()));
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop));
 
 		// Royal flush
@@ -287,7 +287,7 @@ public class HandScoreCalculatorTest extends TestCase {
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.CLUBS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
 		communityCards.setFlop(flop);
-		handScore = new HandScore(HandType.FLUSH, Rank.JACK);
+		handScore = new HandScore(HandType.FLUSH, Rank.JACK, Arrays.asList(hand.getCard2()));
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Royal flush
@@ -349,7 +349,7 @@ public class HandScoreCalculatorTest extends TestCase {
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		communityCards = new CommunityCards(flop, turn, null);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN);
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN, Arrays.asList(hand.getCard2()));
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Royal flush
@@ -420,7 +420,7 @@ public class HandScoreCalculatorTest extends TestCase {
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN);
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN, Arrays.asList(hand.getCard2()));
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Royal flush
