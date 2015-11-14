@@ -42,7 +42,7 @@ public class HandOddsCalculatorTest extends TestCase {
 		Flop flop = new Flop(new Card(Rank.KING, Suit.DIAMONDS), new Card(Rank.QUEEN, Suit.DIAMONDS), new Card(Rank.JACK, Suit.DIAMONDS));
 		CommunityCards communityCards = new CommunityCards(flop);
 		Random r = new Random();
-		HandOdds handOdds = handOddsCalculator.getHandOdds(r.nextInt(8) + 2, hand, communityCards);
+		HandOdds handOdds = handOddsCalculator.getHandOdds(r.nextInt(8) + 2, new HandHoldem(hand, communityCards));
 		assertEquals(1f, handOdds.getHandStrength());
 	}
 

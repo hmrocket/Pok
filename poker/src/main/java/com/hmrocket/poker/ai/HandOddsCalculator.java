@@ -34,29 +34,24 @@ public final class HandOddsCalculator {
 	 */
 	public HandOdds getHandOdds(int playersCount, HandHoldem handHoldem) {
 		// if the hand is null just return HandOdds init to 0 (means 0 winning chances)
-		if (handHoldem == null)
+		if (handHoldem == null || handHoldem.getHand() == null)
 			return new HandOdds(1);
 		else
-			return getHandOdds(playersCount, handHoldem.getHand(), handHoldem.getCommunityCards());
-	}
-
-	/**
-	 * @param playersCount total players (including you)
-	 * @param hand @NotNull
-	 * @param communityCards
-	 * @return the odds of your hand wins against <code>playersCount - 1</code> others Hands
-	 */
-	public HandOdds getHandOdds(int playersCount, Hand hand, CommunityCards communityCards) {
-		return calculateHandOdds(playersCount, new HandHoldem(hand, communityCards));
+			return calculateHandOdds(playersCount, handHoldem);
 	}
 
 	/**
 	 *
 	 * @param playersCount number of players Playing (you included)
-	 * @param handHoldem your hand
+	 * @param handHoldemPlayer your hand
 	 * @return the odds your hand will win against the <code>playersCount - 1</code> other players Hand
 	 */
-	private HandOdds calculateHandOdds(int playersCount, HandHoldem handHoldem) {
+	private HandOdds calculateHandOdds(int playersCount, final HandHoldem handHoldemPlayer) {
+		// all players point to the same CommunityCard
+		// avoid messing with the real CommunityCard create new one
+		CommunityCards cc = new CommunityCards(handHoldemPlayer.getFlop(), handHoldemPlayer.getTurn(), handHoldemPlayer.getRiver());
+		HandHoldem handHoldem = new HandHoldem(handHoldemPlayer.getHand(), cc);
+
 		handOdds.reset();
 		// new deck (full card available
 		deck.reset();
@@ -92,6 +87,7 @@ public final class HandOddsCalculator {
 				handHoldemList.add(handHoldemOppent);
 			}
 			// deal Flop if flop wasn't dealt
+			// FIXME NullPointer ?!
 			if (handHoldem.getCommunityCards().getFlop() == null) {
 				handHoldem.getCommunityCards().setFlop(deck.dealFlop());
 			}

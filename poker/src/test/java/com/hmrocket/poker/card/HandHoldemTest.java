@@ -198,6 +198,7 @@ public class HandHoldemTest extends TestCase {
 		communityCards.setTurn(deck.drawCard());
 		assertTrue(this.handHoldem.compareTo(handHoldem) == 0);
 		communityCards.setTurn(deck.drawCard());
+		// XXX Fail 1
 		assertTrue(this.handHoldem.compareTo(handHoldem) == 0);
 
 
