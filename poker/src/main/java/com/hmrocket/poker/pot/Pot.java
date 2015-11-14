@@ -32,6 +32,12 @@ public class Pot {
 		setup(playersInTheGame);
 	}
 
+	public void setup(List<Player> playersInTheGame) {
+		reset();
+		// we will add all players only once
+		mainPot.init(playersInTheGame);
+	}
+
 	/**
 	 * empty the Pot
 	 */
@@ -39,12 +45,6 @@ public class Pot {
 		mainPot.reset();
 		sidePots.clear();
 		sidePotsTotalValue = 0;
-	}
-
-	public void setup(List<Player> playersInTheGame) {
-		reset();
-		// we will add all players only once
-		mainPot.init(playersInTheGame);
 	}
 
 	/**
@@ -137,7 +137,9 @@ public class Pot {
 	private void distribute(Set<Player> winners, long potValue) {
         if (potValue <= 0)
             return; // Nothing to distribute
-        // distribute level pot To Winners
+		// remove potValue from the MainPot (it's okay if it become negative value getValue() = main + side will give a positive correct value)
+		mainPot.value -= potValue;
+		// distribute level pot To Winners
 		long levelWinValue = potValue / winners.size(); // Every Winner will have this amount of money
 		for (Player winner : winners) {
 			winner.addCash(levelWinValue);
