@@ -29,18 +29,36 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	public HandHoldem(Card card1, Card card2, CommunityCards communityCards) {
 		this.hand = new Hand(card1, card2);
+		setCommunityCards(communityCards);
+	}
+
+	public CommunityCards getCommunityCards() {
+		return communityCardsWeakReference.get();
+	}
+
+	/**
+	 * Set a softReference to a new CommunityCards object,
+	 * And delete this from Observers list of the old object
+	 * Reset the HandScore
+	 *
+	 * @param communityCards
+	 */
+	public void setCommunityCards(CommunityCards communityCards) {
+		// we Don't want to update this object if the old object changed
+		if (communityCardsWeakReference != null && getCommunityCards() != null)
+			getCommunityCards().deleteObserver(this);
+
 		if (communityCards != null) {
 			communityCards.addObserver(this);
 			this.communityCardsWeakReference = new WeakReference<CommunityCards>(communityCards);
 		} else communityCardsWeakReference = new WeakReference<CommunityCards>(null);
+		// Community card changed (update) reset the HandScore
+		handScore = null;
 	}
 
 	public HandHoldem(Hand hand, CommunityCards communityCards) {
 		this.hand = hand;
-		if (communityCards != null) {
-			communityCards.addObserver(this);
-			this.communityCardsWeakReference = new WeakReference<CommunityCards>(communityCards);
-		} else communityCardsWeakReference = new WeakReference<CommunityCards>(null);
+		setCommunityCards(communityCards);
 	}
 
 	public Hand getHand() {
@@ -60,14 +78,6 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 	public Card getRiver() { // No setter cause this is a reference
 		CommunityCards communityCards = communityCardsWeakReference.get();
 		return communityCards == null ? null : this.communityCardsWeakReference.get().getRiver();
-	}
-
-	public CommunityCards getCommunityCards() {
-		return communityCardsWeakReference.get();
-	}
-
-	public void setCommunityCards(CommunityCards communityCards) {
-		this.communityCardsWeakReference = new WeakReference<>(communityCards);
 	}
 
 	public int winPercentage() throws OperationNotSupportedException {

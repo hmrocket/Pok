@@ -2,6 +2,8 @@ package com.hmrocket.poker.card;
 
 import junit.framework.TestCase;
 
+import java.lang.reflect.Field;
+
 import javax.naming.OperationNotSupportedException;
 
 /**
@@ -66,13 +68,57 @@ public class HandHoldemTest extends TestCase {
 		assertNull(handHoldem.getRiver());
 	}
 
-	public void testWinPercentage() throws Exception {
-		try {
-			handHoldem.winPercentage();
-			assertTrue("winPercentage() didn't throw an OperationNotSupportedException", false);
-		} catch (Exception e) {
-			assertTrue(e instanceof OperationNotSupportedException);
-		}
+	public void testGetCommunityCard() throws Exception {
+		// assert the same object
+		// Object equal (community equal wasn't overridden
+		assertEquals(communityCards, handHoldem.getCommunityCards());
+
+		// test null community card
+		handHoldem.setCommunityCards(null);
+		assertNull(handHoldem.getCommunityCards());
+
+	}
+
+	/***
+	 * 1- test setCommunityCards for null object
+	 * 2- test setCommunityCards point to correct new object
+	 * 3- test that the old CommunityCard no longer update the observer handHoldem
+	 *
+	 * @throws Exception
+	 */
+	public void testSetCommunityCards() throws Exception {
+		// test when CommunityCard is set to null everything is working
+		handHoldem.setCommunityCards(null);
+		assertEquals(HandScoreCalculator.getHandScore(hand), handHoldem.getHandScore());
+
+		/// we will test if testSetCommunityCards work properly by
+		// setting a new CommunityCard object
+		communityCards = new CommunityCards();
+		handHoldem.setCommunityCards(communityCards);
+
+		// testGetHandScore work properly or not
+		// by checking that HandHoldem handscore was updated for testGetHandScore (working correctly without errors)
+		testGetHandScore();
+
+		// final test: (3)
+		communityCards = new CommunityCards(new Flop(new Card(Rank.ACE, Suit.SPADES), new Card(Rank.ACE, Suit.CLUBS),
+				new Card(Rank.KING, Suit.SPADES)));
+		handHoldem = new HandHoldem(new Hand(new Card(Rank.ACE, Suit.DIAMONDS), new Card(Rank.ACE, Suit.HEARTS)), communityCards);
+		// handScore is no longer null
+		handHoldem.getHandScore();
+		CommunityCards cc = new CommunityCards(new Flop(new Card(Rank.TEN, Suit.SPADES), new Card(Rank.TEN, Suit.CLUBS),
+				new Card(Rank.KING, Suit.SPADES)));
+		handHoldem.setCommunityCards(cc);
+		// use reflexion to assure that the handscore is changed to null after set
+		Field field = HandHoldem.class.getDeclaredField("handScore");
+		field.setAccessible(true);
+		assertNull(field.get(handHoldem));
+		// make sure the handScore is two pair and not Four of Kind
+		HandScore handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE);
+		assertEquals(handScore, handHoldem.getHandScore());
+		// change Old community card
+		communityCards.setTurn(new Card(Rank.FOUR, Suit.DIAMONDS));
+		assertNotNull(field.get(handHoldem));
 	}
 
 	public void testGetHandScore() throws Exception {
@@ -125,6 +171,15 @@ public class HandHoldemTest extends TestCase {
 		// assertNull(handHoldem.getFlop());
 
 
+	}
+
+	public void testWinPercentage() throws Exception {
+		try {
+			handHoldem.winPercentage();
+			assertTrue("winPercentage() didn't throw an OperationNotSupportedException", false);
+		} catch (Exception e) {
+			assertTrue(e instanceof OperationNotSupportedException);
+		}
 	}
 
 	public void testCompareTo() throws Exception {
