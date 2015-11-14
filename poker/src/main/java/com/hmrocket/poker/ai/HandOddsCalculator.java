@@ -87,7 +87,6 @@ public final class HandOddsCalculator {
 				handHoldemList.add(handHoldemOppent);
 			}
 			// deal Flop if flop wasn't dealt
-			// FIXME NullPointer ?!
 			if (handHoldem.getCommunityCards().getFlop() == null) {
 				handHoldem.getCommunityCards().setFlop(deck.dealFlop());
 			}
@@ -104,6 +103,14 @@ public final class HandOddsCalculator {
 				handOdds.wins(handHoldem.getHandScore().getHandType());
 			}
 			deck.resetIgnoreBurns();
+		}
+
+		// you need to keep using CommunityCard cc or it will be Cabbage Collector in consequence
+		// SoftReference point to null (raison why you have null pointer)
+		if (cc == null) {
+			if (PokerTools.DEBUG) {
+				System.out.println();
+			}
 		}
 		return handOdds;
 	}
