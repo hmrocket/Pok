@@ -102,7 +102,7 @@ public class GameTest extends TestCase implements Game.GameEvent {
 			// if this.moneyTotal and moneyTotal aren't equal because of possible loss, and not because of bug in Pot class or something else
 			// check if the diff(loss) > 0 and loss < winnersCount
 			assertTrue(lossBecauseOfFraction >= 0);
-			assertTrue(lossBecauseOfFraction < winnersCount);
+			assertTrue(lossBecauseOfFraction <= lostBecauseOfFractionLimit);
 		}
 
 
@@ -120,7 +120,6 @@ public class GameTest extends TestCase implements Game.GameEvent {
 
 	@Override
 	public void gameWinners(boolean last, Set<Player> winners) {
-		// TODO remove winners count and use lostBecauseOfFractionLimit
 		// someTime there is lost of fraction when winners are more than one
 		// we will track the limit of dollar might be lost be cause of the fraction
 		if (winners.size() > 1)
@@ -128,6 +127,13 @@ public class GameTest extends TestCase implements Game.GameEvent {
 
 		winnersCount = Math.max(winnersCount, winners.size());
 		lastCalledOnce |= last;
-		// TODO assert winner won the same amount
+		// assert winner won the same amount
+		Player winner0 = winners.iterator().next();
+		long cashWon = winner0.getCash() - playerCashBefore.get(winner0).longValue();
+		for (Player winner : winners) {
+			assertEquals(winner + " didn't get the same cash like the others",
+					cashWon, winner.getCash() - playerCashBefore.get(winner).longValue());
+		}
+
 	}
 }
