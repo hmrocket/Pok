@@ -26,6 +26,16 @@ public class CommunityCards extends Observable {
         this.river = river;
     }
 
+	/**
+	 * Create a new object from a CommunityCards
+	 * @param communityCards not null CommunityCards
+	 */
+    public CommunityCards(CommunityCards communityCards) {
+        this.flop = communityCards.flop;
+        this.turn = communityCards.turn;
+		this.river = communityCards.river;
+    }
+
     public Flop getFlop() {
         return flop;
     }
@@ -35,6 +45,11 @@ public class CommunityCards extends Observable {
         setChangedAndNotify();
     }
 
+    private void setChangedAndNotify() {
+        setChanged();
+        notifyObservers();
+    }
+
     public Card getTurn() {
         return turn;
     }
@@ -42,11 +57,6 @@ public class CommunityCards extends Observable {
     public void setTurn(Card turn) {
         this.turn = turn;
         setChangedAndNotify();
-    }
-
-    private void setChangedAndNotify() {
-        setChanged();
-        notifyObservers();
     }
 
     public Card getRiver() {
