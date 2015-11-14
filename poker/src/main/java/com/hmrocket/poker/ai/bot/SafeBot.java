@@ -18,8 +18,8 @@ public class SafeBot extends Player {
 
 	private static final PlayingStyle playingStyle = new PlayingStyle(0, 1);
 	protected final HandOddsCalculator handOddsCalculator;
-	private final Random random = new Random();
-	private int level = 1;
+	protected final Random random = new Random();
+	protected int level = 1;
 
 	public SafeBot(String name, long bankBalance, long cash) {
 		super(name, bankBalance, cash);
@@ -40,7 +40,9 @@ public class SafeBot extends Player {
 		else makeMove(turn, handStrength);
 	}
 
-	// Credit: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
+	// Not used: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials // SUCKS
+	// Credit: http://www.holdemsecrets.com/preflop.htm
+	// Credit: http://www.rakebackpros.net/texas-holdem-starting-hands/// Credit: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
 	void preflopStrategy(Turn turn) {
 		// here where PlayingStyle.tight will have an effect
 		// but SafeBot play very tight
