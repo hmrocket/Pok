@@ -49,12 +49,12 @@ public class HandScore implements Comparable<HandScore> {
         return handType;
     }
 
-    public Rank getRank() {
-        return rank;
-    }
-
     public void setHandType(HandType handType) {
         this.handType = handType;
+    }
+
+    public Rank getRank() {
+        return rank;
     }
 
     public void setRank(Rank rank) {
@@ -70,6 +70,14 @@ public class HandScore implements Comparable<HandScore> {
     }
 
     @Override
+    public int hashCode() {
+        int result = handType.hashCode();
+        result = 31 * result + rank.hashCode();
+        result = 31 * result + (kickers != null ? kickers.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -79,16 +87,17 @@ public class HandScore implements Comparable<HandScore> {
         if (handType != handScore.handType) return false;
         if (rank != handScore.rank) return false;
         // Deep equal of the Card not CompareTo
-        return !(kickers != null ? !Arrays.deepEquals(kickers.toArray(), handScore.kickers.toArray()) : handScore.kickers != null);
+        return !(kickers != null ? !Arrays.deepEquals(kickers.toArray(), handScore.kickers == null ? null : handScore.kickers.toArray()) : handScore.kickers != null);
 
     }
 
     @Override
-    public int hashCode() {
-        int result = handType.hashCode();
-        result = 31 * result + rank.hashCode();
-        result = 31 * result + (kickers != null ? kickers.hashCode() : 0);
-        return result;
+    public String toString() {
+        return "HandScore{" +
+                "handType=" + handType +
+                ", rank=" + rank +
+                ", kickers=" + (kickers == null ? "" : Arrays.deepToString(kickers.toArray())) +
+                '}';
     }
 
     /**
@@ -109,10 +118,6 @@ public class HandScore implements Comparable<HandScore> {
         }
     }
 
-    private boolean isEmpty(List<Card> kicks) {
-        return kicks == null || kicks.isEmpty();
-    }
-
     private int compareKickers(HandScore handScore) {
         if (isEmpty(kickers) && isEmpty(handScore.kickers)) //both kickers empty
             return 0; // Same score
@@ -129,12 +134,7 @@ public class HandScore implements Comparable<HandScore> {
         return 0;
     }
 
-    @Override
-    public String toString() {
-        return "HandScore{" +
-                "handType=" + handType +
-                ", rank=" + rank +
-                ", kickers=" + (kickers == null ? "" : Arrays.deepToString(kickers.toArray())) +
-                '}';
+    private boolean isEmpty(List<Card> kicks) {
+        return kicks == null || kicks.isEmpty();
     }
 }

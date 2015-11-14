@@ -420,8 +420,12 @@ public class HandScoreCalculatorTest extends TestCase {
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN, Arrays.asList(hand.getCard2()));
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN); // No kickers cause Ten is the rank of the flush (not a kicker)
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
+		communityCards.setRiver(new Card(Rank.ACE, Suit.CLUBS));
+		handScore = new HandScore(HandType.FLUSH, Rank.ACE, Arrays.asList(hand.getCard2())); // this case Ten is a kicker it belong to the flush
+		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
+
 
 		// Royal flush
 		hand = new Hand(new Card(Rank.JACK, Suit.SPADES), new Card(Rank.TEN, Suit.CLUBS));
@@ -435,6 +439,36 @@ public class HandScoreCalculatorTest extends TestCase {
 
 	}
 
+	/**
+	 * 1- test flush with no kicker cause the high rank of the flush is in the hand
+	 * 2- test flush with no kicker cause no card in the hand belong to the best hand
+	 * 3- nomal case suited hand
+	 *
+	 * @throws Exception
+	 */
+	public void testFlushScore() throws Exception {
+		// Flush - 1
+		Hand hand = new Hand(new Card(Rank.JACK, Suit.DIAMONDS), new Card(Rank.TEN, Suit.CLUBS));
+		Flop flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
+		Card turn = new Card(Rank.NINE, Suit.CLUBS);
+		Card river = new Card(Rank.SEVEN, Suit.SPADES);
+		CommunityCards communityCards = new CommunityCards(flop, turn, river);
+		HandScore handScore = new HandScore(HandType.FLUSH, Rank.TEN); // No kickers cause Ten is the rank of the flush (not a kicker)
+		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
+		// Flush - 3
+		communityCards.setRiver(new Card(Rank.ACE, Suit.CLUBS));
+		handScore = new HandScore(HandType.FLUSH, Rank.ACE, Arrays.asList(hand.getCard2())); // this case Ten is a kicker it belong to the flush
+		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
+		// Flush - 2
+		hand = new Hand(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.THREE, Suit.CLUBS));
+		flop = new Flop(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
+		turn = new Card(Rank.NINE, Suit.CLUBS);
+		river = new Card(Rank.SEVEN, Suit.CLUBS);
+		communityCards = new CommunityCards(flop, turn, river);
+		handScore = new HandScore(HandType.FLUSH, Rank.ACE); // No kickers cause (2)
+		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
+
+	}
 
 	public void testRandom() throws Exception {
 		// using a lib to test my library
