@@ -349,7 +349,7 @@ public class HandScoreCalculatorTest extends TestCase {
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		communityCards = new CommunityCards(flop, turn, null);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN, Arrays.asList(hand.getCard2()));
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Royal flush

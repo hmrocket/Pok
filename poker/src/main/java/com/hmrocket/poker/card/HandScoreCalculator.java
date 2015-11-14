@@ -15,31 +15,11 @@ public final class HandScoreCalculator {
     private HandScoreCalculator() {
     }
 
-    public static HandScore getHandScore(Hand hand) {
-        if (hand.isPair()) {
-			return new HandScore(HandType.ONE_PAIR, hand.getCard1().getRank());
+	public static HandScore getHandScore(Hand hand, CommunityCards communityCards) {
+		if (communityCards != null) {
+			return getHandScore(hand, communityCards.getFlop(), communityCards.getTurn(), communityCards.getRiver());
 		} else {
-			ArrayList<Card> kicker = new ArrayList<>();
-			kicker.add(hand.getMin());
-			return new HandScore(HandType.HIGH_CARD, hand.getMax().getRank(), kicker);
-		}
-	}
-
-
-    public static HandScore getHandScore(Hand hand, Flop flop) {
-		if (flop == null) {
 			return getHandScore(hand);
-		} else {
-			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3());
-		}
-
-	}
-
-	public static HandScore getHandScore(Hand hand, Flop flop, Card turn) {
-		if (turn != null) {
-			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3(), turn);
-		} else {
-			return HandScoreCalculator.getHandScore(hand, flop);
 		}
 	}
 
@@ -51,38 +31,40 @@ public final class HandScoreCalculator {
 		}
 	}
 
-	public static HandScore getHandScore(Hand hand, CommunityCards communityCards) {
-		if (communityCards != null) {
-			return getHandScore(hand, communityCards.getFlop(), communityCards.getTurn(), communityCards.getRiver());
+    public static HandScore getHandScore(Hand hand) {
+        if (hand.isPair()) {
+			return new HandScore(HandType.ONE_PAIR, hand.getCard1().getRank());
 		} else {
-			return getHandScore(hand);
+			ArrayList<Card> kicker = new ArrayList<>();
+			kicker.add(hand.getMin());
+			return new HandScore(HandType.HIGH_CARD, hand.getMax().getRank(), kicker);
 		}
 	}
 
-    /**
-     * call this only if there more than 2 cards
-     *
-     * @param hand        hand (used to calculate kickers)
-     * @param sharedCards Community Cards (window cards)
-     * @return
-     */
-    private static HandScore calculateHandScore(Hand hand, Card... sharedCards) {
-        //cards are null, go through different process
-        if (sharedCards == null || sharedCards.length == 0)
-            return getHandScore(hand);
-        // all cards
-        Card[] cards = new Card[2 + sharedCards.length];
-        System.arraycopy(hand.getCards(), 0, cards, 0, 2);
-        System.arraycopy(sharedCards, 0, cards, 2, sharedCards.length);
+	/**
+	 * call this only if there more than 2 cards
+	 *
+	 * @param hand        hand (used to calculate kickers)
+	 * @param sharedCards Community Cards (window cards)
+	 * @return
+	 */
+	private static HandScore calculateHandScore(Hand hand, Card... sharedCards) {
+		//cards are null, go through different process
+		if (sharedCards == null || sharedCards.length == 0)
+			return getHandScore(hand);
+		// all cards
+		Card[] cards = new Card[2 + sharedCards.length];
+		System.arraycopy(hand.getCards(), 0, cards, 0, 2);
+		System.arraycopy(sharedCards, 0, cards, 2, sharedCards.length);
 
 		// Sort Card only once (Descending sort)
 		Arrays.sort(cards, Collections.reverseOrder());
 
-        // Check Flush
-        Rank rank;
-        Suit suit;
-        suit = checkFlush(cards);
-        rank = checkStraight(cards);
+		// Check Flush
+		Rank rank;
+		Suit suit;
+		suit = checkFlush(cards);
+		rank = checkStraight(cards);
 		HandScore handScore;
 		if (suit != null && rank != null) {
 			// rank.equals(Rank.ACE) ? HandType.ROYAL_FLUSH : HandType.STRAIGHT_FLUSH
@@ -103,6 +85,80 @@ public final class HandScoreCalculator {
 			handScore.setKickers(searchKickers(hand, handScore));
 			return handScore;
 		}
+	}
+
+	public static HandScore getHandScore(Hand hand, Flop flop, Card turn) {
+		if (turn != null) {
+			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3(), turn);
+		} else {
+			return HandScoreCalculator.getHandScore(hand, flop);
+		}
+	}
+
+	/**
+	 * @param cards
+	 * @return {@link Suit} of the flush, null if no flush can be constructed from <code>cards</code>cards
+	 */
+	private static Suit checkFlush(Card... cards) {
+		if (cards == null || cards.length < 5) return null;
+		int hearts = 0, clubs = 0, diamonds = 0, spades = 0;
+		for (Card card : cards) {
+			switch (card.getSuit()) {
+				case CLUBS:
+					clubs++;
+					break;
+				case DIAMONDS:
+					diamonds++;
+					break;
+				case HEARTS:
+					hearts++;
+					break;
+				case SPADES:
+					spades++;
+					break;
+			}
+		}
+		if (clubs > 4) return Suit.CLUBS;
+		else if (hearts > 4) return Suit.HEARTS;
+		else if (diamonds > 4) return Suit.DIAMONDS;
+		else if (spades > 4) return Suit.SPADES;
+		else return null;
+	}
+
+	/**
+	 * Search if there is more than 5 consecutive cards (straight)
+	 *
+	 * @param cards Descending order Card Array
+	 * @return the higher card rank of the straight, null otherwise
+	 */
+	private static Rank checkStraight(Card... cards) {
+		// Card implements comparable. Rank Comparative
+		for (int i = 0; i < cards.length; i++) {
+			Rank currentRank = cards[i].getRank();
+			int consecutiveCards = 1;
+			int j;
+			for (j = i + 1; j < cards.length; j++) {
+				Rank nextCardRank = cards[j].getRank();
+				if (currentRank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
+					consecutiveCards++;
+					currentRank = nextCardRank;
+				} else if (currentRank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break, (straight chain is broken)
+					break;
+				}
+			}
+			if (consecutiveCards < 4) {
+				// startNewHand the next loop from card j
+				i = j - 1;
+				continue;
+			} else {
+				boolean straightFrom5to1 = (consecutiveCards == 4
+						&& cards[i].getRank() == Rank.FIVE && cards[0].getRank() == Rank.ACE);
+				if (straightFrom5to1)
+					consecutiveCards++;
+				if (consecutiveCards > 4) return cards[i].getRank();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -150,99 +206,6 @@ public final class HandScoreCalculator {
 		}
 		return null;
 	}
-
-	/**
-	 * @param cards
-	 * @return {@link Suit} of the flush, null if no flush can be constructed from <code>cards</code>cards
-	 */
-    private static Suit checkFlush(Card... cards) {
-        if (cards == null || cards.length < 5) return null;
-        int hearts = 0, clubs = 0, diamonds = 0, spades = 0;
-        for (Card card : cards) {
-            switch (card.getSuit()) {
-                case CLUBS:
-                    clubs++;
-                    break;
-                case DIAMONDS:
-                    diamonds++;
-                    break;
-                case HEARTS:
-                    hearts++;
-                    break;
-                case SPADES:
-                    spades++;
-                    break;
-            }
-        }
-        if (clubs > 4) return Suit.CLUBS;
-        else if (hearts > 4) return Suit.HEARTS;
-        else if (diamonds > 4) return Suit.DIAMONDS;
-        else if (spades > 4) return Suit.SPADES;
-        else return null;
-    }
-
-	/**
-	 * Get the Flush Rank and kickers
-	 * It turns out there's kickers in Flush:
-	 * Credit: http://poker.stackexchange.com/questions/1501/does-the-top-5-cards-rule-apply-to-a-flush/
-	 * @param flushSuit
-	 * @param hand
-	 * @param ordCards
-	 * @return a HandScore specific for Flush HandType
-	 */
-	private static HandScore getFlushHandScore(Suit flushSuit, Hand hand, Card... ordCards) {
-		if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
-		Rank flushRank = null;
-		int cardsCount = 0;
-
-		List<Card> kickers = new ArrayList<>(2);
-		for (Card card : ordCards) {
-			// save max flush (Represent the rank)
-			if (card.getSuit() == flushSuit) {
-				if (flushRank == null) flushRank = card.getRank();
-				else if (hand.contains(card)) kickers.add(card);
-				cardsCount++;
-				if (cardsCount == 5) return new HandScore(HandType.FLUSH, flushRank, kickers);
-			}
-		}
-		return null;
-	}
-
-    /**
-     * Search if there is more than 5 consecutive cards (straight)
-     *
-	 * @param cards Descending order Card Array
-	 * @return the higher card rank of the straight, null otherwise
-     */
-    private static Rank checkStraight(Card... cards) {
-        // Card implements comparable. Rank Comparative
-		for (int i = 0; i < cards.length; i++) {
-			Rank currentRank = cards[i].getRank();
-			int consecutiveCards = 1;
-            int j;
-			for (j = i + 1; j < cards.length; j++) {
-				Rank nextCardRank = cards[j].getRank();
-				if (currentRank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
-					consecutiveCards++;
-					currentRank = nextCardRank;
-				} else if (currentRank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break, (straight chain is broken)
-					break;
-				}
-            }
-            if (consecutiveCards < 4) {
-                // startNewHand the next loop from card j
-				i = j - 1;
-				continue;
-            } else {
-                boolean straightFrom5to1 = (consecutiveCards == 4
-						&& cards[i].getRank() == Rank.FIVE && cards[0].getRank() == Rank.ACE);
-				if (straightFrom5to1)
-                    consecutiveCards++;
-				if (consecutiveCards > 4) return cards[i].getRank();
-			}
-        }
-        return null;
-    }
 
 	/**
 	 * Note cards must be ordered
@@ -326,6 +289,43 @@ public final class HandScoreCalculator {
 		}
 
 		return kickers.isEmpty() ? null : kickers;
+	}
+
+	/**
+	 * Get the Flush Rank and kickers
+	 * It turns out there's kickers in Flush:
+	 * Credit: http://poker.stackexchange.com/questions/1501/does-the-top-5-cards-rule-apply-to-a-flush/
+	 * @param flushSuit
+	 * @param hand
+	 * @param ordCards
+	 * @return a HandScore specific for Flush HandType
+	 */
+	private static HandScore getFlushHandScore(Suit flushSuit, Hand hand, Card... ordCards) {
+		if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
+		Rank flushRank = null;
+		int cardsCount = 0;
+
+		List<Card> kickers = new ArrayList<>(2);
+		for (Card card : ordCards) {
+			// save max flush (Represent the rank)
+			if (card.getSuit() == flushSuit) {
+				if (flushRank == null) flushRank = card.getRank();
+				else if (hand.contains(card)) kickers.add(card);
+				cardsCount++;
+				if (cardsCount == 5)
+					return new HandScore(HandType.FLUSH, flushRank, kickers.isEmpty() ? null : kickers);
+			}
+		}
+		return null;
+	}
+
+	public static HandScore getHandScore(Hand hand, Flop flop) {
+		if (flop == null) {
+			return getHandScore(hand);
+		} else {
+			return calculateHandScore(hand, flop.getCard1(), flop.getCard2(), flop.getCard3());
+		}
+
 	}
 
 }
