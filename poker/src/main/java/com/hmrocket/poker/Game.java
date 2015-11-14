@@ -118,7 +118,17 @@ public class Game implements PokerRound.RoundEvent {
 	}
 
 	private void showdown() {
-		// TODO implement method
+		// add the rest of the card
+		int missingCard = communityCards.getFlop() == null ? 5 :
+				(communityCards.getTurn() == null ? 2 : (communityCards.getRiver() == null ? 1 : 0));
+		switch (missingCard) {
+			case 5:
+				communityCards.setFlop(deck.dealFlop());
+			case 2:
+				communityCards.setTurn(deck.drawCard());
+			case 1:
+				communityCards.setRiver(deck.drawCard());
+		}
 		endGame();
 	}
 
