@@ -1,5 +1,6 @@
 package com.hmrocket.poker.pot;
 
+import com.hmrocket.poker.Game;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.PokerTools;
 
@@ -95,7 +96,7 @@ public class Pot {
 	 *
 	 * @return busted players if there's any
 	 */
-	public Set<Player> distributeToWinners() {
+	public Set<Player> distributeToWinners(Game.GameEvent... gameEvents) {
 		Set<Player> busted = new HashSet<Player>();
 		Set<Player> levelWinners;
 
@@ -106,7 +107,8 @@ public class Pot {
             sidePot.setValue(sidePot.getValue() + mainPot.value);
         } else {
             distribute(levelWinners, mainPot.value);
-        }
+			broadcastWin(levelWinners, sidePots.isEmpty(), gameEvents);
+		}
 
 		//As long there is SidePot, (money) on the table, Add cash to winners
 		while (sidePots.isEmpty() == false) {
@@ -115,6 +117,7 @@ public class Pot {
 			levelWinners.addAll(sidePot.getAllInPlayers());
 			levelWinners = PokerTools.getWinners(levelWinners);
 			distribute(levelWinners, sidePot.getValue());
+			broadcastWin(levelWinners, sidePots.isEmpty(), gameEvents);
 
 			// every SidePot - check if there is busted players
 			// (players went all among and lost)
@@ -135,8 +138,8 @@ public class Pot {
 	 * @param potValue Value of winning
 	 */
 	private void distribute(Set<Player> winners, long potValue) {
-        if (potValue <= 0)
-            return; // Nothing to distribute
+		if (potValue <= 0)
+			return; // Nothing to distribute
 		// remove potValue from the MainPot (it's okay if it become negative value getValue() = main + side will give a positive correct value)
 		mainPot.value -= potValue;
 		// distribute level pot To Winners
@@ -145,6 +148,18 @@ public class Pot {
 			winner.addCash(levelWinValue);
 		}
 
+	}
+
+	/**
+	 * BroadCast the event of the someone won either a SidePot or MainPot
+	 * @param levelWinners
+	 * @param gameEvents GameEvent listeners
+	 */
+	private void broadcastWin(Set<Player> levelWinners, boolean last, Game.GameEvent... gameEvents) {
+		if (gameEvents != null)
+			for (Game.GameEvent gameEvent : gameEvents) {
+				gameEvent.gameWinners(last, levelWinners);
+			}
 	}
 
 

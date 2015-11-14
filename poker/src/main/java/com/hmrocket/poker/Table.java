@@ -125,6 +125,11 @@ public class Table implements Game.GameEvent {
             removePlayer(iterator.next());
 	}
 
+	@Override
+	public void gameWinners(boolean last, Set<Player> winners) {
+		// TODO auto generated
+	}
+
 	/**
 	 * Remove a Player from the Table
 	 *

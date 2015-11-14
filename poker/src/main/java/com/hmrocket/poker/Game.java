@@ -95,7 +95,7 @@ public class Game implements PokerRound.RoundEvent {
 	 * when
 	 */
 	private void endGame() {
-		Set<Player> busted = pot.distributeToWinners();
+		Set<Player> busted = pot.distributeToWinners(gameEventListener);
 		if (gameEventListener != null) {
 			if (!busted.isEmpty()) gameEventListener.playerBusted(busted);
 			gameEventListener.gameEnded();
@@ -137,10 +137,18 @@ public class Game implements PokerRound.RoundEvent {
 
 	}
 
-	protected interface GameEvent { // Table is expecting a callback when game ends and when a player doesn't have enough money to bet
+	public interface GameEvent { // Table is expecting a callback when game ends and when a player doesn't have enough money to bet
 		public void gameEnded();
 
 		public void playerBusted(Set<Player> player);
+
+		/**
+		 * Called by Pot whenever there's some got a money from the pot
+		 *
+		 * @param last    if false winner are just LevelWinner, ther will be other callback of gameWinners, true if these winner(s) win the last pot
+		 * @param winners can be level winners (side pot winner) or game winners
+		 */
+		public void gameWinners(boolean last, Set<Player> winners);
 	}
 
 

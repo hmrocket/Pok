@@ -31,6 +31,9 @@ public class GameTest extends TestCase implements Game.GameEvent {
 	));
 
 	private boolean gameEndedCalled = false;
+	private int winnersCount = 0;
+	private int lostBecauseOfFractionLimit = 0;
+	private boolean lastCalledOnce = false;
 	private long moneyTotal = 0;
 	private Map<Player, Long> playerCashBefore;
 
@@ -55,11 +58,16 @@ public class GameTest extends TestCase implements Game.GameEvent {
 
 			Game game = new Game(this);
 			gameEndedCalled = false;
+			winnersCount = 0;
+			lostBecauseOfFractionLimit = 0;
+			lastCalledOnce = false;
 			for (Player player : PLAYERS) {
 				playerCashBefore.put(player, player.getCash());
 			}
 			game.startNewHand(2, PLAYERS, dealer);
 			assertTrue(gameEndedCalled);
+			assertTrue(winnersCount > 0); // assert there's winners weither SidePot winners or game winners
+			assertTrue(lastCalledOnce); // assert that there's always a final winners (Pot winners)
 			for (Player player : PLAYERS) {
 				assertTrue(player + " still in playing", player.getCash() != 0);
 			}
@@ -71,7 +79,6 @@ public class GameTest extends TestCase implements Game.GameEvent {
 		gameEndedCalled = true;
 		if (DEBUG) System.out.print("gameEnded() called: ");
 		long moneyTotal = 0;
-		int winnersCount = 0;
 		for (Player player : PLAYERS) {
 			moneyTotal += player.getCash();
 			long moneyDiff = player.getCash() - playerCashBefore.get(player);
@@ -83,7 +90,7 @@ public class GameTest extends TestCase implements Game.GameEvent {
 		// if number of winner is 1, the amount should be the same
 		// there's some cases where money is divided amount two player or more but there's ony one winner
 		if (winnersCount == 1) {
-			assertEquals(this.moneyTotal, moneyTotal); // XXX FAILED: money got increased 1
+			assertEquals(this.moneyTotal, moneyTotal); // XXX FAILED: money got decreased 1
 		} else {
 			// winners > 1 - Possible Loss of Fraction
 			// For example if 2 winner we might have a lost of 50c for one player and 50c to the other
@@ -109,5 +116,18 @@ public class GameTest extends TestCase implements Game.GameEvent {
 			assertEquals(player + "has enough cash to continue: ", 0, player.getCash());
 			PLAYERS.remove(player);
 		}
+	}
+
+	@Override
+	public void gameWinners(boolean last, Set<Player> winners) {
+		// TODO remove winners count and use lostBecauseOfFractionLimit
+		// someTime there is lost of fraction when winners are more than one
+		// we will track the limit of dollar might be lost be cause of the fraction
+		if (winners.size() > 1)
+			lostBecauseOfFractionLimit += winners.size() - 1;
+
+		winnersCount = Math.max(winnersCount, winners.size());
+		lastCalledOnce |= last;
+		// TODO assert winner won the same amount
 	}
 }
