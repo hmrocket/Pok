@@ -125,6 +125,7 @@ public class PokerTools {
 	}
 
 	public static float calculateRateOfReturn(float handStrength, float potOdds) {
+		if (DEBUG) System.out.println("ror: " + handStrength + " / " + potOdds);
 		return handStrength / potOdds;
 	}
 
@@ -140,7 +141,7 @@ public class PokerTools {
 		if (DEBUG && turn.getAmountToContinue() - player.getBet() < 0)
 			throw new IllegalArgumentException("added bet is negative bet:" + player.getBet() + " amountToCon:" + turn.getAmountToContinue());
 		// Caution turn.getMoneyOnTable return the other Players bet and not my bet that's why totalMoney = bet + moneyOnTable + potValue
-		return (turn.getAmountToContinue() - player.getBet()) / (turn.getAmountToContinue() + turn.getPotValue() + turn.getMoneyOnTable());
+		return (turn.getAmountToContinue() - player.getBet()) / (float) (turn.getAmountToContinue() + turn.getPotValue() + turn.getMoneyOnTable());
 	}
 
 }
