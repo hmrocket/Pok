@@ -30,20 +30,6 @@ public final class Util {
 	}
 
 	/**
-	 * Format a number with a max digit.
-	 *
-	 * @param amount   value to be formatted
-	 * @param maxDigit max digit allowed in
-	 * @return a formatted String of the value and possible digit with it depending on the amount
-	 */
-	private static String formatNumber(double amount, int maxDigit) {
-		NumberFormat numberformat = NumberFormat.getCurrencyInstance();
-		numberformat.setGroupingUsed(true);
-		numberformat.setMaximumFractionDigits(maxDigit);
-		return numberformat.format(amount);
-	}
-
-	/**
 	 * Format a number
 	 * Example: 100,000 or 1,000,000
 	 *
@@ -54,6 +40,20 @@ public final class Util {
 		NumberFormat numberformat = NumberFormat.getCurrencyInstance();
 		numberformat.setGroupingUsed(true);
 		numberformat.setMaximumFractionDigits(0);
+		return numberformat.format(amount);
+	}
+
+	/**
+	 * Format a number with a max digit.
+	 *
+	 * @param amount   value to be formatted
+	 * @param maxDigit max digit allowed in
+	 * @return a formatted String of the value and possible digit with it depending on the amount
+	 */
+	private static String formatNumber(double amount, int maxDigit) {
+		NumberFormat numberformat = NumberFormat.getCurrencyInstance();
+		numberformat.setGroupingUsed(true);
+		numberformat.setMaximumFractionDigits(maxDigit);
 		return numberformat.format(amount);
 	}
 
@@ -203,6 +203,6 @@ public final class Util {
 						return R.mipmap.s2;
 				}
 		}
-		return 0;
+		return R.mipmap.backcover;
 	}
 }
