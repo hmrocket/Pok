@@ -77,6 +77,10 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
         return cash;
     }
 
+    public void setCash(long cash) {
+        this.cash = cash;
+    }
+
     /**
      * @return the player bet
      */
