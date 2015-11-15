@@ -135,7 +135,7 @@ public class Turn {
 	private void resetRoundTurn() {
 		amountToContinue = 0;
 		roundPlayersAllIn = roundPlayerRaised = roundRally = 0;
-		potValue = moneyOnTable;
+		potValue += moneyOnTable;
 		moneyOnTable = 0;
 		humanState = null;
 		setPosition(0);
