@@ -87,14 +87,14 @@ public final class HandOddsCalculator {
 				handHoldemList.add(handHoldemOppent);
 			}
 			// deal Flop if flop wasn't dealt
-			if (handHoldem.getCommunityCards().getFlop() == null) {
+			if (handHoldemPlayer.getCommunityCards().getFlop() == null) {
 				handHoldem.getCommunityCards().setFlop(deck.dealFlop());
 			}
 			// dealt turn if wasn't dealt
-			if (handHoldem.getCommunityCards().getTurn() == null)
+			if (handHoldemPlayer.getCommunityCards().getTurn() == null)
 				handHoldem.getCommunityCards().setTurn(deck.drawCard());
 			// deal river if wasn't dealt
-			if (handHoldem.getCommunityCards().getRiver() == null)
+			if (handHoldemPlayer.getCommunityCards().getRiver() == null)
 				handHoldem.getCommunityCards().setRiver(deck.drawCard());
 
 			// Evaluate all hands, and see who has the best hands
