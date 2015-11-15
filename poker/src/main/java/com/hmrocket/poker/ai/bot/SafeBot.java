@@ -29,16 +29,96 @@ public class SafeBot extends Player {
 	@Override
 	public void play(Turn turn) {
 		if (turn.getPhase() == RoundPhase.PRE_FLOP) { // actually it's pre flop
-			preflopStrategy(turn);
+			//if (true || PokerTools.DEBUG) System.out.println("preflop strategy played: " + turn.toString());
+//			preflopStrategy(turn);
+			call(turn.getAmountToContinue());
 			return;
 		}
 
 		// calculate hand odd, based on your hand
 		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldem);
-		if (PokerTools.DEBUG) System.out.println(handStrength.toString());
-		if (turn.isRaisedBefore() || turn.isRaisedAfter())
+		if (turn.getAmountToContinue() - bet > 0) {
+			if (true || PokerTools.DEBUG) System.out.println(handStrength.toString());
+			if (true || PokerTools.DEBUG) System.out.println(turn.toString());
 			makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
-		else makeMove(turn, handStrength);
+		} else {
+			if (true || PokerTools.DEBUG) System.out.println("custom move of mhamed");
+			if (true || PokerTools.DEBUG) System.out.println(turn.toString());
+			makeMove(turn, handStrength);
+		}
+	}
+
+	/**
+	 * based on the hand percentage and the amount to continue (added bet = calculateRaiseStyle)
+	 *
+	 * @param turn
+	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
+	 * @param minBetToAdd   cost of a contemplated call (min bet must be Added to continue)
+	 */
+	protected void makeMove(Turn turn, float winPercentage, long minBetToAdd) {
+		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, this);
+		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
+//		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
+//		If RR <1.3 the 0% fold, 60% call, 40% raise
+//		Else (RR >= 1.3) 0% fold, 30% call, 70% raise
+//		If fold and amount to call is zero, then call.
+		// TODO implement more customizable move (ror thresholds should change depending on the player)
+		// ror take care in consideration the number of players left
+		// ror take in consideration the return value and the risk
+		int per = random.nextInt(100);
+		if (true || PokerTools.DEBUG)
+			System.out.println("MakeMove: ror=" + ror + ", random=" + per + " win=" + winPercentage);
+		if (ror < 0.8) {
+			if (per < 95)
+				fold();
+			else raise(calculateRaise(turn));
+		} else if (ror < 1.0) {
+			if (per < 80)
+				fold();
+			else if (per < 85)
+				call(turn.getAmountToContinue());
+			else raise(calculateRaise(turn));
+		} else if (ror < 1.3) {
+			if (per < 60) call(turn.getAmountToContinue());
+			else raise(calculateRaise(turn));
+		} else {
+			if (per < 30) call(turn.getAmountToContinue());
+			else raise(calculateRaise(turn));
+		}
+	}
+
+	/**
+	 * call this method when the minBetToAdd is 0 (not raise, amount to continue is 0)
+	 * @param turn
+	 * @param handStrength
+	 */
+	protected void makeMove(Turn turn, HandOdds handStrength) {
+		float strength = handStrength.getHandStrength();
+
+		int per = random.nextInt(100);
+		if (strength < 0.1) { // weak hand
+			if (per < 95)
+				check();
+			else raise(calculateRaise(turn));
+		} else if (strength < 0.4) { // not bad
+			if (per < 80)
+				check();
+			else if (per < 85)
+				check();
+			else raise(calculateRaise(turn));
+		} else if (strength < 0.6) {
+			if (per < 60) check();
+			else raise(calculateRaise(turn));
+		} else {
+			if (per < 30) check();
+			else raise(calculateRaise(turn));
+		}
+	}
+
+	protected long calculateRaise(Turn turn) {
+		// here where aggressive attribute will play role
+		// but SafeBot has aggression 0
+		return Math.max(turn.getAmountToContinue() * 3 + turn.getMinBet(), turn.getPotValue() / 4);
 	}
 
 	// Not used: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials // SUCKS
@@ -191,78 +271,6 @@ public class SafeBot extends Player {
 		} else {
 			fold();
 		}
-	}
-
-	/**
-	 * based on the hand percentage and the amount to continue (added bet = calculateRaiseStyle)
-	 *
-	 * @param turn
-	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
-	 * @param minBetToAdd   cost of a contemplated call (min bet must be Added to continue)
-	 */
-	protected void makeMove(Turn turn, float winPercentage, long minBetToAdd) {
-		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, this);
-		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
-//		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
-//		If RR <1.3 the 0% fold, 60% call, 40% raise
-//		Else (RR >= 1.3) 0% fold, 30% call, 70% raise
-//		If fold and amount to call is zero, then call.
-		// TODO implement more customizable move (ror thresholds should change depending on the player)
-		// ror take care in consideration the number of players left
-		// ror take in consideration the return value and the risk
-		int per = random.nextInt(100);
-		if (PokerTools.DEBUG) System.out.println("MakeMove3: ror=" + ror + ", random=" + random);
-		if (ror < 0.8) {
-			if (per < 95)
-				fold();
-			else raise(calculateRaise(turn));
-		} else if (ror < 1.0) {
-			if (per < 80)
-				fold();
-			else if (per < 85)
-				call(turn.getAmountToContinue());
-			else raise(calculateRaise(turn));
-		} else if (ror < 1.3) {
-			if (per < 60) call(turn.getAmountToContinue());
-			else raise(calculateRaise(turn));
-		} else {
-			if (per < 30) call(turn.getAmountToContinue());
-			else raise(calculateRaise(turn));
-		}
-	}
-
-	/**
-	 * call this method when the minBetToAdd is 0 (not raise, amount to continue is 0)
-	 * @param turn
-	 * @param handStrength
-	 */
-	protected void makeMove(Turn turn, HandOdds handStrength) {
-		float strength = handStrength.getHandStrength();
-
-		int per = random.nextInt(100);
-		if (strength < 0.1) { // weak hand
-			if (per < 95)
-				check();
-			else raise(calculateRaise(turn));
-		} else if (strength < 0.4) { // not bad
-			if (per < 80)
-				check();
-			else if (per < 85)
-				check();
-			else raise(calculateRaise(turn));
-		} else if (strength < 0.6) {
-			if (per < 60) check();
-			else raise(calculateRaise(turn));
-		} else {
-			if (per < 30) check();
-			else raise(calculateRaise(turn));
-		}
-	}
-
-	protected long calculateRaise(Turn turn) {
-		// here where aggressive attribute will play role
-		// but SafeBot has aggression 0
-		return Math.max(turn.getAmountToContinue() * 4, turn.getPotValue() / 4);
 	}
 
 	/**
