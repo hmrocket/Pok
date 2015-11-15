@@ -35,6 +35,7 @@ public class SafeBot extends Player {
 
 		// calculate hand odd, based on your hand
 		HandOdds handStrength = handOddsCalculator.getHandOdds(turn.getPokerRoundTurnsCount(), handHoldem);
+		if (PokerTools.DEBUG) System.out.println(handStrength.toString());
 		if (turn.isRaisedBefore() || turn.isRaisedAfter())
 			makeMove(turn, handStrength.getHandStrength(), turn.getAmountToContinue() - bet);
 		else makeMove(turn, handStrength);
@@ -200,7 +201,7 @@ public class SafeBot extends Player {
 	 * @param minBetToAdd   cost of a contemplated call (min bet must be Added to continue)
 	 */
 	protected void makeMove(Turn turn, float winPercentage, long minBetToAdd) {
-		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, minBetToAdd);
+		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, this);
 		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
 //		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
 //		If RR <1.3 the 0% fold, 60% call, 40% raise
@@ -210,6 +211,7 @@ public class SafeBot extends Player {
 		// ror take care in consideration the number of players left
 		// ror take in consideration the return value and the risk
 		int per = random.nextInt(100);
+		if (PokerTools.DEBUG) System.out.println("MakeMove3: ror=" + ror + ", random=" + random);
 		if (ror < 0.8) {
 			if (per < 95)
 				fold();

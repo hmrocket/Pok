@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class PokerTools {
 
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	private static final int MIN_BUY_IN_MULTIPLYER = 10;
     private static final int MAX_BUY_IN_MULTIPLYER = 200;
 
@@ -113,20 +113,34 @@ public class PokerTools {
 		return winners;
 	}
 
-	public static float calculateRateOfReturn(float handStrength, Turn turn, long addedBet) {
-		return calculateRateOfReturn(handStrength, calculatePotOdds(turn, addedBet));
+	/**
+	 * @param handStrength
+	 * @param turn
+	 * @param player
+	 * @return handStrength / Pot odds
+	 */
+	public static float calculateRateOfReturn(float handStrength, Turn turn, Player player) {
+		//bet of the player not the the added bet (cause turn.getMoneyOnTable() return money on the table of the other players my money (bet) not included
+		return calculateRateOfReturn(handStrength, calculatePotOdds(turn, player));
 	}
 
 	public static float calculateRateOfReturn(float handStrength, float potOdds) {
 		return handStrength / potOdds;
 	}
 
-	public static float calculatePotOdds(Turn turn, long addedBet) {
-		// pots odds = (value you will add to the pot) / (pot value after your add)
-		// when potOdds get closer to 0.5 you mean you're put lot of money
-		//FIXME moneyOnTHe table is missing my bet !
-		// FIXME pot value should simply return the total
-		return addedBet / (addedBet + turn.getPotValue() + turn.getMoneyOnTable());
+	/**
+	 * we need to get the current bet and amount to continue (to be able to calculate the added bet)
+	 * so we can calculate Pot Odds
+	 *
+	 * @param turn
+	 * @param player
+	 * @return (call cost) / (pot value + call cost)
+	 */
+	public static float calculatePotOdds(Turn turn, Player player) {
+		if (DEBUG && turn.getAmountToContinue() - player.getBet() < 0)
+			throw new IllegalArgumentException("added bet is negative bet:" + player.getBet() + " amountToCon:" + turn.getAmountToContinue());
+		// Caution turn.getMoneyOnTable return the other Players bet and not my bet that's why totalMoney = bet + moneyOnTable + potValue
+		return (turn.getAmountToContinue() - player.getBet()) / (turn.getAmountToContinue() + turn.getPotValue() + turn.getMoneyOnTable());
 	}
 
 }

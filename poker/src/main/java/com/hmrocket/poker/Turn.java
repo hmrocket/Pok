@@ -145,6 +145,9 @@ public class Turn {
 		return pokerPosition;
 	}
 
+	/**
+	 * @return the other money on the table my bet excluded
+	 */
 	public long getMoneyOnTable() {
 		return moneyOnTable;
 	}

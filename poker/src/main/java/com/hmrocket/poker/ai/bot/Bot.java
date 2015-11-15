@@ -98,7 +98,7 @@ public class Bot extends Player {
 	 */
 	protected void makeMove(Turn turn, float winPercentage, long minToAdd) {
 		// FIXME create a method when the addBet is 0 (just check)
-		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, minToAdd);
+		float ror = PokerTools.calculateRateOfReturn(winPercentage, turn, this);
 		//If RR < 0.8 then 95% fold, 0 % call, 5% raise (bluff)
 //		If RR < 1.0 then 80%, fold 5% call, 15% raise (bluff)
 //		If RR <1.3 the 0% fold, 60% call, 40% raise

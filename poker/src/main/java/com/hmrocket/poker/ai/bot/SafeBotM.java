@@ -112,7 +112,7 @@ public class SafeBotM extends SafeBot {
 					if (getHandHoldem().getHand().isSuited()) { // Suited Aces
 						switch (turn.getPokerPosition()) {
 							case EARLY:
-								if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .5)
+								if (PokerTools.calculatePotOdds(turn, this) > .5)
 									fold();
 								else
 									call(turn.getAmountToContinue());
@@ -120,7 +120,7 @@ public class SafeBotM extends SafeBot {
 							case MID_POSITION:
 							case BLINDS:
 								if (turn.isRaisedBefore() || turn.isRaisedAfter()) {
-									if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .4)
+									if (PokerTools.calculatePotOdds(turn, this) > .4)
 										fold();
 									else call(turn.getAmountToContinue());
 								} else if (!turn.isRaisedBefore()) {
@@ -129,13 +129,13 @@ public class SafeBotM extends SafeBot {
 								break;
 							case LATE:
 								if (turn.isRaisedBefore() || turn.isRaisedAfter()) {
-									if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .5)
+									if (PokerTools.calculatePotOdds(turn, this) > .5)
 										fold();
 									else call(turn.getAmountToContinue());
 								} else raise(calculateRaise(turn));
 								break;
 						}
-					} else if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .3)
+					} else if (PokerTools.calculatePotOdds(turn, this) > .3)
 						fold();
 					else call(turn.getAmountToContinue());
 					break;
@@ -144,14 +144,14 @@ public class SafeBotM extends SafeBot {
 			switch (turn.getPokerPosition()) {
 				case EARLY:
 				case MID_POSITION:
-					if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .3)
+					if (PokerTools.calculatePotOdds(turn, this) > .3)
 						fold();
 					else call(turn.getAmountToContinue());
 					break;
 				case LATE:
 				case BLINDS:
 					if (turn.isRaisedBefore() || turn.isRaisedAfter())
-						if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .5)
+						if (PokerTools.calculatePotOdds(turn, this) > .5)
 							fold();
 						else call(turn.getAmountToContinue());
 					else if (turn.isEveryoneFoldOnPreflop())
@@ -163,7 +163,7 @@ public class SafeBotM extends SafeBot {
 			switch (turn.getPokerPosition()) {
 				case EARLY:
 				case MID_POSITION:
-					if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .4)
+					if (PokerTools.calculatePotOdds(turn, this) > .4)
 						fold();
 					else call(turn.getAmountToContinue());
 					break;
@@ -171,21 +171,21 @@ public class SafeBotM extends SafeBot {
 					if (turn.isEveryoneFoldOnPreflop())
 						raise(calculateRaise(turn));
 					else if (turn.isRaisedBefore() || turn.isRaisedAfter())
-						if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .5)
+						if (PokerTools.calculatePotOdds(turn, this) > .5)
 							fold();
 						else call(turn.getAmountToContinue());
 					else call(turn.getAmountToContinue());
 					break;
 				case BLINDS:
 					if (turn.isEveryoneFoldOnPreflop() || turn.isRaisedBefore() || turn.isRaisedAfter())
-						if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .3)
+						if (PokerTools.calculatePotOdds(turn, this) > .3)
 							fold();
 						else call(turn.getAmountToContinue());
 					else call(turn.getAmountToContinue());
 					break;
 			}
 		} else {
-			if (PokerTools.calculatePotOdds(turn, turn.getAmountToContinue()) > .3)
+			if (PokerTools.calculatePotOdds(turn, this) > .3)
 				fold();
 			else call(turn.getAmountToContinue());
 		}
