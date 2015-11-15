@@ -58,7 +58,151 @@ public final class Util {
 	}
 
 	public static int getCardImageId(Card card) {
-		//TODO implement
-		return R.mipmap.ic_launcher;
+		switch (card.getRank()) {
+			case ACE:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.da;
+					case CLUBS:
+						return R.mipmap.ca;
+					case HEARTS:
+						return R.mipmap.ha;
+					case SPADES:
+						return R.mipmap.sa;
+				}
+			case KING:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.dk;
+					case CLUBS:
+						return R.mipmap.ck;
+					case HEARTS:
+						return R.mipmap.hk;
+					case SPADES:
+						return R.mipmap.sk;
+				}
+			case QUEEN:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.dq;
+					case CLUBS:
+						return R.mipmap.cq;
+					case HEARTS:
+						return R.mipmap.hq;
+					case SPADES:
+						return R.mipmap.sq;
+				}
+			case JACK:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.dj;
+					case CLUBS:
+						return R.mipmap.cj;
+					case HEARTS:
+						return R.mipmap.hj;
+					case SPADES:
+						return R.mipmap.sj;
+				}
+			case TEN:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d10;
+					case CLUBS:
+						return R.mipmap.c10;
+					case HEARTS:
+						return R.mipmap.h10;
+					case SPADES:
+						return R.mipmap.s10;
+				}
+			case NINE:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d9;
+					case CLUBS:
+						return R.mipmap.c9;
+					case HEARTS:
+						return R.mipmap.h9;
+					case SPADES:
+						return R.mipmap.s9;
+				}
+			case EIGHT:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d8;
+					case CLUBS:
+						return R.mipmap.c8;
+					case HEARTS:
+						return R.mipmap.h8;
+					case SPADES:
+						return R.mipmap.s8;
+				}
+			case SEVEN:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d7;
+					case CLUBS:
+						return R.mipmap.c7;
+					case HEARTS:
+						return R.mipmap.h7;
+					case SPADES:
+						return R.mipmap.s7;
+				}
+			case SIX:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d6;
+					case CLUBS:
+						return R.mipmap.c6;
+					case HEARTS:
+						return R.mipmap.h6;
+					case SPADES:
+						return R.mipmap.s6;
+				}
+			case FIVE:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d5;
+					case CLUBS:
+						return R.mipmap.c5;
+					case HEARTS:
+						return R.mipmap.h5;
+					case SPADES:
+						return R.mipmap.s5;
+				}
+			case FOUR:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d4;
+					case CLUBS:
+						return R.mipmap.c4;
+					case HEARTS:
+						return R.mipmap.h4;
+					case SPADES:
+						return R.mipmap.s4;
+				}
+			case THREE:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d3;
+					case CLUBS:
+						return R.mipmap.c3;
+					case HEARTS:
+						return R.mipmap.h3;
+					case SPADES:
+						return R.mipmap.s3;
+				}
+			case TWO:
+				switch (card.getSuit()) {
+					case DIAMONDS:
+						return R.mipmap.d2;
+					case CLUBS:
+						return R.mipmap.c2;
+					case HEARTS:
+						return R.mipmap.h2;
+					case SPADES:
+						return R.mipmap.s2;
+				}
+		}
+		return 0;
 	}
 }
