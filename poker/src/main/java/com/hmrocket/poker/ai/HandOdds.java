@@ -71,4 +71,22 @@ public class HandOdds {
 	public void wins(HandType handType) {
 		odds[handType.ordinal()] += 1;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		sb.append("[");
+		for (float odd : odds) {
+			sb.append(HandType.values()[i++]);
+			sb.append(":");
+			sb.append(odd);
+			sb.append(", ");
+		}
+		sb.append("]");
+		return "HandOdds{" +
+				"odds=" + sb.toString() +
+				", n=" + n +
+				'}';
+	}
 }

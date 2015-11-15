@@ -313,4 +313,26 @@ public class Turn {
 	public int getRoundPlayerRaised() {
 		return roundPlayerRaised;
 	}
+
+	@Override
+	public String toString() {
+		return "Turn{" +
+				"turnState=" + turnState +
+				", playerCount=" + playerCount +
+				", phase=" + phase +
+				", roundRally=" + roundRally +
+				", amountToContinue=" + amountToContinue +
+				", minBet=" + minBet +
+				", position=" + position +
+				", pokerPosition=" + pokerPosition +
+				", playersFolded=" + playersFolded +
+				", playersAllIn=" + playersAllIn +
+				", roundPlayersAllIn=" + roundPlayersAllIn +
+				", roundPlayersFolded=" + roundPlayersFolded +
+				", roundPlayerRaised=" + roundPlayerRaised +
+				", potValue=" + potValue +
+				", moneyOnTable=" + moneyOnTable +
+				", humanState=" + humanState +
+				'}';
+	}
 }
