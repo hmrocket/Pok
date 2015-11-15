@@ -1,8 +1,11 @@
 package com.hmrocket.magicpoker.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,11 +29,31 @@ public class PlayerView extends RelativeLayout {
 
 	public PlayerView(Context context) {
 		super(context);
+		init(context);
+	}
+
+	private void init(Context context) {
 		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
 		profileImage = (ImageView) findViewById(R.id.iv_profile);
 		cardView1 = (CardView) findViewById(R.id.cardView1);
 		cardView2 = (CardView) findViewById(R.id.cardView2);
 		txCash = (TextView) findViewById(R.id.tx_cash);
+	}
+
+	public PlayerView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init(context);
+	}
+
+	public PlayerView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init(context);
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public PlayerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init(context);
 	}
 
 	/**
