@@ -1,42 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				xmlns:tools="http://schemas.android.com/tools"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				tools:context=".view.PlayerView">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:layout_width="wrap_content"
+			  android:layout_height="wrap_content"
+			  android:orientation="vertical">
+
+	<RelativeLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		tools:context=".view.PlayerView">
 
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:id="@+id/iv_profile"
+		android:src="@mipmap/default_profile"
 		android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"/>
+
+
+		<FrameLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/iv_profile"
+		android:layout_toEndOf="@+id/iv_profile">
+
+			<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/cardView1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="30dp"
+			android:src="@mipmap/backcover"
+			/>
+
+			<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/cardView2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="right|center_vertical"
+			android:layout_toEndOf="@+id/cardView1"
+			android:layout_toRightOf="@+id/cardView1"
+			android:src="@mipmap/backcover"/>
+		</FrameLayout>
+	</RelativeLayout>
 
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:layout_gravity="center"
 		android:text="$800,000"
 		android:id="@+id/tx_cash"
-		android:layout_below="@+id/iv_profile"
+		android:layout_alignParentTop="true"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"/>
-
-	<com.hmrocket.magicpoker.view.CardView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:id="@+id/cardView1"
-		android:src="@mipmap/backcover"
-		android:layout_alignParentTop="true"
-		android:layout_toRightOf="@+id/iv_profile"
-		android:layout_toEndOf="@+id/iv_profile"/>
-
-	<com.hmrocket.magicpoker.view.CardView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:id="@+id/cardView2"
-		android:src="@mipmap/backcover"
-		android:layout_alignParentTop="true"
-		android:layout_toRightOf="@+id/cardView1"
-		android:layout_toEndOf="@+id/cardView1"/>
-</RelativeLayout>
+</LinearLayout>

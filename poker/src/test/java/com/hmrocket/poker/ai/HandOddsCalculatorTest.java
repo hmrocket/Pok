@@ -33,7 +33,7 @@ public class HandOddsCalculatorTest extends TestCase {
 			strength += handOdds.getOdds(handType);
 		}
 		assertEquals("HS: " + handOdds.getHandStrength() + " isn't equal to " + strength,
-				0, Float.compare(strength, handOdds.getHandStrength()));
+				0, Integer.compare((int) (100 * strength), (int) (100 * handOdds.getHandStrength())));
 
 	}
 
