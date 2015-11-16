@@ -86,16 +86,22 @@ public final class HandOddsCalculator {
 				HandHoldem handHoldemOppent = new HandHoldem(deck.drawCard(), deck.drawCard(), handHoldem.getCommunityCards());
 				handHoldemList.add(handHoldemOppent);
 			}
+
 			// deal Flop if flop wasn't dealt
-			if (handHoldemPlayer.getCommunityCards().getFlop() == null) {
-				handHoldem.getCommunityCards().setFlop(deck.dealFlop());
-			}
 			// dealt turn if wasn't dealt
-			if (handHoldemPlayer.getCommunityCards().getTurn() == null)
-				handHoldem.getCommunityCards().setTurn(deck.drawCard());
 			// deal river if wasn't dealt
-			if (handHoldemPlayer.getCommunityCards().getRiver() == null)
-				handHoldem.getCommunityCards().setRiver(deck.drawCard());
+			// add the rest of the card,
+			CommunityCards communityCards = handHoldemPlayer.getCommunityCards();
+			int missingCard = communityCards == null || communityCards.getFlop() == null ? 5 :
+					(communityCards.getTurn() == null ? 2 : (communityCards.getRiver() == null ? 1 : 0));
+			switch (missingCard) {
+				case 5:
+					cc.setFlop(deck.dealFlop());
+				case 2:
+					cc.setTurn(deck.drawCard());
+				case 1:
+					cc.setRiver(deck.drawCard());
+			}
 
 			// Evaluate all hands, and see who has the best hands
 			handHoldemList = PokerTools.getBestHands(handHoldemList);
