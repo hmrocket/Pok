@@ -1,5 +1,6 @@
 package com.hmrocket.poker;
 
+import com.hmrocket.poker.ai.bot.CallBot;
 import com.hmrocket.poker.ai.bot.RandBot;
 
 import junit.framework.TestCase;
@@ -59,7 +60,7 @@ public class GameTest extends TestCase implements Game.GameEvent {
 			Game game = new Game(this);
 			gameEndedCalled = false;
 			winnersCount = 0;
-			lostBecauseOfFractionLimit = 0;
+			//lostBecauseOfFractionLimit = 0;
 			lastCalledOnce = false;
 			for (Player player : PLAYERS) {
 				playerCashBefore.put(player, player.getCash());
@@ -127,13 +128,5 @@ public class GameTest extends TestCase implements Game.GameEvent {
 
 		winnersCount = Math.max(winnersCount, winners.size());
 		lastCalledOnce |= last;
-		// assert winner won the same amount
-		Player winner0 = winners.iterator().next();
-		long cashWon = winner0.getCash() - playerCashBefore.get(winner0).longValue();
-		for (Player winner : winners) {
-			assertEquals(winner + " didn't get the same cash like the others",
-					cashWon, winner.getCash() - playerCashBefore.get(winner).longValue());
-		}
-
 	}
 }
