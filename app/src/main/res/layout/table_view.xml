@@ -10,13 +10,13 @@
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
 		android:layout_alignParentTop="true"
+		android:background="#000000"
 		android:cropToPadding="false"
 		android:paddingBottom="@dimen/table_padding"
 		android:paddingEnd="@dimen/table_padding"
 		android:paddingStart="@dimen/table_padding"
 		android:paddingTop="@dimen/table_padding"
-		android:src="@mipmap/table_pro"
-		android:background="#DCDCDC" />
+		android:src="@mipmap/table_pro"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
 		android:id="@+id/playerView3"
@@ -88,9 +88,9 @@
 		android:layout_marginTop="40dp"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView0"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/playerView0"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true" />
 </RelativeLayout>

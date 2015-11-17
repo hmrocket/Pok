@@ -9,16 +9,23 @@
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
 
-	<TextView
+	<LinearLayout
 		android:id="@+id/fullscreen_content"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:gravity="center"
 		android:keepScreenOn="true"
+		android:orientation="vertical"
 		android:text="@string/dummy_content"
 		android:textColor="#33b5e5"
 		android:textSize="50sp"
-		android:textStyle="bold"/>
+		android:textStyle="bold">
+
+		<com.hmrocket.magicpoker.view.TableView
+			android:id="@+id/view7"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
 
 	<!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
