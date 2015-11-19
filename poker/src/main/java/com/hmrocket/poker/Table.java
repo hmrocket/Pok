@@ -27,8 +27,8 @@ public class Table implements Game.GameEvent {
         this.players = new ArrayList<Player>(capacity);
         this.seats = new ArrayList<Seat>(capacity);
         for (int i = 0; i < capacity; i++) {
-            seats.add(new Seat());
-            players.add(null);
+			seats.add(new Seat(i));
+			players.add(null);
         }
         this.seatsAvailable = capacity;
         this.minBet = minBet;

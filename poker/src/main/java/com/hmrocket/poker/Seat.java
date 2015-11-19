@@ -5,13 +5,11 @@ package com.hmrocket.poker;
  */
 public class Seat {
     private Status status;
+	private int id;
 
-	public Seat(Status status) {
-		this.status = status;
-	}
-
-	public Seat() {
+	public Seat(int id) {
 		this.status = Status.AVAILABLE;
+		this.id = id;
 	}
 
 	public Status getStatus() {
@@ -26,8 +24,16 @@ public class Seat {
         return status == Status.AVAILABLE;
     }
 
-    public enum Status {
-        AVAILABLE,
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public enum Status {
+		AVAILABLE,
         UNAVAILABLE
     }
 }
