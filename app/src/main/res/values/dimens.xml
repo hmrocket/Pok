@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<dimen name="table_padding">40dp</dimen>
+	<dimen name="width_pot">160dp</dimen>
+	<dimen name="height_pot">50dp</dimen>
 </resources>

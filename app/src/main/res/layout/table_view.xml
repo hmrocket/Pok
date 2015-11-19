@@ -81,8 +81,8 @@
 
 	<com.hmrocket.magicpoker.view.PotView
 		android:id="@+id/potView"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_width="@dimen/width_pot"
+		android:layout_height="@dimen/height_pot"
 		android:layout_below="@+id/playerView4"
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="40dp"/>
