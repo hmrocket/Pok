@@ -1,6 +1,6 @@
 package com.hmrocket.poker.pot;
 
-import com.hmrocket.poker.Game;
+import com.hmrocket.poker.GameEvent;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.PokerTools;
 
@@ -96,7 +96,7 @@ public class Pot {
 	 *
 	 * @return busted players if there's any
 	 */
-	public Set<Player> distributeToWinners(Game.GameEvent... gameEvents) {
+	public Set<Player> distributeToWinners(GameEvent... gameEvents) {
 		Set<Player> busted = new HashSet<Player>();
 		Set<Player> levelWinners;
 
@@ -155,9 +155,9 @@ public class Pot {
 	 * @param levelWinners
 	 * @param gameEvents GameEvent listeners
 	 */
-	private void broadcastWin(Set<Player> levelWinners, boolean last, Game.GameEvent... gameEvents) {
+	private void broadcastWin(Set<Player> levelWinners, boolean last, GameEvent... gameEvents) {
 		if (gameEvents != null)
-			for (Game.GameEvent gameEvent : gameEvents) {
+			for (GameEvent gameEvent : gameEvents) {
 				gameEvent.gameWinners(last, levelWinners);
 			}
 	}

@@ -1,6 +1,5 @@
 package com.hmrocket.poker;
 
-import com.hmrocket.poker.ai.bot.CallBot;
 import com.hmrocket.poker.ai.bot.RandBot;
 
 import junit.framework.TestCase;
@@ -16,7 +15,7 @@ import java.util.Set;
 /**
  * Created by Mhamed on 15-10-26.
  */
-public class GameTest extends TestCase implements Game.GameEvent {
+public class GameTest extends TestCase implements GameEvent {
 
 	private static final boolean DEBUG = false;
 

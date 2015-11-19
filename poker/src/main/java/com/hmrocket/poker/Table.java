@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by hmrocket on 07/10/2015.
  */
-public class Table implements Game.GameEvent {
+public class Table implements GameEvent {
 
     private List<Player> players;
     private int seatsAvailable;
