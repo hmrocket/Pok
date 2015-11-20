@@ -79,6 +79,26 @@ public class Game implements PokerRound.RoundEvent {
 			}
 	}
 
+	@Override
+	public void onPreTurn(Player player, long amountToContinue) {
+
+	}
+
+	@Override
+	public void onTurnEnded(Player player) {
+
+	}
+
+	@Override
+	public void onRound(RoundPhase roundPhase) {
+
+	}
+
+	@Override
+	public void onBlindPosted(Player smallBlind, Player BigBlind) {
+
+	}
+
 	private boolean isAllPlayersExceptOneFolded(List<Player> players) {
 		int numberOfPlayerNotOut = 0;
 		for (Player player :
@@ -131,11 +151,5 @@ public class Game implements PokerRound.RoundEvent {
 		}
 		endGame();
 	}
-
-	@Override
-	public void onRaise() {
-
-	}
-
 
 }

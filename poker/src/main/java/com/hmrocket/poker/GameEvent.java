@@ -46,9 +46,9 @@ public interface GameEvent {
 	void onTurnEnded(Player player);
 
 	/**
-	 * Called after a RoundPhase was finished
+	 * Called when a new RoundPhase about to start
 	 *
-	 * @param roundPhase
+	 * @param roundPhase Started RoundPhase
 	 */
 	void onRound(RoundPhase roundPhase);
 

@@ -215,11 +215,44 @@ public class PokerRound extends Round {
 	}
 
     protected interface RoundEvent {
-        public void onRoundFinish(RoundPhase phase, List<Player> players);
+		/**
+		 * Called after a PokerRound was finished
+		 *
+		 * @param phase   Phase of the PokerRound
+		 * @param players All players who played this game
+		 */
+		void onRoundFinish(RoundPhase phase, List<Player> players);
 
-        public void onRaise();
+		/**
+		 * Called by PokerRound before the player start his turn
+		 *
+		 * @param player           Player current turn
+		 * @param amountToContinue The bet amount to match or raise above
+		 */
+		void onPreTurn(Player player, long amountToContinue);
 
-    }
+		/**
+		 * Called after the Player make a move (decision or move can be, fold, raise, call, check, all-in)
+		 *
+		 * @param player Player just finished his turn
+		 */
+		void onTurnEnded(Player player);
+
+		/**
+		 * Called when a new RoundPhase about to start
+		 *
+		 * @param roundPhase Started RoundPhase
+		 */
+		void onRound(RoundPhase roundPhase);
+
+		/**
+		 * Called after forced bets posted by players
+		 *
+		 * @param smallBlind Player to the left of the dealer button
+		 * @param BigBlind   Player to  the left of the <code>smallBlind</code>
+		 */
+		void onBlindPosted(Player smallBlind, Player BigBlind);
+	}
 
 }
 
