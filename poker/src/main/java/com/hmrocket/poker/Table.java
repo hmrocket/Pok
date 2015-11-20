@@ -54,7 +54,9 @@ public class Table implements GameEvent {
 		else {
 			seatsAvailable--; // no need to check if (players.get(seatId) == null) cause the seat is available
 			players.set(seatId, player);
-			seats.get(seatId).setStatus(Seat.Status.UNAVAILABLE);
+			Seat seat = seats.get(seatId);
+			seat.setStatus(Seat.Status.UNAVAILABLE);
+			player.setSeat(seat);
 		}
 	}
 

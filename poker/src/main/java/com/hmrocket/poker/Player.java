@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * Created by hmrocket on 04/10/2015.
  */
-public abstract class Player implements Comparable<Player> { //TODO what's the needed attribute that player need
+public abstract class Player implements Comparable<Player> {
 	protected HandHoldem handHoldem;
 	protected String name;
 	protected long bankBalance;
@@ -25,10 +25,11 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
             else if (o1 == null)
                 return -1;
             else {
-                return Long.compare(o1.cash, o2.cash);
-            }
+				return Long.valueOf(o1.cash).compareTo(o2.cash);
+			}
         }
     };
+	protected Seat seat;
 	protected long bet;
 	/**
      * Player Bet Comparator
@@ -43,8 +44,8 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
             else if (o1 == null)
                 return -1;
             else {
-                return Long.compare(o1.bet, o2.bet);
-            }
+				return Long.valueOf(o1.bet).compareTo(o2.bet);
+			}
         }
     };
     private PlayerState state;
@@ -122,6 +123,14 @@ public abstract class Player implements Comparable<Player> { //TODO what's the n
     public void setState(PlayerState state) {
         this.state = state;
     }
+
+	public Seat getSeat() {
+		return seat;
+	}
+
+	public void setSeat(Seat seat) {
+		this.seat = seat;
+	}
 
 	public HandHoldem getHandHoldem() {
 		return handHoldem;
