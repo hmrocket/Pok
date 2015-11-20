@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent">
+	<!-- Persistent footer buttons: https://www.google.com/design/spec/components/buttons.html#buttons-usage -->
+	<!-- flat button design -->
+	<Button
+		android:id="@+id/button2"
+		style="?android:attr/borderlessButtonStyle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:minWidth="@dimen/abc_action_button_min_width_material"
+		android:text="ALL IN"
+		android:textColor="@color/allin"/>
+
+	<Button
+		android:id="@+id/button"
+		style="?android:attr/borderlessButtonStyle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:minWidth="@dimen/abc_action_button_min_width_material"
+		android:text="RAISE"
+		android:textColor="@color/raise"/>
+
+	<!--This can be the amount to continue-->
+	<Space
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"/>
+
+	<Button
+		android:id="@+id/button3"
+		style="?android:attr/borderlessButtonStyle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:minWidth="@dimen/abc_action_button_min_width_material"
+		android:text="CALL"
+		android:textColor="@color/call"/>
+
+	<Button
+		android:id="@+id/button4"
+		style="?android:attr/borderlessButtonStyle"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:minWidth="@dimen/abc_action_button_min_width_material"
+		android:text="FOLD"
+		android:textColor="@color/fold"/>
+</LinearLayout>

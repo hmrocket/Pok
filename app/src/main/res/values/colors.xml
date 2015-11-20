@@ -2,5 +2,9 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="chip_background">#66000000</color>
+    <color name="allin">#E69241</color>
+    <color name="raise">#4CCBE4</color>
+    <color name="call">#2CB772</color>
+    <color name="fold">#EF5457</color>
 
 </resources>
