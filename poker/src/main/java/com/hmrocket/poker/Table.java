@@ -150,7 +150,7 @@ public class Table implements GameEvent {
 	}
 
 	@Override
-	public void onBlindPosted(Player smallBlind, Player BigBlind) {
+	public void onBlindPosted(Player smallBlind, Player bigBlind) {
 
 	}
 

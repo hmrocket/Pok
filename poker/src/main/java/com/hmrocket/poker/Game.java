@@ -57,7 +57,10 @@ public class Game implements PokerRound.RoundEvent {
 	 */
 	@Override // TODO Optimize isAllPlayersExceptOneFolded isn't needed t
 	public void onRoundFinish(RoundPhase phase, List<Player> players) {
+		long potValue = pot.getValue();
 		pot.update();
+		// fire a callback only if the Pot value changed
+		if (potValue != pot.getValue()) gameEventListener.onPotChanged(pot.getValue());
 
 		// distinct two case end game and showdown
 		if (isAllPlayersExceptOneFolded(players)) endGame();
@@ -81,22 +84,22 @@ public class Game implements PokerRound.RoundEvent {
 
 	@Override
 	public void onPreTurn(Player player, long amountToContinue) {
-
+		gameEventListener.onPreTurn(player, amountToContinue);
 	}
 
 	@Override
 	public void onTurnEnded(Player player) {
-
+		gameEventListener.onTurnEnded(player);
 	}
 
 	@Override
 	public void onRound(RoundPhase roundPhase) {
-
+		gameEventListener.onRound(roundPhase);
 	}
 
 	@Override
-	public void onBlindPosted(Player smallBlind, Player BigBlind) {
-
+	public void onBlindPosted(Player smallBlind, Player bigBlind) {
+		gameEventListener.onBlindPosted(smallBlind, bigBlind);
 	}
 
 	private boolean isAllPlayersExceptOneFolded(List<Player> players) {
@@ -138,6 +141,7 @@ public class Game implements PokerRound.RoundEvent {
 	}
 
 	private void showdown() {
+		gameEventListener.onShowdown(pot.getPotentialWinners());
 		// add the rest of the card
 		int missingCard = communityCards.getFlop() == null ? 5 :
 				(communityCards.getTurn() == null ? 2 : (communityCards.getRiver() == null ? 1 : 0));
@@ -148,6 +152,8 @@ public class Game implements PokerRound.RoundEvent {
 				communityCards.setTurn(deck.drawCard());
 			case 1:
 				communityCards.setRiver(deck.drawCard());
+				// fire a call back after all cards are set
+				gameEventListener.onCommunityCardsChange(communityCards);
 		}
 		endGame();
 	}

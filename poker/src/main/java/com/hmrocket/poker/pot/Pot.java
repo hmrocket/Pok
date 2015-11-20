@@ -163,4 +163,16 @@ public class Pot {
 	}
 
 
+	/**
+	 * get potential winner of the Poker game
+	 *
+	 * @return return all Player that aren't out and competing for a part of the pot
+	 */
+	public Set<Player> getPotentialWinners() {
+		Set<Player> set = new HashSet<>(mainPot.potentialWinners);
+		for (SidePot sidePot : sidePots) {
+			set.addAll(sidePot.getAllInPlayers());
+		}
+		return set;
+	}
 }

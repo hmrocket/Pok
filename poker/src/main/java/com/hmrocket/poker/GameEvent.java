@@ -56,12 +56,12 @@ public interface GameEvent {
 	 * Called after forced bets posted by players
 	 *
 	 * @param smallBlind Player to the left of the dealer button
-	 * @param BigBlind   Player to  the left of the <code>smallBlind</code>
+	 * @param bigBlind   Player to  the left of the <code>smallBlind</code>
 	 */
-	void onBlindPosted(Player smallBlind, Player BigBlind);
+	void onBlindPosted(Player smallBlind, Player bigBlind);
 
 	/**
-	 * Called when more than one player remains after the last betting round,(River)
+	 * Called when more than one player remains (not out) competing for the Pot or part of it
 	 *
 	 * @param potentialWinners Remaining players whom must expose and compare their hands to win
 	 */

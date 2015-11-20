@@ -49,13 +49,15 @@ public class PokerRound extends Round {
 	 */
 	private void setup(long minBet, Player dealer) {
 		phase = RoundPhase.PRE_FLOP;
+		if (roundEvent != null) roundEvent.onRound(phase);
 
 		Player smallBlindPlayer = getLeftPlayer(dealer);
 		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 2 (nullpointer)
 
-		// big blind is the last one to finish first round (only first round after it's the dealer)
+		// big blnd is the last one to finish first round (only first round after it's the dealer)
 		Player bigBlindPlayer = getLeftPlayer(smallBlindPlayer);
 		bigBlindPlayer.raise(minBet);
+		if (roundEvent != null) roundEvent.onBlindPosted(smallBlindPlayer, bigBlindPlayer);
 		turn.addMoneyOnTable(smallBlindPlayer.getBet() + bigBlindPlayer.getBet());
 		startGame(dealer, bigBlindPlayer);
 	}
@@ -70,16 +72,17 @@ public class PokerRound extends Round {
 		this.newRound(bigBlind);
 		if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
 		nextPhase();
+		if (roundEvent != null) roundEvent.onRound(phase);
 
 		while (phase != RoundPhase.SHOWDOWN && !isAllPlayersNotPlayingExceptOne()) {
 			if (PokerTools.DEBUG) System.out.println("Start: " + phase);
 			this.newRound(button); // new poker round (not super new round )
 			if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
 			nextPhase();
+			if (roundEvent != null) roundEvent.onRound(phase);
 
 		}
-		// TODO it will be better to call end Of game here after all this is start game method
-		// and this is where it end.
+		// The game isn't finished yet that's why is not a good idea to call end Of game here
 	}
 
 	private void nextPhase() {
@@ -200,6 +203,7 @@ public class PokerRound extends Round {
 			// get the position of the player in this game
 			// we use dealerIndex and not Button cause button might be bigBlind at first not dealer
 			int playerPosition = getPosition(players, playerToStart, dealerIndex);
+			if (roundEvent != null) roundEvent.onPreTurn(playerToStart, turn.getAmountToContinue());
 			turn.turnStarted(playerToStart, playerPosition);
 			playerToStart.play(turn); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
@@ -210,6 +214,7 @@ public class PokerRound extends Round {
 			}
 			// update calledAmount and Start new raising Round
 			turn.turnEnded(playerToStart);
+			if (roundEvent != null) roundEvent.onTurnEnded(playerToStart);
 			playerToStart = nextTurn();
 		} while (playerToStart != null);
 	}
@@ -249,9 +254,9 @@ public class PokerRound extends Round {
 		 * Called after forced bets posted by players
 		 *
 		 * @param smallBlind Player to the left of the dealer button
-		 * @param BigBlind   Player to  the left of the <code>smallBlind</code>
+		 * @param bigBlind   Player to  the left of the <code>smallBlind</code>
 		 */
-		void onBlindPosted(Player smallBlind, Player BigBlind);
+		void onBlindPosted(Player smallBlind, Player bigBlind);
 	}
 
 }
