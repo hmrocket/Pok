@@ -1,5 +1,7 @@
 package com.hmrocket.poker;
 
+import com.hmrocket.poker.card.CommunityCards;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -129,7 +131,42 @@ public class Table implements GameEvent {
 
 	@Override
 	public void gameWinners(boolean last, Set<Player> winners) {
-		// TODO auto generated
+		// Table just need a callback when a player doesn't have enough money to bet and should be removed from the table
+	}
+
+	@Override
+	public void onPreTurn(Player player, long amountToContinue) {
+
+	}
+
+	@Override
+	public void onTurnEnded(Player player) {
+
+	}
+
+	@Override
+	public void onRound(RoundPhase roundPhase) {
+
+	}
+
+	@Override
+	public void onBlindPosted(Player smallBlind, Player BigBlind) {
+
+	}
+
+	@Override
+	public void onShowdown(Set<Player> potentialWinners) {
+
+	}
+
+	@Override
+	public void onPotChanged(long potValue) {
+
+	}
+
+	@Override
+	public void onCommunityCardsChange(CommunityCards communityCards) {
+
 	}
 
 	/**
