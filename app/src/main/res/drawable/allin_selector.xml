@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flat Dark/Dark theme (google design)-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Disabled : 30% of the color, allIn color and the text also will be disabled -->
+	<item android:color="@color/allin_25p" android:state_enabled="false"/>
+	<!-- Pressed: 100% of the color, allIn color -->
+	<item android:color="@color/allin" android:state_pressed="true"/>
+	<!-- Normal: 70% of the color, allIn color -->
+	<item android:color="@color/allin_70p"/>
+</selector>

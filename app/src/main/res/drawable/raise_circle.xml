@@ -5,7 +5,7 @@
 		<!-- Disabled : 25% of the color, raise color and the text also will be disabled -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#3F4CCBE4"/>
+			<stroke android:width="2dp" android:color="@color/raise_25p"/>
 		</shape>
 	</item>
 	<item android:state_pressed="true">
@@ -19,7 +19,7 @@
 		<!-- Normal: 70% of the color, raise color -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#B24CCBE4"/>
+			<stroke android:width="2dp" android:color="@color/raise_70p"/>
 		</shape>
 	</item>
 </selector>

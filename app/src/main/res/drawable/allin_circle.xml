@@ -5,7 +5,7 @@
 		<!-- Disabled : 25% of the color, allIn color and the text also will be disabled -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#3FE69241"/>
+			<stroke android:width="2dp" android:color="@color/allin_25p"/>
 		</shape>
 	</item>
 	<item android:state_pressed="true">
@@ -19,7 +19,7 @@
 		<!-- Normal: 70% of the color, allIn color -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#B2E69241"/>
+			<stroke android:width="2dp" android:color="@color/allin_70p"/>
 		</shape>
 	</item>
 </selector>

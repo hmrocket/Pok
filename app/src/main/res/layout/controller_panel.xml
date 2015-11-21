@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:layout_width="match_parent"
-			  android:layout_height="match_parent">
+			  android:layout_height="match_parent"
+			  android:background="#333333"
+			  android:gravity="center_vertical">
 	<!-- Persistent footer buttons: https://www.google.com/design/spec/components/buttons.html#buttons-usage -->
 	<!-- flat button design -->
+
 	<Button
-		android:id="@+id/button2"
+		android:id="@+id/btn_allin"
 		style="?android:attr/borderlessButtonStyle"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
+		android:layout_marginLeft="8dp"
 		android:layout_weight="1"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="ALL IN"
-		android:textColor="@color/allin"/>
+		android:textColor="@drawable/allin_selector"/>
 
 	<Button
-		android:id="@+id/button"
+		android:id="@+id/btn_raise"
 		style="?android:attr/borderlessButtonStyle"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="RAISE"
-		android:textColor="@color/raise"/>
+		android:textColor="@drawable/raise_selector"/>
 
 	<!--This can be the amount to continue-->
 	<Space
@@ -31,22 +35,24 @@
 		android:layout_weight="1"/>
 
 	<Button
-		android:id="@+id/button3"
+		android:id="@+id/btn_call"
 		style="?android:attr/borderlessButtonStyle"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="CALL"
-		android:textColor="@color/call"/>
+		android:textColor="@drawable/call_selector"/>
 
 	<Button
-		android:id="@+id/button4"
+		android:id="@+id/btn_fold"
 		style="?android:attr/borderlessButtonStyle"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
+		android:layout_marginRight="8dp"
 		android:layout_weight="1"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="FOLD"
-		android:textColor="@color/fold"/>
+		android:textColor="@drawable/fold_selector"/>
+
 </LinearLayout>

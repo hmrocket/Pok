@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flat Dark/Dark theme (google design)-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Disabled : 25% of the color, fold color-->
+	<item android:color="@color/fold_25p" android:state_enabled="false"/>
+	<!-- Pressed: 100% of the color, fold color -->
+	<item android:color="@color/fold" android:state_pressed="true"/>
+	<!-- Normal: 70% of the color, fold color -->
+	<item android:color="@color/fold_70p"/>
+</selector>

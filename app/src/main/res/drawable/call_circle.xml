@@ -5,21 +5,21 @@
 		<!-- Disabled : 25% of the color, call color and the text also will be disabled -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#3F2CB772"/>
+			<stroke android:width="2dp" android:color="@color/call_25p"/>
 		</shape>
 	</item>
 	<item android:state_pressed="true">
-		<!-- Pressed: 70% of the color, call color -->
+		<!-- Pressed: 100% of the color, call color -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
 			<stroke android:width="2dp" android:color="@color/call"/>
 		</shape>
 	</item>
 	<item>
-		<!-- Normal: 100% of the color, call color -->
+		<!-- Normal: 70% of the color, call color -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#B22CB772"/>
+			<stroke android:width="2dp" android:color="@color/call_70p"/>
 		</shape>
 	</item>
 </selector>

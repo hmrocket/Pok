@@ -5,11 +5,11 @@
 		<!-- Disabled : 25% of the color, fold color and the text also will be disabled -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#3FEF5457"/>
+			<stroke android:width="2dp" android:color="@color/fold_25p"/>
 		</shape>
 	</item>
 	<item android:state_pressed="true">
-		<!-- Pressed: 70% of the color, fold color -->
+		<!-- Pressed: 100% of the color, fold color -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
 			<stroke android:width="2dp" android:color="@color/fold"/>
@@ -19,7 +19,7 @@
 		<!-- Normal: 70% of the color, fold color -->
 		<shape android:shape="oval">
 			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
-			<stroke android:width="2dp" android:color="#B2EF5457"/>
+			<stroke android:width="2dp" android:color="@color/fold_70p"/>
 		</shape>
 	</item>
 </selector>
