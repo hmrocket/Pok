@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Flat Dark/Dark theme (google design)-->
+	<item android:state_enabled="false">
+		<!-- Disabled : 25% of the color, fold color and the text also will be disabled -->
+		<shape android:shape="oval">
+			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+			<stroke android:width="2dp" android:color="#3FEF5457"/>
+		</shape>
+	</item>
+	<item android:state_pressed="true">
+		<!-- Pressed: 70% of the color, fold color -->
+		<shape android:shape="oval">
+			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+			<stroke android:width="2dp" android:color="@color/fold"/>
+		</shape>
+	</item>
+	<item>
+		<!-- Normal: 70% of the color, fold color -->
+		<shape android:shape="oval">
+			<padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
+			<stroke android:width="2dp" android:color="#B2EF5457"/>
+		</shape>
+	</item>
+</selector>
