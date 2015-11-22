@@ -938,6 +938,7 @@ public class CircularSeekBar extends View {
 	public void setCircleProgressColor(int color) {
 		mCircleProgressColor = color;
 		mCircleProgressPaint.setColor(mCircleProgressColor);
+		mCircleProgressGlowPaint.setColor(mCircleProgressColor);
 		invalidate();
 	}
 
@@ -958,6 +959,7 @@ public class CircularSeekBar extends View {
 	public void setPointerColor(int color) {
 		mPointerColor = color;
 		mPointerPaint.setColor(mPointerColor);
+		mPointerHaloBorderPaint.setColor(mPointerColor);
 		invalidate();
 	}
 
@@ -977,7 +979,13 @@ public class CircularSeekBar extends View {
 	 */
 	public void setPointerHaloColor(int color) {
 		mPointerHaloColor = color;
-		mPointerHaloPaint.setColor(mPointerHaloColor);
+		if (isPressed()) {
+			mPointerHaloPaint.setAlpha(mPointerAlphaOnTouch);
+			mPointerHaloPaint.setColor(mPointerHaloColorOnTouch);
+		} else {
+			mPointerHaloPaint.setAlpha(mPointerAlpha);
+			mPointerHaloPaint.setColor(mPointerHaloColor);
+		}
 		invalidate();
 	}
 
@@ -988,6 +996,32 @@ public class CircularSeekBar extends View {
 	 */
 	public int getPointerHaloColor() {
 		return mPointerHaloColor;
+	}
+
+	/**
+	 * Sets the pointer halo color when pressed.
+	 *
+	 * @param color the color of the pointer halo when pressed
+	 */
+	public void setPointerHaloColorOnTouch(int color) {
+		mPointerHaloColorOnTouch = color;
+		if (isPressed()) {
+			mPointerHaloPaint.setAlpha(mPointerAlphaOnTouch);
+			mPointerHaloPaint.setColor(mPointerHaloColorOnTouch);
+		} else {
+			mPointerHaloPaint.setAlpha(mPointerAlpha);
+			mPointerHaloPaint.setColor(mPointerHaloColor);
+		}
+		invalidate();
+	}
+
+	/**
+	 * Gets the pointer OnTouch halo color.
+	 *
+	 * @return An integer color value for the pointer halo when pressed
+	 */
+	public int getPointerHaloColorOnTouch() {
+		return mPointerHaloColorOnTouch;
 	}
 
 	/**
