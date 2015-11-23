@@ -3,6 +3,7 @@
     <color name="black_overlay">#66000000</color>
 	<!-- Same grey color used for the icon-->
 	<color name="chip_background">#CC626262</color>
+	<color name="background_controller_grey">#333333</color>
     <color name="allin">#E69241</color>
     <color name="allin_70p">#B2E69241</color>
     <color name="allin_25p">#3FE69241</color>
