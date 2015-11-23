@@ -205,4 +205,8 @@ public final class Util {
 		}
 		return R.mipmap.backcover;
 	}
+
+	public static final class AppPreference {
+		public final static String PRECISION_RAISE_MODE = "precision_raise_mode";
+	}
 }

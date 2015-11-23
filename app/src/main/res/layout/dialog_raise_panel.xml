@@ -10,6 +10,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:gravity="center"
 		android:orientation="horizontal"
 		android:weightSum="3">
 
@@ -21,7 +22,8 @@
 			android:layout_weight="1"
 			android:text="+"
 			android:textColor="@drawable/textcolor_circle"
-			android:textSize="28dp"/>
+			android:textSize="28dp"
+			android:visibility="gone"/>
 
 		<TextView
 			android:id="@+id/tx_raiseAmount"
@@ -42,7 +44,8 @@
 			android:layout_weight="1"
 			android:text="-"
 			android:textColor="@drawable/textcolor_circle"
-			android:textSize="28dp"/>
+			android:textSize="28dp"
+			android:visibility="gone"/>
 	</LinearLayout>
 
 
@@ -101,6 +104,7 @@
 	<!-- Let called this Raise precision controller and it's activated by preference-->
 	<!-- For now after the user finish draging we input the value not confirmation waiting-->
 	<LinearLayout
+		android:id="@+id/raise_precision_mode"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="5dp"

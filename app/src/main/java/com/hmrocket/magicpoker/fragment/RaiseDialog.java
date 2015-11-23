@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,11 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	private TextView txAmount;
 	private OnRaiseListener mListener;
 	/**
+	 * A user Preference if enabled, gives more control over the raise amount and it's gaffe friendly
+	 * it wait for the user to confirm the amount before
+	 */
+	private boolean precisionRaiseMode;
+	/**
 	 * The button to subtract Min bet to the current raise
 	 */
 	private Button btnMinus;
@@ -103,8 +109,8 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		try {
 			mListener = (OnRaiseListener) activity;
 		} catch (ClassCastException e) {
-//			throw new ClassCastException(activity.toString()
-//					+ " must implement OnRaiseListener");
+			throw new ClassCastException(activity.toString()
+					+ " must implement OnRaiseListener");
 		}
 	}
 
@@ -125,7 +131,9 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			stack = getArguments().getLong(ARG_STACK);
 			minBet = getArguments().getLong(ARG_MIN_BET);
 		}
-
+		// decide wither to show ok,cancel,plus,minus buttons
+		precisionRaiseMode = PreferenceManager.getDefaultSharedPreferences(getActivity())
+				.getBoolean(Util.AppPreference.PRECISION_RAISE_MODE, true);
 	}
 
 	@Override
@@ -137,23 +145,44 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		txRaisePercentage = (TextView) view.findViewById(R.id.tx_raisePercentage);
 		circularSeekBar = (CircularSeekBar) view.findViewById(R.id.circularSeekBar);
 		circularSeekBar.setOnSeekBarChangeListener(this);
-		// set callback for + and - button
-		btnPlus = (Button) view.findViewById(R.id.btn_plus);
-		btnPlus.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// add the current raise
-				setRaise(currentRaise + minBet);
-			}
-		});
-		btnMinus = (Button) view.findViewById(R.id.btn_minus);
-		btnMinus.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// reduce the raise amount
-				setRaise(currentRaise - minBet);
-			}
-		});
+		// init precision Raise Mode
+		if (precisionRaiseMode) {
+			// set callback for + and - button
+			btnPlus = (Button) view.findViewById(R.id.btn_plus);
+			btnPlus.setVisibility(View.VISIBLE);
+			btnPlus.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// add the current raise
+					setRaise(currentRaise + minBet);
+				}
+			});
+			btnMinus = (Button) view.findViewById(R.id.btn_minus);
+			btnMinus.setVisibility(View.VISIBLE);
+			btnMinus.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// reduce the raise amount
+					setRaise(currentRaise - minBet);
+				}
+			});
+			// set callbacks for ok and cancel
+			view.findViewById(R.id.raise_precision_mode).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mListener.onRaiseConfirmed(currentRaise);
+					dismiss();
+				}
+			});
+
+			view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dismiss();
+				}
+			});
+		}
 
 		// set init call amountToContinue
 		setRaise(2 * amountToContinue);
@@ -181,13 +210,15 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	protected void setRaise(long amount, boolean updateCircleProgress) {
 		if (amount < 0) {
 			currentRaise = 0;
-			btnMinus.setEnabled(false);
+			if (precisionRaiseMode) btnMinus.setEnabled(false);
 		} else if (amount > stack) {
-			btnPlus.setEnabled(false);
+			if (precisionRaiseMode) btnPlus.setEnabled(false);
 			currentRaise = stack;
 		} else {
-			// enable buttons in this state, both buttons can't be disabled in the same time
-			if (!btnMinus.isEnabled()) {
+			// if(precisionRaiseMode) enable buttons in this state, both buttons can't be disabled in the same time
+			if (precisionRaiseMode == false) {
+				// Do nothing
+			} else if (!btnMinus.isEnabled()) {
 				btnMinus.setEnabled(true);
 			} else if (!btnPlus.isEnabled()) {
 				btnPlus.setEnabled(true);
@@ -245,7 +276,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 
 	void onRaise(long raiseValue) {
 		if (mListener != null) {
-			mListener.onFragmentInteraction(raiseValue);
+			mListener.onRaiseConfirmed(raiseValue);
 		}
 	}
 
@@ -259,6 +290,12 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	@Override
 	public void onStopTrackingTouch(CircularSeekBar seekBar) {
 		// might be interesting the change the text to fold or raise ...
+		if (!precisionRaiseMode) {
+			// precisionRaiseMode is disabled dismiss the dialog right away and post the raise to the activity
+			mListener.onRaiseConfirmed(currentRaise);
+			dismiss();
+		}
+
 	}
 
 	@Override
@@ -276,7 +313,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnRaiseListener {
-		public void onFragmentInteraction(long raiseValue);
+		public void onRaiseConfirmed(long raiseValue);
 	}
 
 }
