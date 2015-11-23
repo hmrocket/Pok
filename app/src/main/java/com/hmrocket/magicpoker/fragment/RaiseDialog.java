@@ -1,7 +1,6 @@
 package com.hmrocket.magicpoker.fragment;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -28,6 +27,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 
 	private static final String ARG_AMOUNT_TO_CONTINUE = "amountToContinue";
 	private static final String ARG_STACK = "stack";
+	private static final String ARG_MIN_BET = "min_bet";
 	private static final DecimalFormat DF = new DecimalFormat("##.#");
 	/**
 	 * Last bet
@@ -37,6 +37,14 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * it's simply twice the amount to continue
 	 */
 	private long minRaise;
+	/**
+	 * Smallest bet to add
+	 */
+	private long minBet;
+	/**
+	 * Current raise amount (the current amount displayed on the top)
+	 */
+	private long currentRaise;
 	/**
 	 * Player stack value
 	 */
@@ -65,14 +73,18 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 *
 	 * @param amountToContinue amountToContinue to match
 	 * @param stack            Player's cash
+	 * @param minBet           Min Bet
 	 * @return A new instance of fragment RaiseDialog.
 	 */
-	public static RaiseDialog newInstance(long amountToContinue, long stack) {
+	public static RaiseDialog newInstance(long minBet, long stack, long amountToContinue) {
 		RaiseDialog fragment = new RaiseDialog();
 		Bundle args = new Bundle();
 		args.putLong(ARG_AMOUNT_TO_CONTINUE, amountToContinue);
 		args.putLong(ARG_STACK, stack);
+		args.getLong(ARG_MIN_BET, minBet);
 		fragment.setArguments(args);
+		// XXX if the dialog is large try android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth
+		fragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
 		return fragment;
 	}
 
@@ -102,13 +114,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			minRaise = amountToContinue * 2;
 			stack = getArguments().getLong(ARG_STACK);
 		}
-		//TODO  set theme
-		// setStyle();
-	}
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		return super.onCreateDialog(savedInstanceState);
 	}
 
 	@Override
@@ -121,8 +127,16 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		circularSeekBar = (CircularSeekBar) view.findViewById(R.id.circularSeekBar);
 		circularSeekBar.setOnSeekBarChangeListener(this);
 		// set init call amountToContinue
-		setRaise(amountToContinue, amountToContinue / stack, true);
+		setRaise(2 * amountToContinue);
 		return view;
+	}
+
+	public void setRaise(long raise) {
+		if (raise < 0) raise = 0;
+		else if (raise > stack) raise = stack;
+
+		setRaise(raise, raise * 100 / (float) stack, true);
+		setRaiseColor(raise);
 	}
 
 	/**
@@ -141,19 +155,6 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		txStack.setText(Util.formatNumber(stack - amount));
 		// set the percentage (center of the cercle)
 		txRaisePercentage.setText(DF.format(progress) + "%");
-	}
-
-	void onRaise(long raiseValue) {
-		if (mListener != null) {
-			mListener.onFragmentInteraction(raiseValue);
-		}
-	}
-
-	@Override
-	public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
-		long raiseValue = progress * stack / 100;
-		setRaiseColor(raiseValue);
-		setRaise(raiseValue, progress, false);
 	}
 
 	/**
@@ -191,6 +192,19 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		circularSeekBar.setPointerHaloColor(color25);
 		circularSeekBar.setPointerHaloColorOnTouch(color);
 		circularSeekBar.setPointerColor(color70);
+	}
+
+	void onRaise(long raiseValue) {
+		if (mListener != null) {
+			mListener.onFragmentInteraction(raiseValue);
+		}
+	}
+
+	@Override
+	public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
+		long raiseValue = progress * stack / 100;
+		setRaiseColor(raiseValue);
+		setRaise(raiseValue, progress, false);
 	}
 
 	@Override
