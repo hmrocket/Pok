@@ -137,6 +137,14 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (outState != null) {
+			outState.putLong("currentRaise", currentRaise);
+		}
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.dialog_raise_panel, container, false);
@@ -184,9 +192,18 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			});
 		}
 
-		// set init call amountToContinue
-		setRaise(2 * amountToContinue);
 		return view;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		// recover saved state
+		if (savedInstanceState != null) {
+			currentRaise = savedInstanceState.getLong("currentRaise", this.currentRaise);
+		}
+		// set currentRaise
+		setRaise(currentRaise);
 	}
 
 	/**
