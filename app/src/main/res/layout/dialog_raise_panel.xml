@@ -3,15 +3,48 @@
 			  xmlns:app="http://schemas.android.com/apk/res-auto"
 			  android:layout_width="match_parent"
 			  android:layout_height="wrap_content"
+			  android:background="@color/background_controller_grey"
 			  android:gravity="center"
 			  android:orientation="vertical">
 
-	<TextView
-		android:id="@+id/tx_raiseAmount"
-		android:layout_width="wrap_content"
+	<LinearLayout
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:text="100k"
-		android:textSize="28dp"/>
+		android:orientation="horizontal"
+		android:weightSum="3">
+
+		<Button
+			android:id="@+id/btn_plus"
+			style="?android:attr/borderlessButtonStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="+"
+			android:textColor="@drawable/textcolor_circle"
+			android:textSize="28dp"/>
+
+		<TextView
+			android:id="@+id/tx_raiseAmount"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:enabled="false"
+			android:gravity="center"
+			android:text="100k"
+			android:textColor="@drawable/textcolor_circle"
+			android:textSize="28dp"/>
+
+		<Button
+			android:id="@+id/btn_minus"
+			style="?android:attr/borderlessButtonStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="-"
+			android:textColor="@drawable/textcolor_circle"
+			android:textSize="28dp"/>
+	</LinearLayout>
+
 
 	<FrameLayout
 		android:layout_width="match_parent"
@@ -25,7 +58,6 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:layout_weight="1.88"
-			app:circle_color="@color/background_controller_grey"
 			app:circle_progress_color="@color/raise_70p"
 			app:end_angle="60"
 			app:pointer_color="@color/raise_70p"
@@ -39,8 +71,10 @@
 			android:layout_width="94dp"
 			android:layout_height="33dp"
 			android:layout_gravity="center"
+			android:enabled="false"
 			android:gravity="center"
 			android:text="22.5%"
+			android:textColor="@drawable/textcolor_circle"
 			android:textSize="28dp"/>
 
 		<TextView
@@ -48,8 +82,10 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal|bottom"
+			android:enabled="false"
 			android:gravity="center"
 			android:text="1.5M"
+			android:textColor="@drawable/textcolor_circle"
 			android:textSize="28dp"/>
 	</FrameLayout>
 

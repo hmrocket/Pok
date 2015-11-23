@@ -20,7 +20,7 @@
 		android:background="@drawable/allin_circle"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="ALL IN"
-		android:textColor="@android:color/white"/>
+		android:textColor="@drawable/textcolor_circle"/>
 
 	<Space
 		android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
 		android:background="@drawable/raise_circle"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="RAISE"
-		android:textColor="@android:color/white"/>
+		android:textColor="@drawable/textcolor_circle"/>
 
 	<!--This can be the amount to continue-->
 	<Space
@@ -52,7 +52,7 @@
 		android:background="@drawable/call_circle"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="CALL"
-		android:textColor="@android:color/white"/>
+		android:textColor="@drawable/textcolor_circle"/>
 
 	<Space
 		android:layout_width="wrap_content"

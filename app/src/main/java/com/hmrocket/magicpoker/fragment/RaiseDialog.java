@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.hmrocket.magicpoker.R;
@@ -66,6 +67,14 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 */
 	private TextView txAmount;
 	private OnRaiseListener mListener;
+	/**
+	 * The button to subtract Min bet to the current raise
+	 */
+	private Button btnMinus;
+	/**
+	 * The button to add Min bet to the current raise
+	 */
+	private Button btnPlus;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -81,7 +90,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		Bundle args = new Bundle();
 		args.putLong(ARG_AMOUNT_TO_CONTINUE, amountToContinue);
 		args.putLong(ARG_STACK, stack);
-		args.getLong(ARG_MIN_BET, minBet);
+		args.putLong(ARG_MIN_BET, minBet);
 		fragment.setArguments(args);
 		// XXX if the dialog is large try android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth
 		fragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
@@ -112,7 +121,9 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_CONTINUE);
 			// Raise amount must be at least the double
 			minRaise = amountToContinue * 2;
+			currentRaise = minRaise;
 			stack = getArguments().getLong(ARG_STACK);
+			minBet = getArguments().getLong(ARG_MIN_BET);
 		}
 
 	}
@@ -126,16 +137,38 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		txRaisePercentage = (TextView) view.findViewById(R.id.tx_raisePercentage);
 		circularSeekBar = (CircularSeekBar) view.findViewById(R.id.circularSeekBar);
 		circularSeekBar.setOnSeekBarChangeListener(this);
+		// set callback for + and - button
+		btnPlus = (Button) view.findViewById(R.id.btn_plus);
+		btnPlus.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// add the current raise
+				setRaise(currentRaise + minBet);
+			}
+		});
+		btnMinus = (Button) view.findViewById(R.id.btn_minus);
+		btnMinus.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// reduce the raise amount
+				setRaise(currentRaise - minBet);
+			}
+		});
+
 		// set init call amountToContinue
 		setRaise(2 * amountToContinue);
 		return view;
 	}
 
+	/**
+	 * Set all View related to the raise,
+	 * 1- including enable/disable minus plus button
+	 * 2- change the color the Circular SeekBar (fold, call, raise, allin)
+	 * 3- set 3 TextView amount, percentage, stack
+	 * @param raise amount to raise
+	 */
 	public void setRaise(long raise) {
-		if (raise < 0) raise = 0;
-		else if (raise > stack) raise = stack;
-
-		setRaise(raise, raise * 100 / (float) stack, true);
+		setRaise(raise, true);
 		setRaiseColor(raise);
 	}
 
@@ -143,17 +176,33 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * Set text of 3 TextViews the raise (top), percentage of the raise comparing to stack(center), stack left (bottom)
 	 *
 	 * @param amount               amount to continue
-	 * @param progress             percentage of the raise
 	 * @param updateCircleProgress if true update the value of the progress, circle progress remain unchanged otherwise
 	 */
-	protected void setRaise(long amount, float progress, boolean updateCircleProgress) {
+	protected void setRaise(long amount, boolean updateCircleProgress) {
+		if (amount < 0) {
+			currentRaise = 0;
+			btnMinus.setEnabled(false);
+		} else if (amount > stack) {
+			btnPlus.setEnabled(false);
+			currentRaise = stack;
+		} else {
+			// enable buttons in this state, both buttons can't be disabled in the same time
+			if (!btnMinus.isEnabled()) {
+				btnMinus.setEnabled(true);
+			} else if (!btnPlus.isEnabled()) {
+				btnPlus.setEnabled(true);
+			}
+			currentRaise = amount;
+		}
+		float progress = 100 * currentRaise / (float)stack;
+
 		// set the progress of the circle only if needed; when the user change the progress isn't needed to update it again
 		if (updateCircleProgress) circularSeekBar.setProgress((int) progress);
 		// set the text in the top
 		txAmount.setText(Util.formatNumber(amount));
 		// set the text on bottom
 		txStack.setText(Util.formatNumber(stack - amount));
-		// set the percentage (center of the cercle)
+		// set the percentage (center of the circle)
 		txRaisePercentage.setText(DF.format(progress) + "%");
 	}
 
@@ -204,7 +253,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
 		long raiseValue = progress * stack / 100;
 		setRaiseColor(raiseValue);
-		setRaise(raiseValue, progress, false);
+		setRaise(raiseValue, false);
 	}
 
 	@Override
