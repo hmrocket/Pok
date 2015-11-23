@@ -89,4 +89,44 @@
 			android:textSize="28dp"/>
 	</FrameLayout>
 
+	<!-- Add this tips either at the splash or Home screen or you can embadden here -->
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:enabled="false"
+		android:text="@string/tip_reraise_rule"
+		android:textColor="@drawable/textcolor_circle"
+		android:textSize="14dp"
+		android:visibility="gone"/>
+	<!-- Let called this Raise precision controller and it's activated by preference-->
+	<!-- For now after the user finish draging we input the value not confirmation waiting-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="5dp"
+		android:orientation="horizontal"
+		android:visibility="gone">
+
+		<Button
+			android:id="@+id/btn_ok"
+			style="?android:attr/borderlessButtonStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@android:string/ok"
+			android:textColor="@drawable/textcolor_circle"
+			android:textSize="20dp"/>
+
+		<Button
+			android:id="@+id/btn_cancel"
+			style="?android:attr/borderlessButtonStyle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@android:string/cancel"
+			android:textColor="@drawable/textcolor_circle"
+			android:textSize="20dp"/>
+
+	</LinearLayout>
+
 </LinearLayout>
