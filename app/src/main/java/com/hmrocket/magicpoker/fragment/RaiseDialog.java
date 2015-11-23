@@ -225,11 +225,19 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * @param updateCircleProgress if true update the value of the progress, circle progress remain unchanged otherwise
 	 */
 	protected void setRaise(long amount, boolean updateCircleProgress) {
-		if (amount < 0) {
+		if (amount <= 0) {
 			currentRaise = 0;
-			if (precisionRaiseMode) btnMinus.setEnabled(false);
-		} else if (amount > stack) {
-			if (precisionRaiseMode) btnPlus.setEnabled(false);
+			if (precisionRaiseMode) {
+				// jumping from 0 to 100 is possible so it best to check both button
+				btnMinus.setEnabled(false);
+				btnPlus.setEnabled(true);
+			}
+		} else if (amount >= stack) {
+			if (precisionRaiseMode) {
+				// jumping from 0 to 100 is possible so it best to check both button
+				btnPlus.setEnabled(false);
+				btnMinus.setEnabled(true);
+			}
 			currentRaise = stack;
 		} else {
 			// if(precisionRaiseMode) enable buttons in this state, both buttons can't be disabled in the same time
