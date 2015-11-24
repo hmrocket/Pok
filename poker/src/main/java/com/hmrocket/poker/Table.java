@@ -135,7 +135,7 @@ public class Table implements GameEvent {
 	}
 
 	@Override
-	public void onPreTurn(Player player, long amountToContinue) {
+	public void onPreTurn(Player player, Turn turn) {
 
 	}
 

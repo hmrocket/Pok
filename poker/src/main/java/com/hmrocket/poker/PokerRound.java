@@ -203,7 +203,7 @@ public class PokerRound extends Round {
 			// get the position of the player in this game
 			// we use dealerIndex and not Button cause button might be bigBlind at first not dealer
 			int playerPosition = getPosition(players, playerToStart, dealerIndex);
-			if (roundEvent != null) roundEvent.onPreTurn(playerToStart, turn.getAmountToContinue());
+			if (roundEvent != null) roundEvent.onPreTurn(playerToStart, turn);
 			turn.turnStarted(playerToStart, playerPosition);
 			playerToStart.play(turn); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
@@ -232,9 +232,9 @@ public class PokerRound extends Round {
 		 * Called by PokerRound before the player start his turn
 		 *
 		 * @param player           Player current turn
-		 * @param amountToContinue The bet amount to match or raise above
+		 * @param @param turn contains info about this turn like the last bet amount and the min raise amount
 		 */
-		void onPreTurn(Player player, long amountToContinue);
+		void onPreTurn(final Player player, final Turn turn);
 
 		/**
 		 * Called after the Player make a move (decision or move can be, fold, raise, call, check, all-in)

@@ -9,6 +9,7 @@ import com.hmrocket.poker.GameEvent;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Table;
+import com.hmrocket.poker.Turn;
 import com.hmrocket.poker.card.CommunityCards;
 
 import java.util.Set;
@@ -109,7 +110,7 @@ public class DataFragment extends Fragment {
 					gameEventListener.gameWinners((boolean)values[1], (Set<Player>) values[2]);
 					break;
 				case ON_PRE_TURN:
-					gameEventListener.onPreTurn((Player) values[1], (long) values[2]);
+					gameEventListener.onPreTurn((Player) values[1], (Turn) values[2]);
 					break;
 				case ON_TURN_ENDED:
 					gameEventListener.onTurnEnded((Player) values[1]);
@@ -150,8 +151,8 @@ public class DataFragment extends Fragment {
 		}
 
 		@Override
-		public void onPreTurn(Player player, long amountToContinue) {
-			publishProgress(ON_PRE_TURN, player, amountToContinue);
+		public void onPreTurn(Player player, Turn turn) {
+			publishProgress(ON_PRE_TURN, player, turn);
 		}
 
 		@Override

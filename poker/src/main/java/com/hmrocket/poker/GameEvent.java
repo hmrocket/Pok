@@ -34,9 +34,9 @@ public interface GameEvent {
 	 * Called by PokerRound before the player start his turn
 	 *
 	 * @param player           Player current turn
-	 * @param amountToContinue The bet amount to match or raise above
+	 * @param turn contains info about this turn like the last bet amount and the min raise amount
 	 */
-	void onPreTurn(Player player, long amountToContinue);
+	void onPreTurn(final Player player, final Turn turn);
 
 	/**
 	 * Called after the Player make a move (decision or move can be, fold, raise, call, check, all-in)

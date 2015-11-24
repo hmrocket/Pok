@@ -83,8 +83,8 @@ public class Game implements PokerRound.RoundEvent {
 	}
 
 	@Override
-	public void onPreTurn(Player player, long amountToContinue) {
-		gameEventListener.onPreTurn(player, amountToContinue);
+	public void onPreTurn(Player player, Turn turn) {
+		gameEventListener.onPreTurn(player, turn);
 	}
 
 	@Override

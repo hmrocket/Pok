@@ -12,6 +12,7 @@ import com.hmrocket.poker.GameEvent;
 import com.hmrocket.poker.HumanPlayer;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
+import com.hmrocket.poker.Turn;
 import com.hmrocket.poker.card.CommunityCards;
 
 import java.util.Set;
@@ -100,7 +101,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	}
 
 	@Override
-	public void onPreTurn(Player player, long amountToContinue) {
+	public void onPreTurn(Player player, Turn turn) {
 		if (player instanceof HumanPlayer) {
 			// activate controller panel
 			// TODO activate only possible commands
