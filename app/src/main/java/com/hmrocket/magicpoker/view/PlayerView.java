@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.hmrocket.magicpoker.Util;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.card.Hand;
 
+
 /**
  * @since 10/Nov/2015 - mhamed
  */
@@ -25,7 +27,14 @@ public class PlayerView extends RelativeLayout {
 	private CardView cardView1;
 	private CardView cardView2;
 	private ImageView profileImage;
+	/**
+	 * TextView represent the player cash
+	 */
 	private TextView txCash;
+	/**
+	 * Text on the top of the PlayerImage it contains either player's bet or player's name
+	 */
+	private TextView txInfo;
 
 	public PlayerView(Context context) {
 		super(context);
@@ -38,6 +47,8 @@ public class PlayerView extends RelativeLayout {
 		cardView1 = (CardView) findViewById(R.id.cardView1);
 		cardView2 = (CardView) findViewById(R.id.cardView2);
 		txCash = (TextView) findViewById(R.id.tx_cash);
+		txInfo = (TextView) findViewById(R.id.tx_info);
+
 	}
 
 	public PlayerView(Context context, AttributeSet attrs) {
@@ -108,5 +119,17 @@ public class PlayerView extends RelativeLayout {
 		}
 
 	}
+
+	/**
+	 * display info about player, If player's bet is 0 the view will show the name, the bet amount otherwise
+	 *
+	 * @param player player you would like to this veiw to represent
+	 */
+	public void setInfo(@NonNull Player player) {
+		if (player.getBet() > 0)
+			txInfo.setText(Long.toString(player.getBet()));
+		else txInfo.setText(player.getName());
+	}
+
 
 }
