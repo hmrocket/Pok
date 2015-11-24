@@ -199,6 +199,30 @@ public abstract class Player implements Comparable<Player> {
 	}
 
 	/**
+	 * This method will check if the amount fall under what status allin, Raise, Call, check, or Fold
+	 * <ul>
+	 * <li>It's an allin if the amount is equal to {@link #getBet() bet} + {@link #getCash() cash}</li>
+	 * <li>It's a raise/allin if the amount is higher or equal to MinRaise</li>
+	 * <li>It's a call/check/allin if the amount is lower than minRaise but higher than minCall</li>
+	 * <li>It's a fold otherwise</li>
+	 * </ul>
+	 * Note
+	 *
+	 * @param amount the bet amount
+	 * @param turn   object containing the <code>minRaiseAmount</code> and <code>minAmountToContinue</code>
+	 *               needed to decide which move is correct with that bet
+	 */
+	public void autoMove(long amount, Turn turn) {
+		if (amount >= bet + cash) {
+			allIn();
+		} else if (amount >= turn.getMinRaise()) {
+			raise(amount);
+		} else if (amount >= turn.getAmountToContinue()) {
+			call(turn.getAmountToContinue());
+		} else fold();
+	}
+
+	/**
 	 * Request an Action
 	 *
 	 * @param turn game stats and info related to the turn

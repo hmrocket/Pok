@@ -103,6 +103,15 @@ public class Turn {
 			this.pokerPosition = PokerPosition.getPosition(playerCount, position);
 	}
 
+	/**
+	 * The minimum amount of money a player need to put on the table to consider a raise
+	 *
+	 * @return 2 * {@link #getAmountToContinue() amountToContinue}
+	 */
+	public long getMinRaise() {
+		return 2 * amountToContinue;
+	}
+
 	public long getAmountToContinue() {
 		return amountToContinue;
 	}
