@@ -1,7 +1,7 @@
 package com.hmrocket.magicpoker.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * @since 10/Nov/2015 - mhamed
  */
-public class DataFragment extends Fragment {
+public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListener {
 
 	// Arguments
 	private static final String TABLE_CAPACITY = "table_capacity";
@@ -25,6 +25,8 @@ public class DataFragment extends Fragment {
 
 	private Table table;
 	private GameEvent gameEventListener;
+	private Player playerTurn;
+	private Turn turn;
 
 
 	public static DataFragment newInstance(int tableCapacity, long minBet) {
@@ -37,13 +39,13 @@ public class DataFragment extends Fragment {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onAttach(Context context) {
+		super.onAttach(context);
 		// GameEvent interface must be implemented by the activity
 		try {
-			gameEventListener = (GameEvent) activity;
+			gameEventListener = (GameEvent) context;
 		} catch (ClassCastException e) {
-			throw new ClassCastException(activity.toString()
+			throw new ClassCastException(context.toString()
 					+ " must implement GameEvent");
 		}
 		if (getArguments() == null) {
@@ -68,6 +70,24 @@ public class DataFragment extends Fragment {
 		// TODO load HumanPlayer info (no image)
 
 		// TODO add Bot around
+	}
+
+	public Table getTable() {
+		return table;
+	}
+
+	@Override
+	public void onRaiseConfirmed(long raiseValue) {
+		// the method is called on raise but the user can be called or checked or fold... bad naming lol
+		playerTurn.autoMove(raiseValue, turn);
+	}
+
+	public Player getPlayer() {
+		return playerTurn;
+	}
+
+	public Turn getTurn() {
+		return turn;
 	}
 
 	/**
@@ -152,11 +172,15 @@ public class DataFragment extends Fragment {
 
 		@Override
 		public void onPreTurn(Player player, Turn turn) {
+			DataFragment.this.turn = turn;
+			DataFragment.this.playerTurn = player;
 			publishProgress(ON_PRE_TURN, player, turn);
 		}
 
 		@Override
 		public void onTurnEnded(Player player) {
+			DataFragment.this.turn = null;
+			DataFragment.this.playerTurn = null;
 			publishProgress(ON_TURN_ENDED, player);
 		}
 
