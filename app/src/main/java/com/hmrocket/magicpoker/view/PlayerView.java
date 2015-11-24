@@ -68,7 +68,30 @@ public class PlayerView extends RelativeLayout {
 	}
 
 	/**
+	 * set the image of player
+	 * @param profileImage player image
+	 */
+	public void setProfileImage(final Bitmap profileImage) {
+		this.profileImage.setImageBitmap(profileImage);
+	}
+
+	/**
+	 * Update the PlayerView to reflect and represent the object Player
+	 *
+	 * @param player
+	 * @param faceUp specify if the card will e face up or down (covered or not)
+	 */
+	public void updateView(@NonNull Player player, boolean faceUp) {
+		setCash(player.getCash());
+		if (faceUp)
+			setHand(player.getHandHoldem() == null ? null : player.getHandHoldem().getHand());
+		setInfo(player);
+		setState(player.getState());
+	}
+
+	/**
 	 * set cash
+	 *
 	 * @param cash buy-in chips
 	 */
 	public void setCash(long cash) {
@@ -80,44 +103,12 @@ public class PlayerView extends RelativeLayout {
 	}
 
 	/**
-	 * set the image of player
-	 * @param profileImage player image
-	 */
-	public void setProfileImage(final Bitmap profileImage) {
-		this.profileImage.setImageBitmap(profileImage);
-	}
-
-	/**
 	 * set the CardView of PlayerView
 	 * @param hand two cards
 	 */
 	public void setHand(Hand hand) {
 		cardView1.setCard(hand.getCard1());
 		cardView2.setCard(hand.getCard2());
-	}
-
-	public void setState(Player.PlayerState playerState) {
-		// TODO implement better background colors
-		switch (playerState) {
-			case FOLD:
-				profileImage.setBackgroundColor(Color.RED);
-				break;
-			case RAISE:
-			case ALL_IN:
-				profileImage.setBackgroundColor(Color.YELLOW);
-				break;
-			case CALL:
-			case CHECK:
-				profileImage.setBackgroundColor(Color.GREEN);
-				break;
-			case ACTIVE:
-				profileImage.setBackgroundColor(Color.TRANSPARENT);
-				break;
-			default:
-				profileImage.setBackgroundColor(Color.LTGRAY);
-				break;
-		}
-
 	}
 
 	/**
@@ -131,5 +122,40 @@ public class PlayerView extends RelativeLayout {
 		else txInfo.setText(player.getName());
 	}
 
+	/**
+	 * set the PlayerView state
+	 * @param playerState Player's {@link com.hmrocket.poker.Player.PlayerState state}
+	 */
+	public void setState(Player.PlayerState playerState) {
+		switch (playerState) {
+			case FOLD:
+				profileImage.setBackground(getResources().getDrawable(R.drawable.fold_selector));
+				break;
+			case RAISE:
+				profileImage.setBackground(getResources().getDrawable(R.drawable.raise_selector));
+				break;
+			case ALL_IN:
+				profileImage.setBackground(getResources().getDrawable(R.drawable.allin_selector));
+				break;
+			case CALL:
+			case CHECK:
+				profileImage.setBackground(getResources().getDrawable(R.drawable.call_selector));
+				break;
+			case ACTIVE:
+				profileImage.setBackgroundColor(Color.TRANSPARENT);
+				break;
+			default:
+				profileImage.setBackgroundColor(Color.LTGRAY);
+				break;
+		}
 
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		for (int i = 0; i < getChildCount(); i++) {
+			getChildAt(i).setEnabled(enabled);
+		}
+	}
 }
