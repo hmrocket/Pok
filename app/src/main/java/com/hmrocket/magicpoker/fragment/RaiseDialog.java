@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.magicpoker.Util;
 import com.hmrocket.magicpoker.view.CircularSeekBar;
+import com.hmrocket.poker.Player;
+import com.hmrocket.poker.Turn;
 
 import java.text.DecimalFormat;
 
@@ -31,6 +33,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	private static final String ARG_STACK = "stack";
 	private static final String ARG_MIN_BET = "min_bet";
 	private static final DecimalFormat DF = new DecimalFormat("##.#");
+	private static final String ARG_MIN_RAISE = "min_raise";
 	/**
 	 * Last bet
 	 */
@@ -103,6 +106,27 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		return fragment;
 	}
 
+	/**
+	 * Use this factory method to create a new instance of
+	 * this fragment using the provided parameters.
+	 *
+	 * @param player needed to get Player's stack (cash + current bet)
+	 * @param turn   needed for MinBet, mim amount to match, min raise
+	 * @return A new instance of fragment RaiseDialog.
+	 */
+	public static RaiseDialog newInstance(Player player, Turn turn) {
+		RaiseDialog fragment = new RaiseDialog();
+		Bundle args = new Bundle();
+		args.putLong(ARG_AMOUNT_TO_CONTINUE, turn.getAmountToContinue());
+		args.putLong(ARG_MIN_RAISE, turn.getMinRaise());
+		args.putLong(ARG_STACK, player.getCash());
+		args.putLong(ARG_MIN_BET, turn.getMinBet());
+		fragment.setArguments(args);
+		// XXX if the dialog is large try android.R.style.Theme_DeviceDefault_Light_Dialog_MinWidth
+		fragment.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+		return fragment;
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -126,7 +150,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		if (getArguments() != null) {
 			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_CONTINUE);
 			// Raise amount must be at least the double
-			minRaise = amountToContinue * 2;
+			minRaise = getArguments().getLong(ARG_MIN_RAISE, amountToContinue * 2);
 			currentRaise = minRaise;
 			stack = getArguments().getLong(ARG_STACK);
 			minBet = getArguments().getLong(ARG_MIN_BET);
