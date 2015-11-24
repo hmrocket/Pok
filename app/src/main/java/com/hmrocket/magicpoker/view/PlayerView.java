@@ -78,7 +78,7 @@ public class PlayerView extends RelativeLayout {
 	/**
 	 * Update the PlayerView to reflect Player move (play)
 	 *
-	 * @param player
+	 * @param player player affected to this view
 	 */
 	public void updateView(@NonNull Player player) {
 		setCash(player.getCash());

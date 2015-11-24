@@ -73,6 +73,8 @@ public class CardView extends ImageView {
 
 	public void setCard(Card card) {
 		cardId = Util.getCardImageId(card);
+		if (!faceDown)
+			setImageResource(cardId);
 	}
 
 	/**
