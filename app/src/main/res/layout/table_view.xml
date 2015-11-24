@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:tools="http://schemas.android.com/tools"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent">
+				android:layout_height="match_parent"
+				tools:context=".view.TableView">
 
 	<ImageView
 		android:id="@+id/imageView"
@@ -40,15 +42,7 @@
 		android:layout_marginLeft="50dp"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
-		android:id="@+id/playerView4"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_centerHorizontal="true"
-		android:layout_marginTop="50dp"/>
-
-	<com.hmrocket.magicpoker.view.PlayerView
-		android:id="@+id/playerView5"
+		android:id="@+id/playerView6"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentEnd="true"
@@ -56,12 +50,12 @@
 		android:layout_alignTop="@+id/playerView3"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
-		android:id="@+id/playerView7"
+		android:id="@+id/playerView8"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignEnd="@+id/playerView5"
-		android:layout_alignParentBottom="true"
-		android:layout_alignRight="@+id/playerView5"/>
+		android:layout_alignEnd="@+id/playerView6"
+		android:layout_alignRight="@+id/playerView6"
+		android:layout_alignTop="@id/playerView1"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
 		android:id="@+id/playerView2"
@@ -72,11 +66,11 @@
 		android:layout_centerVertical="true"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
-		android:id="@+id/playerView6"
+		android:id="@+id/playerView7"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignEnd="@+id/playerView5"
-		android:layout_alignRight="@+id/playerView5"
+		android:layout_alignEnd="@+id/playerView6"
+		android:layout_alignRight="@+id/playerView6"
 		android:layout_alignTop="@+id/playerView2"/>
 
 	<com.hmrocket.magicpoker.view.PotView
@@ -93,4 +87,61 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true" />
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_toLeftOf="@+id/potView"
+		android:layout_toStartOf="@+id/potView"/>
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView5"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_toEndOf="@+id/potView"
+		android:layout_toRightOf="@+id/potView"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignEnd="@id/playerView7"
+		android:layout_alignRight="@id/playerView7"
+		android:layout_below="@+id/potView"
+		android:layout_toEndOf="@+id/playerView3"
+		android:layout_toRightOf="@+id/playerView3"
+		android:orientation="horizontal">
+
+		<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/cardView_communityCard0"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/view_communityCard0"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/view_communityCard1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/view_communityCard2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/view_communityCard3"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+
+		<com.hmrocket.magicpoker.view.CardView
+			android:id="@+id/view_communityCard4"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
 </RelativeLayout>
