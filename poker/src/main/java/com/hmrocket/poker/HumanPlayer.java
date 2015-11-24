@@ -7,15 +7,10 @@ import java.util.concurrent.CountDownLatch;
  */
 public class HumanPlayer extends Player {
 
-	private OnHumanTurn onHumanTurn;
 	private CountDownLatch latch;
 
-	public HumanPlayer(String name, long bankBalance, long cash, OnHumanTurn callback) {
+	public HumanPlayer(String name, long bankBalance, long cash) {
 		super(name, bankBalance, cash);
-		if (onHumanTurn == null)
-			throw new IllegalArgumentException("OnHumanTurn callback can't be null");
-
-		onHumanTurn = callback;
 		latch = new CountDownLatch(1);
 	}
 
@@ -56,7 +51,6 @@ public class HumanPlayer extends Player {
 
 	@Override
 	public void play(Turn turn) {
-		onHumanTurn.requestAction(turn.getAmountToContinue());
 		// block this call until human play (fold, call or raise..)
 		try {
 			latch.await();
@@ -65,7 +59,4 @@ public class HumanPlayer extends Player {
 		}
 	}
 
-	public interface OnHumanTurn {
-		public void requestAction(long amountToContinue);
-	}
 }
