@@ -76,15 +76,12 @@ public class PlayerView extends RelativeLayout {
 	}
 
 	/**
-	 * Update the PlayerView to reflect and represent the object Player
+	 * Update the PlayerView to reflect Player move (play)
 	 *
 	 * @param player
-	 * @param faceUp specify if the card will e face up or down (covered or not)
 	 */
-	public void updateView(@NonNull Player player, boolean faceUp) {
+	public void updateView(@NonNull Player player) {
 		setCash(player.getCash());
-		if (faceUp)
-			setHand(player.getHandHoldem() == null ? null : player.getHandHoldem().getHand());
 		setInfo(player);
 		setState(player.getState());
 	}
@@ -100,15 +97,6 @@ public class PlayerView extends RelativeLayout {
 		} else {
 			txCash.setText(Util.formatNumber(cash));
 		}
-	}
-
-	/**
-	 * set the CardView of PlayerView
-	 * @param hand two cards
-	 */
-	public void setHand(Hand hand) {
-		cardView1.setCard(hand.getCard1());
-		cardView2.setCard(hand.getCard2());
 	}
 
 	/**
@@ -151,11 +139,52 @@ public class PlayerView extends RelativeLayout {
 
 	}
 
+	/**
+	 * Update the PlayerView to reflect and represent the object Player
+	 *
+	 * @param player
+	 */
+	public void setPlayer(@NonNull Player player) {
+		setCash(player.getCash());
+		setInfo(player);
+		setState(player.getState());
+	}
+
+	/**
+	 * Flip hand cards
+	 */
+	public void showCards() {
+		cardView1.facedown(false);
+		cardView2.facedown(false);
+	}
+
+	/**
+	 * set the CardView of PlayerView
+	 * @param hand two cards
+	 */
+	public void setHand(Hand hand) {
+		if (hand != null) {
+			cardView1.setCard(hand.getCard1());
+			cardView2.setCard(hand.getCard2());
+		}
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		for (int i = 0; i < getChildCount(); i++) {
 			getChildAt(i).setEnabled(enabled);
 		}
+	}
+
+	/**
+	 * reset the PlayerView
+	 */
+	public void reset() {
+		cardView1.reset();
+		cardView2.reset();
+		txCash.setText("");
+		txInfo.setText("");
+		profileImage.setImageDrawable(null);
 	}
 }
