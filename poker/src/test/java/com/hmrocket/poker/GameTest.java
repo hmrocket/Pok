@@ -1,6 +1,7 @@
 package com.hmrocket.poker;
 
 import com.hmrocket.poker.ai.bot.RandBot;
+import com.hmrocket.poker.card.CommunityCards;
 
 import junit.framework.TestCase;
 
@@ -127,5 +128,40 @@ public class GameTest extends TestCase implements GameEvent {
 
 		winnersCount = Math.max(winnersCount, winners.size());
 		lastCalledOnce |= last;
+	}
+
+	@Override
+	public void onPreTurn(Player player, Turn turn) {
+
+	}
+
+	@Override
+	public void onTurnEnded(Player player) {
+
+	}
+
+	@Override
+	public void onRound(RoundPhase roundPhase) {
+
+	}
+
+	@Override
+	public void onBlindPosted(Player smallBlind, Player bigBlind) {
+
+	}
+
+	@Override
+	public void onShowdown(Set<Player> potentialWinners) {
+
+	}
+
+	@Override
+	public void onPotChanged(long potValue) {
+
+	}
+
+	@Override
+	public void onCommunityCardsChange(CommunityCards communityCards) {
+
 	}
 }

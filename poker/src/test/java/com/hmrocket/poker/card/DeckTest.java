@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by mhamed on 15-10-22.
@@ -85,10 +86,6 @@ public class DeckTest extends TestCase {
 		assertEquals("even if the card was drawn should be back", card, deck.drawCard());
 	}
 
-	public void testRepalceBurnedCard() throws Exception {
-		// is done with burn Card
-	}
-
 	public void testResetIgnoreBurns() throws Exception {
 		// draw 5 cards then resetIgnoreBurns no card should be lost
 		for (int i = 0; i < 5; i++) {
@@ -127,5 +124,69 @@ public class DeckTest extends TestCase {
 
 	public void testDealFlop() throws Exception {
 		// No need, if drawCard work this should work too
+	}
+
+
+	public void testReplaceBurnedCards() throws Exception {
+		// is done with burn Card
+	}
+
+	public void testBurn() throws Exception {
+		// same as testBurnCard
+	}
+
+	public void testDealHand() throws Exception {
+		// no test value
+	}
+
+	/**
+	 * 1- test init
+	 * 2- test after drew random number of cards
+	 * 3- test after burn random number of cards
+	 * 4-test after drew and burn random number of cards
+	 *
+	 * @throws Exception
+	 */
+	public void testGetLeftCardsCount() throws Exception {
+		//1
+		assertEquals(52, deck.getLeftCardsCount());
+		// 2
+		Random r = new Random();
+		int drew = r.nextInt(53);
+		for (int i = 0; i < drew; i++) {
+			deck.drawCard();
+		}
+		assertEquals(drew + " cards was drew but card left: " + deck.getLeftCardsCount(), 52 - drew, deck.getLeftCardsCount());
+
+		deck.reset();
+		assertEquals(52, deck.getLeftCardsCount());
+		// 3
+		Deck deck2 = new Deck();
+		int burn = r.nextInt(53);
+		for (int i = 0; i < burn; i++) {
+			deck.burn(deck2.drawCard());
+		}
+		assertEquals(burn + " cards was burn but card left: " + deck.getLeftCardsCount(), 52 - burn, deck.getLeftCardsCount());
+		deck.resetIgnoreBurns();
+		assertEquals(burn + " cards was burn but card left: " + deck.getLeftCardsCount(), 52 - burn, deck.getLeftCardsCount());
+		deck.reset();
+		assertEquals(52, deck.getLeftCardsCount());
+
+		// 4
+		deck2 = new Deck();
+		burn = r.nextInt(deck.getLeftCardsCount() + 1);
+		for (int i = 0; i < burn; i++) {
+			deck.burn(deck2.drawCard());
+		}
+		drew = r.nextInt(deck.getLeftCardsCount() + 1);
+		for (int i = 0; i < drew; i++) {
+			deck.drawCard();
+		}
+		assertEquals(burn + " cards was burn, " + drew + " drew, but card left: " + deck.getLeftCardsCount(), 52 - burn - drew, deck.getLeftCardsCount());
+		deck.replaceBurnedCards();
+		assertEquals(burn + " cards was burn, " + drew + " drew, but card left: " + deck.getLeftCardsCount(), 52 - drew, deck.getLeftCardsCount());
+
+
+
 	}
 }
