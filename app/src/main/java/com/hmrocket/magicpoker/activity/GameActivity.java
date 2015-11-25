@@ -75,7 +75,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 		// attach fragment data to the activity
 		dataFragment = (DataFragment) getFragmentManager().findFragmentByTag("game");
 		if (dataFragment == null) {
-			dataFragment = DataFragment.newInstance(9, 20);
+			dataFragment = DataFragment.newInstance(9, 2);
 			getFragmentManager().beginTransaction().add(dataFragment, "game").commit();
 			// DEBUG
 			//tableView.populate();
@@ -85,35 +85,48 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		// DEBUG
+		for (int i = 0; i < PLAYERS.size(); i++)
+			dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
+
+		dataFragment.startGame();
+	}
+
+
+	@Override
 	public void onClick(View v) {
 		// TODO handle onClick
 		switch (v.getId()) {
 			case R.id.btn_allin:
-				onRaiseConfirmed(dataFragment.getPlayer().getCash() + dataFragment.getPlayer().getBet());
+				dataFragment.getPlayer().allIn();
 				break;
 			case R.id.btn_raise:
-				// the Dialog fragment should represent just he add value no more, change onRaiseConfirmed to money added to the table
+				// the Dialog fragment should represent just he add value no more, change onRaiseDialogResult to money added to the table
 				//  show RaiseDialog
 				raiseDialog = RaiseDialog.newInstance(dataFragment.getPlayer(), dataFragment.getTurn());
 				raiseDialog.show(getFragmentManager(), null);
 				break;
 			case R.id.btn_call:
 				// call or check
-				onRaiseConfirmed(dataFragment.getTurn().getAmountToContinue());
+				dataFragment.getPlayer().call(dataFragment.getTurn().getAmountToContinue());
 				break;
 			case R.id.btn_fold:
-				onRaiseConfirmed(-1);
+				dataFragment.getPlayer().fold();
 				break;
 		}
 	}
 
 	@Override
-	public void onRaiseConfirmed(long raiseValue) {
+	public void onRaiseDialogResult(long raiseValue) {
 		// disable panel controller
 		for (Button btn : btnController)
 			btn.setEnabled(false);
 
-		// TODO dispatch HumanPlayer action
+		// dispatch HumanPlayer action
+		// the method is called on raise but the user can be called or checked or fold..
+		dataFragment.getPlayer().autoMove(raiseValue, dataFragment.getTurn());
 	}
 
 	@Override
@@ -138,7 +151,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			// activate only possible commands
 			btnController[0].setEnabled(true); //AllIn
 			btnController[3].setEnabled(true); //Fold
-			if (player.getCash() * player.getBet() > turn.getMinBet()) {
+			if (player.getCash() + player.getBet() > turn.getMinBet()) {
 				// Raise/Call cmd enabled only if the player has above the minBet (if it's equal then only allin/Fold activated)
 				btnController[1].setEnabled(true); // Raise
 				btnController[2].setEnabled(true); // Call

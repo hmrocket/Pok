@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * @since 10/Nov/2015 - mhamed
  */
-public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListener {
+public class DataFragment extends Fragment {
 
 	// Arguments
 	private static final String TABLE_CAPACITY = "table_capacity";
@@ -92,11 +92,6 @@ public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListene
 
 	public void startGame() {
 		new GameService().execute();
-	}
-	@Override
-	public void onRaiseConfirmed(long raiseValue) {
-		// the method is called on raise but the user can be called or checked or fold... bad naming lol
-		playerTurn.autoMove(raiseValue, turn);
 	}
 
 	public Player getPlayer() {

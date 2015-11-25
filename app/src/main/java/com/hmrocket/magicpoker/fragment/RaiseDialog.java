@@ -206,7 +206,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			view.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					mListener.onRaiseConfirmed(currentRaise);
+					mListener.onRaiseDialogResult(currentRaise);
 					dismiss();
 				}
 			});
@@ -326,11 +326,6 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		circularSeekBar.setPointerColor(color70);
 	}
 
-	void onRaise(long raiseValue) {
-		if (mListener != null) {
-			mListener.onRaiseConfirmed(raiseValue);
-		}
-	}
 
 	@Override
 	public void onProgressChanged(CircularSeekBar circularSeekBar, int progress, boolean fromUser) {
@@ -344,7 +339,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		// might be interesting the change the text to fold or raise ...
 		if (!precisionRaiseMode) {
 			// precisionRaiseMode is disabled dismiss the dialog right away and post the raise to the activity
-			mListener.onRaiseConfirmed(currentRaise);
+			mListener.onRaiseDialogResult(currentRaise);
 			dismiss();
 		}
 
@@ -365,7 +360,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnRaiseListener {
-		public void onRaiseConfirmed(long raiseValue);
+		public void onRaiseDialogResult(long raiseValue);
 	}
 
 }
