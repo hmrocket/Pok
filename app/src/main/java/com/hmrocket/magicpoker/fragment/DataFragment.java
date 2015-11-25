@@ -48,11 +48,6 @@ public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListene
 			throw new ClassCastException(context.toString()
 					+ " must implement GameEvent");
 		}
-		if (getArguments() == null) {
-			table = new Table(9, 20);
-		} else {
-			table = new Table(getArguments().getInt(TABLE_CAPACITY), getArguments().getLong(MIN_BET));
-		}
 	}
 
 	// this method is only called once for this fragment
@@ -62,6 +57,11 @@ public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListene
 		// retain this fragment
 		setRetainInstance(true);
 
+		if (getArguments() == null) {
+			table = new Table(9, 20);
+		} else {
+			table = new Table(getArguments().getInt(TABLE_CAPACITY), getArguments().getLong(MIN_BET));
+		}
 		// Populate table
 		populateTable();
 	}
@@ -114,6 +114,12 @@ public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListene
 
 			// TODO save data after everyGame
 			return null;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			table.setGameEventListener(this);
 		}
 
 		@Override

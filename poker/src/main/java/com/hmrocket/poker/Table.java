@@ -18,6 +18,7 @@ public class Table implements GameEvent {
     private int dealer;
     private Game game;
     private long minBet;
+	private GameEvent lisGameEvent;
 
 	/**
 	 * Create a poker Table
@@ -115,10 +116,20 @@ public class Table implements GameEvent {
 		return playersInGame;
 	}
 
+	/**
+	 * Set a GameEvent listener
+	 *
+	 * @param lisGameEvent
+	 */
+	public void setGameEventListener(GameEvent lisGameEvent) {
+		this.lisGameEvent = lisGameEvent;
+	}
+
 	@Override
 	public void gameEnded() {
 		// Update the list of players of this new hand
 		//startGame();
+		if (lisGameEvent != null) lisGameEvent.gameEnded();
 	}
 
     @Override
@@ -127,46 +138,49 @@ public class Table implements GameEvent {
         Iterator<Player> iterator = playersBusted.iterator();
         while (iterator.hasNext())
             removePlayer(iterator.next());
+
+		if (lisGameEvent != null) lisGameEvent.playerBusted(playersBusted);
 	}
 
 	@Override
 	public void gameWinners(boolean last, Set<Player> winners) {
 		// Table just need a callback when a player doesn't have enough money to bet and should be removed from the table
+		if (lisGameEvent != null) lisGameEvent.gameWinners(last, winners);
 	}
 
 	@Override
 	public void onPreTurn(Player player, Turn turn) {
-
+		if (lisGameEvent != null) lisGameEvent.onPreTurn(player, turn);
 	}
 
 	@Override
 	public void onTurnEnded(Player player) {
-
+		if (lisGameEvent != null) lisGameEvent.onTurnEnded(player);
 	}
 
 	@Override
 	public void onRound(RoundPhase roundPhase) {
-
+		if (lisGameEvent != null) lisGameEvent.onRound(roundPhase);
 	}
 
 	@Override
 	public void onBlindPosted(Player smallBlind, Player bigBlind) {
-
+		if (lisGameEvent != null) lisGameEvent.onBlindPosted(smallBlind, bigBlind);
 	}
 
 	@Override
 	public void onShowdown(Set<Player> potentialWinners) {
-
+		if (lisGameEvent != null) lisGameEvent.onShowdown(potentialWinners);
 	}
 
 	@Override
 	public void onPotChanged(long potValue) {
-
+		if (lisGameEvent != null) lisGameEvent.onPotChanged(potValue);
 	}
 
 	@Override
 	public void onCommunityCardsChange(CommunityCards communityCards) {
-
+		if (lisGameEvent != null) lisGameEvent.onCommunityCardsChange(communityCards);
 	}
 
 	/**
