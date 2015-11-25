@@ -29,7 +29,7 @@ import java.text.DecimalFormat;
  */
 public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCircularSeekBarChangeListener {
 
-	private static final String ARG_AMOUNT_TO_CONTINUE = "amountToContinue";
+	private static final String ARG_AMOUNT_TO_ADD = "amountToContinue";
 	private static final String ARG_STACK = "stack";
 	private static final String ARG_MIN_BET = "min_bet";
 	private static final DecimalFormat DF = new DecimalFormat("##.#");
@@ -89,15 +89,15 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * Use this factory method to create a new instance of
 	 * this fragment using the provided parameters.
 	 *
-	 * @param amountToContinue amountToContinue to match
+	 * @param amountToAdd amountToAdd to match amountToContinue
 	 * @param stack            Player's cash
 	 * @param minBet           Min Bet
 	 * @return A new instance of fragment RaiseDialog.
 	 */
-	public static RaiseDialog newInstance(long minBet, long stack, long amountToContinue) {
+	public static RaiseDialog newInstance(long minBet, long stack, long amountToAdd) {
 		RaiseDialog fragment = new RaiseDialog();
 		Bundle args = new Bundle();
-		args.putLong(ARG_AMOUNT_TO_CONTINUE, amountToContinue);
+		args.putLong(ARG_AMOUNT_TO_ADD, amountToAdd);
 		args.putLong(ARG_STACK, stack);
 		args.putLong(ARG_MIN_BET, minBet);
 		fragment.setArguments(args);
@@ -117,8 +117,11 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	public static RaiseDialog newInstance(Player player, Turn turn) {
 		RaiseDialog fragment = new RaiseDialog();
 		Bundle args = new Bundle();
-		args.putLong(ARG_AMOUNT_TO_CONTINUE, turn.getAmountToContinue());
-		args.putLong(ARG_MIN_RAISE, turn.getMinRaise());
+		// we will show the player the amount he must add to continue and not the amount to continue
+		args.putLong(ARG_AMOUNT_TO_ADD, turn.getAmountToContinue() - player.getBet());
+		// we will show the player the amount he must add to be considered a raise
+		args.putLong(ARG_MIN_RAISE, turn.getMinRaise() - player.getBet());
+		// current stack and not the cash + bet
 		args.putLong(ARG_STACK, player.getCash());
 		args.putLong(ARG_MIN_BET, turn.getMinBet());
 		fragment.setArguments(args);
@@ -148,7 +151,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_CONTINUE);
+			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_ADD);
 			// Raise amount must be at least the double
 			minRaise = getArguments().getLong(ARG_MIN_RAISE, amountToContinue * 2);
 			currentRaise = minRaise;

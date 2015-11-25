@@ -88,11 +88,11 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 		// TODO handle onClick
 		switch (v.getId()) {
 			case R.id.btn_allin:
-				// FIXME the Dialog fragment sould represent just he add value no more, change onRaiseConfirmed to money added to the table
 				onRaiseConfirmed(dataFragment.getPlayer().getCash() + dataFragment.getPlayer().getBet());
 				break;
 			case R.id.btn_raise:
-				//  show RaiseDialg
+				// the Dialog fragment should represent just he add value no more, change onRaiseConfirmed to money added to the table
+				//  show RaiseDialog
 				raiseDialog = RaiseDialog.newInstance(dataFragment.getPlayer(), dataFragment.getTurn());
 				raiseDialog.show(getFragmentManager(), null);
 				break;
