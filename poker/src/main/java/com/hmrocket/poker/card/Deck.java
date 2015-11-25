@@ -76,6 +76,13 @@ public class Deck {
 	}
 
 	/**
+	 * @return number of card that are left in the deck
+	 */
+	public int getLeftCardsCount() {
+		return cards.size() - drawn;
+	}
+
+	/**
 	 * Draw the Top Card
 	 * @return Top Card of the Deck, <code>null</code> if the Deck is empty
 	 */
@@ -87,11 +94,21 @@ public class Deck {
 	}
 
 	/**
-	 * Deal three Card at once
-	 *
+	 * Deal three Card at once.
+	 * Note: no checking if deck has less three cards.
 	 * @return Flop
 	 */
 	public Flop dealFlop() {
 		return new Flop(drawCard(), drawCard(), drawCard());
-    }
+	}
+
+	/**
+	 * Deal a hand (two cards).
+	 * Note: No checking, if deck has less two card.
+	 *
+	 * @return Hand constructed from two top cards of the Deck
+	 */
+	public Hand dealHand() {
+		return new Hand(drawCard(), drawCard());
+	}
 }
