@@ -76,6 +76,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 		dataFragment = (DataFragment) getFragmentManager().findFragmentByTag("game");
 		if (dataFragment == null) {
 			dataFragment = DataFragment.newInstance(9, 20);
+			getFragmentManager().beginTransaction().add(dataFragment, "game").commit();
 			// DEBUG
 			//tableView.populate();
 		}

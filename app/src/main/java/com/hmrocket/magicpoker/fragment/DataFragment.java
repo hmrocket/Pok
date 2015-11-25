@@ -1,5 +1,6 @@
 package com.hmrocket.magicpoker.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -50,6 +51,19 @@ public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListene
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	@Override
+	public void onAttach(Activity context) {
+		super.onAttach(context);
+		// GameEvent interface must be implemented by the activity
+		try {
+			gameEventListener = (GameEvent) context;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(context.toString()
+					+ " must implement GameEvent");
+		}
+	}
+
 	// this method is only called once for this fragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +90,9 @@ public class DataFragment extends Fragment implements RaiseDialog.OnRaiseListene
 		return table;
 	}
 
+	public void startGame() {
+		new GameService().execute();
+	}
 	@Override
 	public void onRaiseConfirmed(long raiseValue) {
 		// the method is called on raise but the user can be called or checked or fold... bad naming lol
