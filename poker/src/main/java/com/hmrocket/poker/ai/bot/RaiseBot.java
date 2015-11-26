@@ -23,8 +23,9 @@ public class RaiseBot extends Player {
 		if (maxAddBet <= 0) {
 			fold();
 		} else {
-			long betAdd = random.nextInt((int) maxAddBet) + 1;
-			raise(betAdd + turn.getAmountToContinue());
+			long maxReRaiseBet = (cash + bet) - turn.getMinRaise();
+			long betAdd = maxReRaiseBet <= 0 ? 0 : random.nextInt((int) maxReRaiseBet) + 1;
+			raise(betAdd + turn.getMinRaise());
 		}
 	}
 }

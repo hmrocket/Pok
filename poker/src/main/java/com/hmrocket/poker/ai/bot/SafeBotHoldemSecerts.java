@@ -160,7 +160,7 @@ public class SafeBotHoldemSecerts extends SafeBot {
 	}
 
 	protected void raCa(Turn turn) {
-		long raiseAny = 3 * turn.getMinBet() + random.nextInt((int) cash);
+		long raiseAny = 3 * turn.getMinRaise() + random.nextInt((int) cash);
 		if (raiseAny > turn.getAmountToContinue())
 			raise(raiseAny);
 		else call(turn.getAmountToContinue());
@@ -182,7 +182,7 @@ public class SafeBotHoldemSecerts extends SafeBot {
 
 	protected void c3Ca(Turn turn) {
 		long raise = 4 * turn.getMinBet();
-		if (raise > turn.getAmountToContinue())
+		if (raise >= turn.getMinRaise())
 			raise(raise);
 		else call(turn.getAmountToContinue());
 	}
@@ -196,7 +196,7 @@ public class SafeBotHoldemSecerts extends SafeBot {
 
 	protected void r2Ca(Turn turn) {
 		long raise = 3 * turn.getMinBet();
-		if (raise > turn.getAmountToContinue())
+		if (raise >= turn.getMinRaise())
 			raise(raise);
 		else call(turn.getAmountToContinue());
 	}

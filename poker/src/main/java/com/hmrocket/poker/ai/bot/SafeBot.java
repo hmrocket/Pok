@@ -118,7 +118,9 @@ public class SafeBot extends Player {
 	protected long calculateRaise(Turn turn) {
 		// here where aggressive attribute will play role
 		// but SafeBot has aggression 0
-		return Math.max(turn.getAmountToContinue() * 3 + turn.getMinBet(), turn.getPotValue() / 4);
+		long raise = Math.max(turn.getAmountToContinue() * 3 + turn.getMinBet(), turn.getPotValue() / 4);
+		// make sure that the raise is higher than MinRaise
+		return Math.max(raise, turn.getMinRaise());
 	}
 
 	// Not used: https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials // SUCKS

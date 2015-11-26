@@ -90,7 +90,7 @@ public class Bot extends Player {
 	}
 
 	/**
-	 * based on the hand percentage and the amount to continue (added bet = calculateRaiseStyle)
+	 * based on the hand percentage and the amount to continue (added bet = calculateAddRaiseStyle)
 	 *
 	 * @param turn
 	 * @param winPercentage using HandOdds (MontCarlo) determine winPercentage
@@ -278,13 +278,13 @@ public class Bot extends Player {
 	}
 
 	/**
-	 * Calculate the Average raise amount for a certain citation
+	 * Calculate the Average added raise amount for a certain situation
 	 *
 	 * @param turn    turnStat needed to calculate the bet (for example (4+limpersCount)*minRaise )
 	 * @param betType why are we raising ? (this is important
 	 * @return
 	 */
-	private long calculateRawRaise(Turn turn, BetType betType) {
+	private long calculateAddRawRaise(Turn turn, BetType betType) {
 		// determine the rawBet,
 		long bet1 = 0;
 		long bet2 = 0;
@@ -315,10 +315,11 @@ public class Bot extends Player {
 	}
 
 	/**
+	 * calculate added raise character from a raw added raise
 	 * @param rawBet represent the bet without taking account of bot aggressive character
 	 * @return bet taking care of the agressive character
 	 */
-	private long calculateRaiseStyle(long rawBet) {
+	private long calculateAddRaiseStyle(long rawBet) {
 		// here where aggressive attribute will play role
 		// XXX generate a formula that use aggressive playingStyle
 		return (long) (rawBet * (playingStyle.getAggressive() + 1));
@@ -360,7 +361,7 @@ public class Bot extends Player {
 		int callPercentageTHold = 1 + mistake / 2;
 		if (percentage >= raisePercentageTHold) {
 			// 85% raise if mistake = 0, (85 - mistake/2)%
-			super.raise(calculateRaise(turn, betStyle) + bet);
+			super.raise(calculateRaise(turn, betStyle));
 		} else if (percentage >= callPercentageTHold) {
 			// 14% call if mistake = 0 (14 + mistake/2)%
 			super.call(turn.getAmountToContinue());
@@ -388,7 +389,7 @@ public class Bot extends Player {
 			super.call(turn.getAmountToContinue());
 		} else if (percentage >= raisePercentageTHold) {
 			// 14% call if mistake = 0 (14 + mistake/2)%
-			super.raise(calculateRaise(turn, BetType.STEAL) + bet);
+			super.raise(calculateRaise(turn, BetType.STEAL));
 		} else {
 			// 5% ==> 100 - 85 - 10 - 5 = 0, higher or equal to 0 it's a fold
 			// 5% fold if mistake = 0, (5 + mistake/2)%
@@ -397,7 +398,9 @@ public class Bot extends Player {
 	}
 
 	private long calculateRaise(Turn turn, BetType betStyle) {
-		return calculateRaiseStyle(calculateRawRaise(turn, betStyle));
+		// we make sure that the raise is minRaise or higher
+		//
+		return Math.max(turn.getMinRaise(), bet + calculateAddRaiseStyle(calculateAddRawRaise(turn, betStyle)));
 	}
 
 	/**
@@ -419,7 +422,7 @@ public class Bot extends Player {
 			super.fold();
 		} else if (percentage >= raisePercentageTHold) {
 			// 5% raise if mistake = 0 (5 + mistake/2)%
-			super.raise(calculateRaise(turn, BetType.BLUFF) + bet);
+			super.raise(calculateRaise(turn, BetType.BLUFF));
 		} else {
 			// 1% call if mistake = 0, (1 + mistake/2)%
 			super.call(turn.getAmountToContinue());

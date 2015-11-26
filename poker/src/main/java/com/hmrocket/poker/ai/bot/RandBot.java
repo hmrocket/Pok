@@ -29,7 +29,7 @@ public class RandBot extends Player {
 				else if (amountToContinue == raiseAmount)
 					call(amountToContinue);
 				else {
-					raise(raiseAmount);
+					raise(Math.max(raiseAmount, turn.getMinRaise()));
 					amountToContinue = raiseAmount;
 				}
 				break;
