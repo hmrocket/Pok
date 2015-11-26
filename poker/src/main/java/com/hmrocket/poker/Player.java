@@ -60,10 +60,10 @@ public abstract class Player implements Comparable<Player> {
     public int compareTo(Player o) {
 		if (handHoldem == null && o.handHoldem == null || isOut() && o.isOut())
 			return 0; // return 0 if both player has not hands or both of them folded
-        else if (this.isOut()) // lose automatically if he folded
-            return -1;
-        else if (o.isOut()) // lose automatically if he folded
-            return 1;
+		else if (handHoldem == null || this.isOut()) // lose automatically if he folded
+			return -1;
+		else if (o.handHoldem == null || o.isOut()) // lose automatically if he folded
+			return 1;
 		return handHoldem.compareTo(o.handHoldem);
 	}
 

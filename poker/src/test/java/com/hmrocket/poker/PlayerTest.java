@@ -147,10 +147,11 @@ public class PlayerTest extends TestCase {
 		//3
 		player.allIn();
 		assertFalse(player.didRaise(cash));
-		assertFalse(player.didRaise(cash + 1 + new Random().nextInt()));
+		int r = Math.abs(new Random().nextInt());
+		assertFalse("random :" + r, player.didRaise(cash + 1 + r));
 		//4
 		assertTrue(player.didRaise(cash - 1));
-		assertTrue(player.didRaise(cash - 1 - new Random().nextInt()));
+		assertTrue("random :" + r, player.didRaise(cash - 1 - r));
 		//5
 		player.addCash(cash);
 		player.raise(cash / 2);
