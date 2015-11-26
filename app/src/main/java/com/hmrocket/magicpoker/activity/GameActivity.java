@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.hmrocket.magicpoker.R;
+import com.hmrocket.magicpoker.Util;
 import com.hmrocket.magicpoker.fragment.DataFragment;
 import com.hmrocket.magicpoker.fragment.RaiseDialog;
 import com.hmrocket.magicpoker.view.TableView;
@@ -62,11 +63,12 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 
 
 		// set Layout controller
-		btnController = new Button[4];
+		btnController = new Button[5];
 		btnController[0] = (Button) findViewById(R.id.btn_allin);
 		btnController[1] = (Button) findViewById(R.id.btn_raise);
 		btnController[2] = (Button) findViewById(R.id.btn_call);
 		btnController[3] = (Button) findViewById(R.id.btn_fold);
+		btnController[4] = (Button) findViewById(R.id.btn_start_skip_info);
 		for (Button btn : btnController) {
 			btn.setOnClickListener(this);
 		}
@@ -87,11 +89,6 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// DEBUG
-		for (int i = 0; i < PLAYERS.size(); i++)
-			dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
-
-		dataFragment.startGame();
 	}
 
 
@@ -115,6 +112,13 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			case R.id.btn_fold:
 				dataFragment.getPlayer().fold();
 				break;
+			case R.id.btn_start_skip_info:
+				// XXX DEBUG
+				for (int i = 0; i < PLAYERS.size(); i++)
+					dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
+				// XXX DEBUG
+				dataFragment.startGame();
+				break;
 		}
 	}
 
@@ -131,7 +135,9 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 
 	@Override
 	public void gameEnded() {
-		// TODO ask the player if he would like to continue playing
+		// ask the player if he would like to continue playing
+		btnController[4].setEnabled(true);
+		btnController[4].setText(R.string.start);
 	}
 
 	@Override
@@ -156,6 +162,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				btnController[1].setEnabled(true); // Raise
 				btnController[2].setEnabled(true); // Call
 			}
+			btnController[4].setText(Util.formatNumber(turn.getAmountToContinue() - player.getBet()));
 			//
 		}
 		// TODO animate PlayerView
@@ -170,12 +177,23 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			btnController[1].setEnabled(false); // raise
 			btnController[2].setEnabled(false); // call
 			btnController[3].setEnabled(false); //Fold
+			if (player.isOut()) {
+				// TODO implement skip by disabling animation and task delays
+				btnController[4].setEnabled(true);
+				btnController[4].setText(R.string.skip);
+			} else {
+				// remove info (amount to add to continue
+				btnController[4].setText(null);
+			}
 		}
 	}
 
 	@Override
 	public void onRound(RoundPhase roundPhase) {
 		// TODO animate card dealing on PRE_FLOP and Toast roundPhase name
+		if (roundPhase == RoundPhase.PRE_FLOP) {
+			tableView.populate(PLAYERS);
+		}
 	}
 
 	@Override

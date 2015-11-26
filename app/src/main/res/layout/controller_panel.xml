@@ -14,6 +14,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="8dp"
 		android:layout_weight="1"
+		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="ALL IN"
 		android:textColor="@drawable/allin_selector"/>
@@ -24,15 +25,20 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
+		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="RAISE"
 		android:textColor="@drawable/raise_selector"/>
 
 	<!--This can be the amount to continue-->
-	<Space
+	<Button
+		android:id="@+id/btn_start_skip_info"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"/>
+		android:layout_weight="1"
+		android:gravity="center"
+		android:text="@string/start"
+		android:textColor="@drawable/textcolor_circle"/>
 
 	<Button
 		android:id="@+id/btn_call"
@@ -40,6 +46,7 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
+		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="CALL"
 		android:textColor="@drawable/call_selector"/>
@@ -51,6 +58,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginRight="8dp"
 		android:layout_weight="1"
+		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="FOLD"
 		android:textColor="@drawable/fold_selector"/>
