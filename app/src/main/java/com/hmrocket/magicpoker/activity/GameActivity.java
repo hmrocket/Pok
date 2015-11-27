@@ -56,6 +56,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 
 
 		// Hide Navigation and status bar
+		// FIXME keep Navigation and status bar for android-18 and below
 		getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 				| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -119,6 +120,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				for (int i = 0; i < PLAYERS.size(); i++)
 					dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
 				// XXX DEBUG
+				tableView.clear();
 				dataFragment.startGame();
 				break;
 		}
