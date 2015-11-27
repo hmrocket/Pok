@@ -69,12 +69,15 @@ public class Game implements PokerRound.RoundEvent {
 			switch (phase) {
 				case PRE_FLOP:
 					communityCards.setFlop(deck.dealFlop());
+					gameEventListener.onCommunityCardsChange(communityCards);
 					break;
 				case FLOP:
 					communityCards.setTurn(deck.drawCard());
+					gameEventListener.onCommunityCardsChange(communityCards);
 					break;
 				case TURN:
 					communityCards.setRiver(deck.drawCard());
+					gameEventListener.onCommunityCardsChange(communityCards);
 					break;
 				case RIVER: // Game ended // the game not always ends here !
 					showdown();
