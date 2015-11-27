@@ -20,33 +20,35 @@ public class CardView extends ImageView {
 
 	public CardView(Context context) {
 		super(context);
-		init();
+		init(true);
 	}
 
 	/**
 	 * set the default state of the CardView which is no image card and facedown is set to true
+	 *
+	 * @param facedown false CardView by default will be show, otherwise backcover will be shown by default
 	 */
-	protected void init() {
+	protected void init(boolean facedown) {
 		cardId = -1;
 		// by default No card is shown and show the card facedown
-		faceDown = true;
+		faceDown = facedown;
 		setImageBitmap(null);
 	}
 
 	public CardView(Context context, AttributeSet attributeset) {
 		super(context, attributeset);
-		init();
+		init(true);
 	}
 
 	public CardView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		init();
+		init(true);
 	}
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public CardView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
-		init();
+		init(true);
 	}
 
 	/**
@@ -56,11 +58,12 @@ public class CardView extends ImageView {
 	 */
 	public void facedown(boolean facedown) {
 		// do not update CardView if the states match or there's no card id
-		if (facedown == this.faceDown || cardId == -1) {
-			faceDown = facedown;
+		if (facedown == this.faceDown) {
 			return;
-		} else
-			this.faceDown = facedown;
+		}
+		this.faceDown = facedown;
+		if (cardId == -1)
+			return; // no card set yet
 
 		if (!facedown) {
 			// setImageResource ==> reading and decoding on the UI thread
@@ -93,10 +96,10 @@ public class CardView extends ImageView {
 	}
 
 	/**
-	 * Reset the CardView
+	 * Reset the CardView by removing the image but keep faceDown attribute
 	 */
 	public void reset() {
-		init();
+		init(faceDown);
 	}
 }
 

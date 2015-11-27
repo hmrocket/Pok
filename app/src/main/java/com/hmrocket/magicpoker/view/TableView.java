@@ -179,7 +179,6 @@ public class TableView extends RelativeLayout {
 	public void clear() {
 		potView.setAmount(0);
 		for (CardView cardView : cardViews) {
-			cardView.setVisibility(INVISIBLE);
 			cardView.reset();
 		}
 		for (PlayerView p : playerViews) {
