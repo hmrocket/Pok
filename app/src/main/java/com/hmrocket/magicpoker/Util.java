@@ -58,6 +58,9 @@ public final class Util {
 	}
 
 	public static int getCardImageId(Card card) {
+		if (card == null)
+			return R.mipmap.backcover;
+
 		switch (card.getRank()) {
 			case ACE:
 				switch (card.getSuit()) {

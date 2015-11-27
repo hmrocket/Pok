@@ -55,20 +55,17 @@ public class CardView extends ImageView {
 	 * @param facedown true show card face down, show card face up otherwise
 	 */
 	public void facedown(boolean facedown) {
-		// do not update CardView if the states match
-		if (facedown == this.faceDown && cardId != -1)
+		// do not update CardView if the states match or there's no card id
+		if (facedown == this.faceDown || cardId == -1) {
+			faceDown = facedown;
 			return;
-		else
+		} else
 			this.faceDown = facedown;
 
 		if (!facedown) {
-			if (this.cardId != -1) {
-				// setImageResource ==> reading and decoding on the UI thread
-				// setImageDrawable ==> just the setting is on UI thread
-				setImageResource(cardId);
-			} else {
-				setImageBitmap(null);
-			}
+			// setImageResource ==> reading and decoding on the UI thread
+			// setImageDrawable ==> just the setting is on UI thread
+			setImageResource(cardId);
 		} else {
 			// just show the back cover of the card
 			setImageResource(R.mipmap.backcover);
@@ -76,15 +73,22 @@ public class CardView extends ImageView {
 	}
 
 	/**
-	 * Set a card, setCard(null) will set the back cover of the cards
+	 * Set a card, setCard(null) will remove card it will show neither back cover neither the card
 	 *
 	 * @param card card to set
 	 */
 	public void setCard(Card card) {
-		int id = Util.getCardImageId(card);
-		if (!faceDown && id != cardId) {
-			cardId = id;
-			setImageResource(cardId);
+		if (card == null) // if the card is null show null drawable
+			reset();
+		else {
+			// depending on faceDown variable either show backcover or the card itself
+			int id = Util.getCardImageId(card);
+			if (id != cardId) {
+				cardId = id;
+				// if facedown is off set the card, otherwise the backcover
+				if (!faceDown) setImageResource(cardId);
+				else setImageResource(Util.getCardImageId(null));
+			}
 		}
 	}
 
