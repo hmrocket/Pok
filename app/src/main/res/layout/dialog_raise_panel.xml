@@ -21,7 +21,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="+"
-			android:textColor="@drawable/textcolor_circle"
+			android:textColor="@color/textcolor_circle"
 			android:textSize="28dp"
 			android:visibility="gone"/>
 
@@ -33,7 +33,7 @@
 			android:enabled="false"
 			android:gravity="center"
 			android:text="100k"
-			android:textColor="@drawable/textcolor_circle"
+			android:textColor="@color/textcolor_circle"
 			android:textSize="28dp"/>
 
 		<Button
@@ -43,7 +43,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="-"
-			android:textColor="@drawable/textcolor_circle"
+			android:textColor="@color/textcolor_circle"
 			android:textSize="28dp"
 			android:visibility="gone"/>
 	</LinearLayout>
@@ -77,7 +77,7 @@
 			android:enabled="false"
 			android:gravity="center"
 			android:text="22.5%"
-			android:textColor="@drawable/textcolor_circle"
+			android:textColor="@color/textcolor_circle"
 			android:textSize="28dp"/>
 
 		<TextView
@@ -88,7 +88,7 @@
 			android:enabled="false"
 			android:gravity="center"
 			android:text="1.5M"
-			android:textColor="@drawable/textcolor_circle"
+			android:textColor="@color/textcolor_circle"
 			android:textSize="28dp"/>
 	</FrameLayout>
 
@@ -98,7 +98,7 @@
 		android:layout_height="wrap_content"
 		android:enabled="false"
 		android:text="@string/tip_reraise_rule"
-		android:textColor="@drawable/textcolor_circle"
+		android:textColor="@color/textcolor_circle"
 		android:textSize="14dp"
 		android:visibility="gone"/>
 	<!-- Let called this Raise precision controller and it's activated by preference-->
@@ -118,7 +118,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@android:string/ok"
-			android:textColor="@drawable/textcolor_circle"
+			android:textColor="@color/textcolor_circle"
 			android:textSize="20dp"/>
 
 		<Button
@@ -128,7 +128,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="@android:string/cancel"
-			android:textColor="@drawable/textcolor_circle"
+			android:textColor="@color/textcolor_circle"
 			android:textSize="20dp"/>
 
 	</LinearLayout>

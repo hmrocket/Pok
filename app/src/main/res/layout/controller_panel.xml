@@ -17,7 +17,7 @@
 		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="ALL IN"
-		android:textColor="@drawable/allin_selector"/>
+		android:textColor="@color/allin_selector"/>
 
 	<Button
 		android:id="@+id/btn_raise"
@@ -28,7 +28,7 @@
 		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="RAISE"
-		android:textColor="@drawable/raise_selector"/>
+		android:textColor="@color/raise_selector"/>
 
 	<!--This can be the amount to continue-->
 	<Button
@@ -38,7 +38,7 @@
 		android:layout_weight="1"
 		android:gravity="center"
 		android:text="@string/start"
-		android:textColor="@drawable/textcolor_circle"/>
+		android:textColor="@color/textcolor_circle"/>
 
 	<Button
 		android:id="@+id/btn_call"
@@ -49,7 +49,7 @@
 		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="CALL"
-		android:textColor="@drawable/call_selector"/>
+		android:textColor="@color/call_selector"/>
 
 	<Button
 		android:id="@+id/btn_fold"
@@ -61,6 +61,6 @@
 		android:enabled="false"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="FOLD"
-		android:textColor="@drawable/fold_selector"/>
+		android:textColor="@color/fold_selector"/>
 
 </LinearLayout>

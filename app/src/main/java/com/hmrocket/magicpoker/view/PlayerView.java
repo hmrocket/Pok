@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -115,19 +116,38 @@ public class PlayerView extends RelativeLayout {
 	 * @param playerState Player's {@link com.hmrocket.poker.Player.PlayerState state}
 	 */
 	public void setState(Player.PlayerState playerState) {
+		// getColorStateList(id) is deprecated in M
+		// FIXME set background of the image using ColorStateList or Tint avoid having color and drawable if possible
 		switch (playerState) {
 			case FOLD:
-				profileImage.setBackground(getResources().getDrawable(R.drawable.fold_selector));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+					profileImage.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.fold_selector));
+				} else {
+					profileImage.setBackgroundColor(getResources().getColor(R.color.fold_selector));
+				}
 				break;
 			case RAISE:
-				profileImage.setBackground(getResources().getDrawable(R.drawable.raise_selector));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+					profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.raise_selector, null));
+				} else {
+					profileImage.setBackgroundColor(getResources().getColor(R.color.raise_selector));
+				}
 				break;
 			case ALL_IN:
-				profileImage.setBackground(getResources().getDrawable(R.drawable.allin_selector));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+					// I don't care about theme that why isn't getContext().getTheme()
+					profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.allin_selector, null));
+				} else {
+					profileImage.setBackgroundColor(getResources().getColor(R.color.allin_selector));
+				}
 				break;
 			case CALL:
 			case CHECK:
-				profileImage.setBackground(getResources().getDrawable(R.drawable.call_selector));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+					profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.call_selector, getContext().getTheme()));
+				} else {
+					profileImage.setBackgroundColor(getResources().getColor(R.color.call_selector));
+				}
 				break;
 			case ACTIVE:
 				profileImage.setBackgroundColor(Color.TRANSPARENT);
