@@ -120,27 +120,22 @@
 			android:layout_height="wrap_content"/>
 
 		<com.hmrocket.magicpoker.view.CardView
-			android:id="@+id/view_communityCard0"
+			android:id="@+id/cardView_communityCard1"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 
 		<com.hmrocket.magicpoker.view.CardView
-			android:id="@+id/view_communityCard1"
+			android:id="@+id/cardView_communityCard2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 
 		<com.hmrocket.magicpoker.view.CardView
-			android:id="@+id/view_communityCard2"
+			android:id="@+id/cardView_communityCard3"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 
 		<com.hmrocket.magicpoker.view.CardView
-			android:id="@+id/view_communityCard3"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"/>
-
-		<com.hmrocket.magicpoker.view.CardView
-			android:id="@+id/view_communityCard4"
+			android:id="@+id/cardView_communityCard4"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"/>
 	</LinearLayout>

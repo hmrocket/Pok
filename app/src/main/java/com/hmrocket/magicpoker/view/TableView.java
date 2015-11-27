@@ -56,14 +56,14 @@ public class TableView extends RelativeLayout {
 		playerViews[2] = (PlayerView) findViewById(R.id.playerView2);
 		playerViews[3] = (PlayerView) findViewById(R.id.playerView3);
 		playerViews[4] = (PlayerView) findViewById(R.id.playerView4);
-		playerViews[5] = (PlayerView) findViewById(R.id.playerView6);
+		playerViews[5] = (PlayerView) findViewById(R.id.playerView5);
 		playerViews[6] = (PlayerView) findViewById(R.id.playerView6);
 		playerViews[7] = (PlayerView) findViewById(R.id.playerView7);
 		playerViews[8] = (PlayerView) findViewById(R.id.playerView8);
 
 		CardView cardView;
-		int cardViewIDs[] = new int[]{R.id.view_communityCard0, R.id.view_communityCard1, R.id.view_communityCard2,
-				R.id.view_communityCard3, R.id.view_communityCard4};
+		int cardViewIDs[] = new int[]{R.id.cardView_communityCard0, R.id.cardView_communityCard1, R.id.cardView_communityCard2,
+				R.id.cardView_communityCard3, R.id.cardView_communityCard4};
 		for (int i = 0; i < cardViews.length; i++) {
 			cardView = (CardView) findViewById(cardViewIDs[i]);
 			cardView.facedown(false);
@@ -135,8 +135,11 @@ public class TableView extends RelativeLayout {
 			cardViews[1].setCard(flop.getCard2());
 			cardViews[2].setCard(flop.getCard3());
 		}
-		cardViews[3].setCard(communityCards.getTurn());
-		cardViews[4].setCard(communityCards.getRiver());
+		if (communityCards.getTurn() != null) {
+			cardViews[3].setCard(communityCards.getTurn());
+		}
+		if (communityCards.getRiver() != null)
+			cardViews[4].setCard(communityCards.getRiver());
 	}
 
 	/**
