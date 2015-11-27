@@ -54,6 +54,8 @@ public class HumanPlayer extends Player {
 		// block this call until human play (fold, call or raise..)
 		try {
 			latch.await();
+			// latch won't reset so a new LatchCountDown must be created
+			latch = new CountDownLatch(1);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
