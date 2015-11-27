@@ -71,10 +71,17 @@ public class CardView extends ImageView {
 		init();
 	}
 
+	/**
+	 * Set a card
+	 *
+	 * @param card card to set
+	 */
 	public void setCard(Card card) {
-		cardId = Util.getCardImageId(card);
-		if (!faceDown)
+		int id = Util.getCardImageId(card);
+		if (!faceDown && id != cardId) {
+			cardId = id;
 			setImageResource(cardId);
+		}
 	}
 
 	/**
