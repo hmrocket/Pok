@@ -188,6 +188,9 @@ public class PlayerView extends RelativeLayout {
 			cardView1.setCard(hand.getCard1());
 			cardView2.facedown(true);
 			cardView2.setCard(hand.getCard2());
+		} else {
+			cardView1.reset();
+			cardView2.reset();
 		}
 	}
 
