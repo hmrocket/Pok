@@ -124,6 +124,17 @@ public class TableView extends RelativeLayout {
 	}
 
 	/**
+	 * remove all PlayerView from the TableView
+	 * call {@link #clear()} if you need to clear PotView and 5 shared CardView
+	 */
+	public void abandon() {
+		for (PlayerView p : playerViews) {
+			p.setVisibility(INVISIBLE);
+			p.reset();
+		}
+	}
+
+	/**
 	 * set the shared card on the TableView
 	 *
 	 * @param communityCards communityCards object hold the shared card on the table
@@ -161,4 +172,19 @@ public class TableView extends RelativeLayout {
 	public void setPot(long potValue) {
 		potView.setAmount(potValue);
 	}
+
+	/**
+	 * reset the PotView, reset the 5 shared CardView and reset CardView from PlayerView
+	 */
+	public void clear() {
+		potView.setAmount(0);
+		for (CardView cardView : cardViews) {
+			cardView.setVisibility(INVISIBLE);
+			cardView.reset();
+		}
+		for (PlayerView p : playerViews) {
+			p.setHand(null);
+		}
+	}
+
 }
