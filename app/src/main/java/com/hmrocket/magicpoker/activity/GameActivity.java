@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.magicpoker.Util;
 import com.hmrocket.magicpoker.fragment.DataFragment;
 import com.hmrocket.magicpoker.fragment.RaiseDialog;
+import com.hmrocket.magicpoker.view.PlayerView;
 import com.hmrocket.magicpoker.view.TableView;
 import com.hmrocket.poker.GameEvent;
 import com.hmrocket.poker.HumanPlayer;
@@ -165,12 +167,13 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			btnController[4].setText(Util.formatNumber(turn.getAmountToContinue() - player.getBet()));
 			//
 		}
-		// TODO animate PlayerView
+		// animate PlayerView
+		tableView.getPlayerView(player.getSeat().getId()).setState(Player.PlayerState.ACTIVE);
 	}
 
 	@Override
 	public void onTurnEnded(Player player) {
-		// TODO update and animate PlayerView to reflect action
+		// update and animate PlayerView to reflect action
 		if (player instanceof HumanPlayer) {
 			// disable panel control
 			btnController[0].setEnabled(false); //AllIn
@@ -186,6 +189,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				btnController[4].setText(null);
 			}
 		}
+		tableView.getPlayerView(player.getSeat().getId()).updateView(player);
 	}
 
 	@Override
@@ -193,26 +197,41 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 		// TODO animate card dealing on PRE_FLOP and Toast roundPhase name
 		if (roundPhase == RoundPhase.PRE_FLOP) {
 			tableView.populate(PLAYERS);
+			for (Player player : PLAYERS) {
+				PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
+				playerView.setHand(player.getHandHoldem().getHand());
+				if (player instanceof HumanPlayer)
+					playerView.showCards();
+
+			}
 		}
+		Toast.makeText(this, roundPhase.name(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void onBlindPosted(Player smallBlind, Player bigBlind) {
-		// TODO post raise same work as TurnEnded
+		// post raise same work as TurnEnded
+		tableView.getPlayerView(smallBlind.getSeat().getId()).updateView(smallBlind);
+		tableView.getPlayerView(bigBlind.getSeat().getId()).updateView(bigBlind);
 	}
 
 	@Override
 	public void onShowdown(Set<Player> potentialWinners) {
-		// TODO flip potentialWinners cards
+		// flip potentialWinners cards
+		for (Player player : potentialWinners) {
+			tableView.getPlayerView(player.getSeat().getId()).showCards();
+		}
 	}
 
 	@Override
 	public void onPotChanged(long potValue) {
-		// TODO Update PotView
+		// Update PotView
+		tableView.setPot(potValue);
 	}
 
 	@Override
 	public void onCommunityCardsChange(CommunityCards communityCards) {
-		// TODO flip shared cards
+		// flip shared cards
+		tableView.setCommunityCardsView(communityCards);
 	}
 }
