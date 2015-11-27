@@ -179,12 +179,14 @@ public class PlayerView extends RelativeLayout {
 	}
 
 	/**
-	 * set the CardView of PlayerView
+	 * set the CardView of PlayerView face down
 	 * @param hand two cards
 	 */
 	public void setHand(Hand hand) {
 		if (hand != null) {
+			cardView1.facedown(true);
 			cardView1.setCard(hand.getCard1());
+			cardView2.facedown(true);
 			cardView2.setCard(hand.getCard2());
 		}
 	}
