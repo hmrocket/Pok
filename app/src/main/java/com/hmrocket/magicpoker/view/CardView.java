@@ -23,10 +23,30 @@ public class CardView extends ImageView {
 		init();
 	}
 
+	/**
+	 * set the default state of the CardView which is no image card and facedown is set to true
+	 */
 	protected void init() {
 		cardId = -1;
-		// by default show the card facedown
-		facedown(true);
+		// by default No card is shown and show the card facedown
+		faceDown = true;
+		setImageBitmap(null);
+	}
+
+	public CardView(Context context, AttributeSet attributeset) {
+		super(context, attributeset);
+		init();
+	}
+
+	public CardView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public CardView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init();
 	}
 
 	/**
@@ -55,24 +75,8 @@ public class CardView extends ImageView {
 		}
 	}
 
-	public CardView(Context context, AttributeSet attributeset) {
-		super(context, attributeset);
-		init();
-	}
-
-	public CardView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
-
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public CardView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		init();
-	}
-
 	/**
-	 * Set a card
+	 * Set a card, setCard(null) will set the back cover of the cards
 	 *
 	 * @param card card to set
 	 */
