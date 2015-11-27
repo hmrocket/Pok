@@ -148,4 +148,12 @@ public class TableView extends RelativeLayout {
 		playerView.reset();
 	}
 
+	/**
+	 * set the PotView text value and chip color
+	 *
+	 * @param potValue value of the pot
+	 */
+	public void setPot(long potValue) {
+		potView.setAmount(potValue);
+	}
 }
