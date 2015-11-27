@@ -61,12 +61,14 @@ public class TableView extends RelativeLayout {
 		playerViews[7] = (PlayerView) findViewById(R.id.playerView7);
 		playerViews[8] = (PlayerView) findViewById(R.id.playerView8);
 
-		cardViews[0] = (CardView) findViewById(R.id.view_communityCard0);
-		cardViews[1] = (CardView) findViewById(R.id.view_communityCard1);
-		cardViews[2] = (CardView) findViewById(R.id.view_communityCard2);
-		cardViews[3] = (CardView) findViewById(R.id.view_communityCard3);
-		cardViews[4] = (CardView) findViewById(R.id.view_communityCard4);
-
+		CardView cardView;
+		int cardViewIDs[] = new int[]{R.id.view_communityCard0, R.id.view_communityCard1, R.id.view_communityCard2,
+				R.id.view_communityCard3, R.id.view_communityCard4};
+		for (int i = 0; i < cardViews.length; i++) {
+			cardView = (CardView) findViewById(cardViewIDs[i]);
+			cardView.facedown(false);
+			cardViews[i] = cardView;
+		}
 	}
 
 	public TableView(Context context, AttributeSet attrs) {
