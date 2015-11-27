@@ -48,13 +48,6 @@ public class Pot {
 		sidePotsTotalValue = 0;
 	}
 
-	/**
-	 * @return Pot total worth
-	 */
-	public long getValue() {
-		return sidePotsTotalValue + mainPot.value;
-	}
-
 	public void update() {
 		if (mainPot.potentialWinners.isEmpty()) // XXX no worries mainPot.potentialWinners will be never null
 			return;
@@ -72,7 +65,7 @@ public class Pot {
 			// SidePot is created from min allInPlayer and MainPot cause the value of of MainPot will be transferred to the SidePot
 			SidePot sidePot = new SidePot(allInPlayer, mainPot);
 
-            sidePot.consumeBets(mainPot);
+			sidePot.consumeBets(mainPot);
 
 			sidePots.add(sidePot);
 			sidePotsTotalValue += sidePot.getValue();
@@ -90,7 +83,6 @@ public class Pot {
 		}
 	}
 
-
 	/**
 	 * Distribute level pot To Winners
 	 *
@@ -102,11 +94,11 @@ public class Pot {
 
 		// Get Winners of MainPot
 		levelWinners = PokerTools.getWinners(mainPot.potentialWinners);
-        if (levelWinners == null || levelWinners.isEmpty()) {
-            SidePot sidePot = sidePots.peek();
-            sidePot.setValue(sidePot.getValue() + mainPot.value);
-        } else {
-            distribute(levelWinners, mainPot.value);
+		if (levelWinners == null || levelWinners.isEmpty()) {
+			SidePot sidePot = sidePots.peek();
+			sidePot.setValue(sidePot.getValue() + mainPot.value);
+		} else {
+			distribute(levelWinners, mainPot.value);
 			broadcastWin(levelWinners, sidePots.isEmpty(), gameEvents);
 		}
 
@@ -152,16 +144,24 @@ public class Pot {
 
 	/**
 	 * BroadCast the event of the someone won either a SidePot or MainPot
-	 * @param levelWinners
+	 * Also broadcast that the pot value has changed
+	 * @param levelWinners level winners
 	 * @param gameEvents GameEvent listeners
 	 */
 	private void broadcastWin(Set<Player> levelWinners, boolean last, GameEvent... gameEvents) {
 		if (gameEvents != null)
 			for (GameEvent gameEvent : gameEvents) {
 				gameEvent.gameWinners(last, levelWinners);
+				gameEvent.onPotChanged(getValue());
 			}
 	}
 
+	/**
+	 * @return Pot total worth
+	 */
+	public long getValue() {
+		return sidePotsTotalValue + mainPot.value;
+	}
 
 	/**
 	 * get potential winner of the Poker game
