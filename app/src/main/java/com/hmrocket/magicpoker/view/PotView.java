@@ -1,11 +1,13 @@
 package com.hmrocket.magicpoker.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hmrocket.magicpoker.R;
@@ -17,7 +19,7 @@ import com.hmrocket.magicpoker.Util;
 /**
  * @since 10/Nov/2015 - mhamed
  */
-public class PotView extends FrameLayout {
+public class PotView extends LinearLayout {
 
 	private long amount;
 	private TextView potAmountLabel;
@@ -28,6 +30,19 @@ public class PotView extends FrameLayout {
 		LayoutInflater.from(context).inflate(R.layout.pot_view, this, true);
 		potAmountLabel = (TextView) findViewById(R.id.tx_PotAmount);
 		potChips = (ChipView) findViewById(R.id.chipsView_Pot);
+	}
+
+	public PotView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public PotView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+	}
+
+	public PotView(Context context) {
+		super(context);
 	}
 
 	public long getAmount() {
