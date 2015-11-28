@@ -1,8 +1,12 @@
 package com.hmrocket.magicpoker.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -31,9 +35,9 @@ public class ChipView extends ImageView {
 			1000000,//1M
 			100000000 // 100M
 	};
-	private static final int CHIPS_COLOR[] = {0x607D8B, 0x795548, 0xFFEB3B,
-	0xCDDC39, 0x03A9F4, 0x2196F3, 0x9C27B0, 0x009688, 0xF44336, 0x00BCD4, Color.BLACK,
-			0x673AB7, 0x4CAF50, 0x3F51B5, 0xE91E63, 0xFFC107
+	private static final int CHIPS_COLOR[] = {0xFF607D8B, 0xFF795548, 0xFFFFEB3B,
+			0xFFCDDC39, 0xFF03A9F4, 0xFF2196F3, 0xFF9C27B0, 0xFF009688, 0xFFF44336, 0xFF00BCD4, Color.BLACK,
+			0xFF673AB7, 0xFF4CAF50, 0xFF3F51B5, 0xFFE91E63, 0xFFFFC107
 	};
 
 	public ChipView(Context context) {
@@ -44,6 +48,15 @@ public class ChipView extends ImageView {
 		super(context, attributeset);
 	}
 
+	public ChipView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public ChipView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+	}
+
 	/**
 	 * set the chip image depending on the pot level
 	 * @param potAmount pot value
@@ -52,13 +65,16 @@ public class ChipView extends ImageView {
 		if (potAmount == 0)
 			this.setImageDrawable(null);
 		else {
-			this.setColorFilter(getChipColor(potAmount),PorterDuff.Mode.MULTIPLY);
-			this.setImageDrawable(getResources().getDrawable(R.mipmap.chip));
+			this.setColorFilter(getChipColor(potAmount), PorterDuff.Mode.MULTIPLY);
+			// support M API 23
+			Drawable drawable = ContextCompat.getDrawable(getContext(), R.mipmap.chip);
+			this.setImageDrawable(drawable);
 		}
 	}
 
 	/**
 	 * Find the highest level of poker chip just below the potValue
+	 *
 	 * @param potAmount pot value
 	 * @return color
 	 */
