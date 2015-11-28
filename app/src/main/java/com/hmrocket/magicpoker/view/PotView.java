@@ -1,6 +1,8 @@
 package com.hmrocket.magicpoker.view;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -11,6 +13,7 @@ import com.hmrocket.magicpoker.Util;
 
 //TODO multi-size support for the bck, textSize, size en general
 //optional currency support
+
 /**
  * @since 10/Nov/2015 - mhamed
  */
@@ -37,4 +40,21 @@ public class PotView extends FrameLayout {
 		potChips.setChipLevel(l);
 	}
 
+	@Override
+	protected Parcelable onSaveInstanceState() {
+		Parcelable superState = super.onSaveInstanceState();
+		Bundle state = new Bundle();
+		state.putParcelable("PARENT", superState);
+		state.putLong("amount", amount);
+		return state;
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		Bundle bundle = (Bundle) state;
+		super.onRestoreInstanceState(bundle.getParcelable("PARENT"));
+		amount = bundle.getLong("amount", 0);
+		if (amount != 0)
+			setAmount(amount);
+	}
 }
