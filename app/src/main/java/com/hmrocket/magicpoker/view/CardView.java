@@ -3,6 +3,8 @@ package com.hmrocket.magicpoker.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -32,7 +34,6 @@ public class CardView extends ImageView {
 		cardId = -1;
 		// by default No card is shown and show the card facedown
 		faceDown = facedown;
-		setImageBitmap(null);
 	}
 
 	public CardView(Context context, AttributeSet attributeset) {
@@ -65,7 +66,14 @@ public class CardView extends ImageView {
 		if (cardId == -1)
 			return; // no card set yet
 
-		if (!facedown) {
+		renderCard();
+	}
+
+	/**
+	 * if facedown is off set the card, otherwise the backcover
+	 */
+	private void renderCard() {
+		if (!faceDown) {
 			// setImageResource ==> reading and decoding on the UI thread
 			// setImageDrawable ==> just the setting is on UI thread
 			setImageResource(cardId);
@@ -88,9 +96,7 @@ public class CardView extends ImageView {
 			int id = Util.getCardImageId(card);
 			if (id != cardId) {
 				cardId = id;
-				// if facedown is off set the card, otherwise the backcover
-				if (!faceDown) setImageResource(cardId);
-				else setImageResource(Util.getCardImageId(null));
+				renderCard();
 			}
 		}
 	}
@@ -99,7 +105,31 @@ public class CardView extends ImageView {
 	 * Reset the CardView by removing the image but keep faceDown attribute
 	 */
 	public void reset() {
-		init(faceDown);
+		cardId = -1;
+		setImageBitmap(null);
+	}
+
+	@Override
+	protected Parcelable onSaveInstanceState() {
+		Parcelable superState = super.onSaveInstanceState();
+
+		Bundle state = new Bundle();
+		state.putParcelable("PARENT", superState);
+		state.putInt("card_id", cardId);
+		state.putBoolean("facedown", faceDown);
+		return state;
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Parcelable state) {
+		Bundle savedState = (Bundle) state;
+
+		Parcelable superState = savedState.getParcelable("PARENT");
+		super.onRestoreInstanceState(superState);
+		cardId = savedState.getInt("card_id", -1);
+		faceDown = savedState.getBoolean("facedown", true);
+		if (cardId != -1)
+			renderCard();
 	}
 }
 
