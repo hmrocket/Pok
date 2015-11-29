@@ -70,6 +70,7 @@ public class PlayerView extends RelativeLayout {
 
 	/**
 	 * set the image of player
+	 *
 	 * @param profileImage player image
 	 */
 	public void setProfileImage(final Bitmap profileImage) {
@@ -113,12 +114,15 @@ public class PlayerView extends RelativeLayout {
 
 	/**
 	 * set the PlayerView state
+	 *
 	 * @param playerState Player's {@link com.hmrocket.poker.Player.PlayerState state}
 	 */
 	public void setState(Player.PlayerState playerState) {
-		// getColorStateList(id) is deprecated in M
-		// FIXME set background of the image using ColorStateList or Tint avoid having color and drawable if possible
-		switch (playerState) {
+		if (playerState == null)
+			profileImage.setBackgroundColor(Color.LTGRAY);
+			// getColorStateList(id) is deprecated in M
+			// FIXME set background of the image using ColorStateList or Tint avoid having color and drawable if possible
+		else switch (playerState) {
 			case FOLD:
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 					profileImage.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.fold_selector));
@@ -180,6 +184,7 @@ public class PlayerView extends RelativeLayout {
 
 	/**
 	 * set the CardView of PlayerView face down
+	 *
 	 * @param hand two cards
 	 */
 	public void setHand(Hand hand) {
