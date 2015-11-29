@@ -42,7 +42,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			new SafeBot("Sof", (long) 100e3, 200),//8
 			new SafeBot("M", (long) 100e3, 200)//9
 	));
-	
+
 	private Button btnController[];
 	private DataFragment dataFragment;
 	private RaiseDialog raiseDialog;
@@ -117,11 +117,15 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				break;
 			case R.id.btn_start_skip_info:
 				// XXX DEBUG
-				for (int i = 0; i < PLAYERS.size(); i++)
-					dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
+				if (dataFragment.getTable().getPlayers() == null || dataFragment.getTable().getPlayers().isEmpty()) {
+					for (int i = 0; i < PLAYERS.size(); i++)
+						dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
+					tableView.populate(PLAYERS);
+				}
 				// XXX DEBUG
 				tableView.clear();
 				dataFragment.startGame();
+				btnController[4].setEnabled(false);
 				break;
 		}
 	}
@@ -147,6 +151,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	@Override
 	public void playerBusted(Set<Player> player) {
 		// TODO remove Player from TableView too, if it's human request that he buy in or purchase chips
+		for (Player p : player)
+			tableView.removePlayer(p);
 	}
 
 	@Override
@@ -198,7 +204,6 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	public void onRound(RoundPhase roundPhase) {
 		// TODO animate card dealing on PRE_FLOP and Toast roundPhase name
 		if (roundPhase == RoundPhase.PRE_FLOP) {
-			tableView.populate(PLAYERS);
 			for (Player player : PLAYERS) {
 				PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
 				playerView.setHand(player.getHandHoldem().getHand());
