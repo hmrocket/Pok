@@ -160,7 +160,8 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		}
 		// decide wither to show ok,cancel,plus,minus buttons
 		precisionRaiseMode = PreferenceManager.getDefaultSharedPreferences(getActivity())
-				.getBoolean(Util.AppPreference.PRECISION_RAISE_MODE, true);
+				.getBoolean(Util.AppPreference.PRECISION_RAISE_MODE, false);
+
 	}
 
 	@Override

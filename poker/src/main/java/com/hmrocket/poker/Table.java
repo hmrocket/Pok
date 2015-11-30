@@ -15,8 +15,8 @@ public class Table implements GameEvent {
     private List<Player> players;
     private int seatsAvailable;
     private List<Seat> seats;
-    private int dealer;
-    private Game game;
+	private int dealer;
+	private Game game;
     private long minBet;
 	private GameEvent lisGameEvent;
 
@@ -99,6 +99,15 @@ public class Table implements GameEvent {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get the dealer
+	 *
+	 * @return dealer seatId
+	 */
+	public int getDealer() {
+		return dealer;
 	}
 
 	/**

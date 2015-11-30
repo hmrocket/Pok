@@ -45,6 +45,22 @@ public class TableView extends RelativeLayout {
 		init();
 	}
 
+	public TableView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init();
+	}
+
 	private void init() {
 		View view = inflate(getContext(), R.layout.table_view, this);
 		potView = (PotView) view.findViewById(R.id.potView);
@@ -70,23 +86,6 @@ public class TableView extends RelativeLayout {
 			cardViews[i] = cardView;
 		}
 	}
-
-	public TableView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
-
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
-
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		init();
-	}
-
 
 	/**
 	 * Get the PlayerView affect to that seat
@@ -134,6 +133,20 @@ public class TableView extends RelativeLayout {
 		}
 	}
 
+	/**
+	 * Specify the dealer
+	 *
+	 * @param seatId seat number on the table should be between 0 and less than {@link #MAX_PLAYERS}
+	 */
+	public void setDealer(int seatId) {
+		for (int i = 0; i < seatId; i++)
+			playerViews[i].setDealer(false);
+
+		playerViews[seatId].setDealer(true);
+
+		for (int i = seatId + 1; i < playerViews.length; i++)
+			playerViews[i].setDealer(false);
+	}
 	/**
 	 * set the shared card on the TableView
 	 *

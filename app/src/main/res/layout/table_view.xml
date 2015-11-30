@@ -12,7 +12,7 @@
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
 		android:layout_alignParentTop="true"
-		android:background="#000000"
+		android:background="@android:color/transparent"
 		android:cropToPadding="false"
 		android:paddingBottom="@dimen/table_padding"
 		android:paddingEnd="@dimen/table_padding"

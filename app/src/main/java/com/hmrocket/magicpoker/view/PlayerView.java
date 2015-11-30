@@ -28,6 +28,7 @@ public class PlayerView extends RelativeLayout {
 	private CardView cardView1;
 	private CardView cardView2;
 	private ImageView profileImage;
+	private TextView dealerFlag;
 	/**
 	 * TextView represent the player cash
 	 */
@@ -40,16 +41,6 @@ public class PlayerView extends RelativeLayout {
 	public PlayerView(Context context) {
 		super(context);
 		init(context);
-	}
-
-	private void init(Context context) {
-		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
-		profileImage = (ImageView) findViewById(R.id.iv_profile);
-		cardView1 = (CardView) findViewById(R.id.cardView1);
-		cardView2 = (CardView) findViewById(R.id.cardView2);
-		txCash = (TextView) findViewById(R.id.tx_cash);
-		txInfo = (TextView) findViewById(R.id.tx_info);
-
 	}
 
 	public PlayerView(Context context, AttributeSet attrs) {
@@ -68,6 +59,17 @@ public class PlayerView extends RelativeLayout {
 		init(context);
 	}
 
+	private void init(Context context) {
+		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
+		profileImage = (ImageView) findViewById(R.id.iv_profile);
+		cardView1 = (CardView) findViewById(R.id.cardView1);
+		cardView2 = (CardView) findViewById(R.id.cardView2);
+		txCash = (TextView) findViewById(R.id.tx_cash);
+		txInfo = (TextView) findViewById(R.id.tx_info);
+		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
+
+	}
+
 	/**
 	 * set the image of player
 	 *
@@ -77,6 +79,14 @@ public class PlayerView extends RelativeLayout {
 		this.profileImage.setImageBitmap(profileImage);
 	}
 
+	/**
+	 * Show/Hide the dealer tag indicator
+	 *
+	 * @param isDealer represent if this PlayerView is a dealer or not
+	 */
+	public void setDealer(boolean isDealer) {
+		dealerFlag.setVisibility(isDealer ? VISIBLE : GONE);
+	}
 	/**
 	 * Update the PlayerView to reflect Player move (play)
 	 *
