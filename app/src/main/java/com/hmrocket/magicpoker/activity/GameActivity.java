@@ -197,9 +197,10 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			tableView.setDealer(dataFragment.getTable().getDealer());
 			for (Player player : PLAYERS) {
 				PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
-				playerView.setHand(player.getHandHoldem().getHand());
-				if (player instanceof HumanPlayer)
+				if (player instanceof HumanPlayer) {
+					playerView.setHand(player.getHandHoldem().getHand());
 					playerView.showCards();
+				}
 
 			}
 		}
@@ -217,7 +218,9 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	public void onShowdown(Set<Player> potentialWinners) {
 		// flip potentialWinners cards
 		for (Player player : potentialWinners) {
-			tableView.getPlayerView(player.getSeat().getId()).showCards();
+			PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
+			playerView.setHand(player.getHandHoldem().getHand());
+			playerView.showCards();
 		}
 	}
 

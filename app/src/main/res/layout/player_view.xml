@@ -60,7 +60,6 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="30dp"
-			android:src="@mipmap/backcover"
 			/>
 
 			<com.hmrocket.magicpoker.view.CardView
@@ -70,8 +69,7 @@
 			android:layout_alignParentTop="true"
 			android:layout_gravity="right|center_vertical"
 			android:layout_toEndOf="@+id/cardView1"
-			android:layout_toRightOf="@+id/cardView1"
-			android:src="@mipmap/backcover"/>
+			android:layout_toRightOf="@+id/cardView1"/>
 		</FrameLayout>
 	</RelativeLayout>
 
