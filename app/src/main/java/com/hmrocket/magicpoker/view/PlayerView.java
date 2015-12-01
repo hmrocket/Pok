@@ -141,9 +141,7 @@ public class PlayerView extends RelativeLayout {
 					// profileImage.setBackgroundColor(getResources().getColor(R.color.fold_selector));
 					// ColorStateList colorStateList = ContextCompat.getColorStateList(getContext(), R.color.fold_selector);
 				} else {
-					profileImage.setAlpha(.30f);
-					txCash.setEnabled(false);
-					txInfo.setEnabled(false);
+					setEnabled(false);
 					// we don't like support state, that's why we won't use ColorStateList as color
 					profileImage.setColorFilter(
 							//colorStateList.getColorForState(profileImage.getBackground().getState(), colorStateList.getDefaultColor())
@@ -188,18 +186,30 @@ public class PlayerView extends RelativeLayout {
 				break;
 			case ACTIVE:
 				// remove filter
-				profileImage.setAlpha(1f);
+				setEnabled(true);
 				profileImage.setColorFilter(null);
-				txCash.setEnabled(true);
-				txInfo.setEnabled(true);
 				//profileImage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.frame_player));
 				break;
 			default:
 				profileImage.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
-				profileImage.setAlpha(.3f);
+				setEnabled(false);
 				break;
 		}
 
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		for (int i = 0; i < getChildCount(); i++) {
+			getChildAt(i).setEnabled(enabled);
+		}
+		if (enabled)
+			profileImage.setAlpha(1f);
+		else profileImage.setAlpha(.3f);
+
+		cardView1.setEnabled(enabled);
+		cardView2.setEnabled(enabled);
 	}
 
 	/**
@@ -238,14 +248,6 @@ public class PlayerView extends RelativeLayout {
 		}
 	}
 
-	@Override
-	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		for (int i = 0; i < getChildCount(); i++) {
-			getChildAt(i).setEnabled(enabled);
-		}
-	}
-
 	/**
 	 * reset the PlayerView
 	 */
@@ -268,4 +270,6 @@ public class PlayerView extends RelativeLayout {
 		else
 			profileImage.setBackground(null);
 	}
+
+
 }

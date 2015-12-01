@@ -2,6 +2,8 @@ package com.hmrocket.magicpoker.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -107,6 +109,16 @@ public class CardView extends ImageView {
 	public void reset() {
 		cardId = -1;
 		setImageBitmap(null);
+	}
+
+	@Override
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		if (enabled)
+			setColorFilter(null);
+		else {
+			setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+		}
 	}
 
 	@Override
