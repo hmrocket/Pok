@@ -165,12 +165,14 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			btnController[4].setText(Util.formatNumber(turn.getAmountToContinue() - player.getBet()));
 			//
 		}
+		tableView.getPlayerView(player.getSeat().getId()).setHighlight(true);
 		// animate PlayerView
 
 	}
 
 	@Override
 	public void onTurnEnded(Player player) {
+		tableView.getPlayerView(player.getSeat().getId()).setHighlight(false);
 		// update and animate PlayerView to reflect action
 		if (player instanceof HumanPlayer) {
 			// disable panel control

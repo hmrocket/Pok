@@ -133,7 +133,7 @@ public class PlayerView extends RelativeLayout {
 		// TODO support player_view_circle
 		boolean circle = false;
 		if (playerState == null)
-			profileImage.setBackgroundColor(Color.LTGRAY);
+			profileImage.setBackground(null);
 			// getColorStateList(id) is deprecated in M
 		else switch (playerState) {
 			case FOLD:
@@ -255,5 +255,17 @@ public class PlayerView extends RelativeLayout {
 		txCash.setText("");
 		txInfo.setText("");
 		profileImage.setImageDrawable(null);
+	}
+
+	/**
+	 * Highlight PlayerView onTurn
+	 *
+	 * @param highlight true will highlight the PlayerView, default state otherwise
+	 */
+	public void setHighlight(boolean highlight) {
+		if (highlight)
+			profileImage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.frame_player));
+		else
+			profileImage.setBackground(null);
 	}
 }

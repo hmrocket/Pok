@@ -16,5 +16,7 @@
     <color name="fold">#EF5457</color>
     <color name="fold_70p">#B2EF5457</color>
     <color name="fold_25p">#3FEF5457</color>
+	<color name="textColor_disable">@color/white_30p</color>
+	<color name="white_30p">#4CFFFFFF</color>
 
 </resources>
