@@ -22,6 +22,7 @@ import com.hmrocket.poker.card.CommunityCards;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -112,6 +113,9 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 						dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
 					tableView.populate(PLAYERS);
 				}
+				// remove busted player if any
+				for (Player p : dataFragment.getBustedPlayer() != null ? dataFragment.getBustedPlayer() : Collections.<Player>emptyList())
+					tableView.removePlayer(p);
 				// XXX DEBUG
 				tableView.clear();
 				dataFragment.startGame();
@@ -140,9 +144,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 
 	@Override
 	public void playerBusted(Set<Player> player) {
-		// TODO remove Player from TableView too, if it's human request that he buy in or purchase chips
-		for (Player p : player)
-			tableView.removePlayer(p);
+		// TODO if it's human request that he buy in or purchase chips to removed him from busted set
 	}
 
 	@Override

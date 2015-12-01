@@ -28,6 +28,7 @@ public class DataFragment extends Fragment {
 	private GameEvent gameEventListener;
 	private Player playerTurn;
 	private Turn turn;
+	private Set<Player> bustedPlayer;
 
 
 	public static DataFragment newInstance(int tableCapacity, long minBet) {
@@ -102,6 +103,10 @@ public class DataFragment extends Fragment {
 		return turn;
 	}
 
+	public Set<Player> getBustedPlayer() {
+		return bustedPlayer;
+	}
+
 	/**
 	 * Connection between the game logic and the
 	 * Service will be best but this will do just fine.
@@ -121,7 +126,6 @@ public class DataFragment extends Fragment {
 
 		@Override
 		protected Void doInBackground(Void... parms) {
-			// TODO remove table.nextDealer from table.statGame cause
 			table.startGame();
 
 			// TODO save data after everyGame
@@ -131,6 +135,8 @@ public class DataFragment extends Fragment {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			// reset and setup needed variable for every hand
+			bustedPlayer = null;
 			table.setGameEventListener(this);
 		}
 
@@ -180,6 +186,7 @@ public class DataFragment extends Fragment {
 
 		@Override
 		public void playerBusted(Set<Player> players) {
+			bustedPlayer = players;
 			publishProgress(PLAYER_BUSTED, players);
 		}
 
