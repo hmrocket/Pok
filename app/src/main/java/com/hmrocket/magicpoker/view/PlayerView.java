@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -43,6 +44,17 @@ public class PlayerView extends RelativeLayout {
 		init(context);
 	}
 
+	private void init(Context context) {
+		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
+		profileImage = (ImageView) findViewById(R.id.iv_profile);
+		cardView1 = (CardView) findViewById(R.id.cardView1);
+		cardView2 = (CardView) findViewById(R.id.cardView2);
+		txCash = (TextView) findViewById(R.id.tx_cash);
+		txInfo = (TextView) findViewById(R.id.tx_info);
+		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
+
+	}
+
 	public PlayerView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context);
@@ -57,17 +69,6 @@ public class PlayerView extends RelativeLayout {
 	public PlayerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
-	}
-
-	private void init(Context context) {
-		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
-		profileImage = (ImageView) findViewById(R.id.iv_profile);
-		cardView1 = (CardView) findViewById(R.id.cardView1);
-		cardView2 = (CardView) findViewById(R.id.cardView2);
-		txCash = (TextView) findViewById(R.id.tx_cash);
-		txInfo = (TextView) findViewById(R.id.tx_info);
-		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
-
 	}
 
 	/**
@@ -87,6 +88,7 @@ public class PlayerView extends RelativeLayout {
 	public void setDealer(boolean isDealer) {
 		dealerFlag.setVisibility(isDealer ? VISIBLE : GONE);
 	}
+
 	/**
 	 * Update the PlayerView to reflect Player move (play)
 	 *
@@ -128,46 +130,73 @@ public class PlayerView extends RelativeLayout {
 	 * @param playerState Player's {@link com.hmrocket.poker.Player.PlayerState state}
 	 */
 	public void setState(Player.PlayerState playerState) {
+		// TODO support player_view_circle
+		boolean circle = false;
 		if (playerState == null)
 			profileImage.setBackgroundColor(Color.LTGRAY);
 			// getColorStateList(id) is deprecated in M
-			// FIXME set background of the image using ColorStateList or Tint avoid having color and drawable if possible
 		else switch (playerState) {
 			case FOLD:
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-					profileImage.setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.fold_selector));
+				if (circle) {
+					// profileImage.setBackgroundColor(getResources().getColor(R.color.fold_selector));
+					// ColorStateList colorStateList = ContextCompat.getColorStateList(getContext(), R.color.fold_selector);
 				} else {
-					profileImage.setBackgroundColor(getResources().getColor(R.color.fold_selector));
+					profileImage.setAlpha(.30f);
+					txCash.setEnabled(false);
+					txInfo.setEnabled(false);
+					// we don't like support state, that's why we won't use ColorStateList as color
+					profileImage.setColorFilter(
+							//colorStateList.getColorForState(profileImage.getBackground().getState(), colorStateList.getDefaultColor())
+							ContextCompat.getColor(getContext(), R.color.fold)
+							, PorterDuff.Mode.MULTIPLY);
 				}
 				break;
 			case RAISE:
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-					profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.raise_selector, null));
+				if (circle) {
+					//profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.raise_selector, null));
 				} else {
-					profileImage.setBackgroundColor(getResources().getColor(R.color.raise_selector));
+					//profileImage.setBackgroundColor(getResources().getColor(R.color.raise_selector));
+					// we don't like support state, that's why we won't use ColorStateList as color
+					profileImage.setColorFilter(
+							//colorStateList.getColorForState(profileImage.getBackground().getState(), colorStateList.getDefaultColor())
+							ContextCompat.getColor(getContext(), R.color.raise)
+							, PorterDuff.Mode.MULTIPLY);
 				}
 				break;
 			case ALL_IN:
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				if (circle) {
 					// I don't care about theme that why isn't getContext().getTheme()
-					profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.allin_selector, null));
+					//profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.allin_selector, null));
 				} else {
-					profileImage.setBackgroundColor(getResources().getColor(R.color.allin_selector));
+					profileImage.setColorFilter(
+							//colorStateList.getColorForState(profileImage.getBackground().getState(), colorStateList.getDefaultColor())
+							ContextCompat.getColor(getContext(), R.color.allin)
+							, PorterDuff.Mode.MULTIPLY);
 				}
 				break;
 			case CALL:
 			case CHECK:
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-					profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.call_selector, getContext().getTheme()));
+				if (circle) {
+					//profileImage.setBackgroundTintList(getResources().getColorStateList(R.color.call_selector, getContext().getTheme()));
 				} else {
-					profileImage.setBackgroundColor(getResources().getColor(R.color.call_selector));
+					//profileImage.setBackgroundColor(getResources().getColor(R.color.call_selector));
+					profileImage.setColorFilter(
+							//colorStateList.getColorForState(profileImage.getBackground().getState(), colorStateList.getDefaultColor())
+							ContextCompat.getColor(getContext(), R.color.call)
+							, PorterDuff.Mode.MULTIPLY);
 				}
 				break;
 			case ACTIVE:
-				profileImage.setBackgroundColor(Color.TRANSPARENT);
+				// remove filter
+				profileImage.setAlpha(1f);
+				profileImage.setColorFilter(null);
+				txCash.setEnabled(true);
+				txInfo.setEnabled(true);
+				//profileImage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.frame_player));
 				break;
 			default:
-				profileImage.setBackgroundColor(Color.LTGRAY);
+				profileImage.setColorFilter(Color.LTGRAY, PorterDuff.Mode.MULTIPLY);
+				profileImage.setAlpha(.3f);
 				break;
 		}
 
