@@ -166,7 +166,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			//
 		}
 		// animate PlayerView
-		tableView.getPlayerView(player.getSeat().getId()).setState(Player.PlayerState.ACTIVE);
+
 	}
 
 	@Override
@@ -193,16 +193,18 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	@Override
 	public void onRound(RoundPhase roundPhase) {
 		// TODO animate card dealing on PRE_FLOP and Toast roundPhase name
-		if (roundPhase == RoundPhase.PRE_FLOP) {
-			tableView.setDealer(dataFragment.getTable().getDealer());
-			for (Player player : PLAYERS) {
+		for (Player player : PLAYERS) {
+			if (roundPhase == RoundPhase.PRE_FLOP) {
+				tableView.setDealer(dataFragment.getTable().getDealer());
+
 				PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
 				if (player instanceof HumanPlayer) {
 					playerView.setHand(player.getHandHoldem().getHand());
 					playerView.showCards();
 				}
-
 			}
+			if (player.isPlaying())
+				tableView.getPlayerView(player.getSeat().getId()).setState(Player.PlayerState.ACTIVE);
 		}
 		Toast.makeText(this, roundPhase.name(), Toast.LENGTH_SHORT).show();
 	}
