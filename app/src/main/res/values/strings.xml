@@ -11,4 +11,9 @@
     <string name="skip">skip</string>
     <string name="busted">BUSTED</string>
     <string name="winner">WINNER</string>
+    <string name="check">CHECK</string>
+    <string name="fold">FOLD</string>
+    <string name="call">CALL</string>
+    <string name="raise">RAISE</string>
+    <string name="all_in">ALL IN</string>
 </resources>

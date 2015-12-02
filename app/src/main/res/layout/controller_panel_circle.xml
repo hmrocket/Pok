@@ -19,7 +19,7 @@
 		android:layout_height="@dimen/circle_panel_radius"
 		android:background="@drawable/allin_circle"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
-		android:text="ALL IN"
+		android:text="@string/all_in"
 		android:textColor="@color/textcolor_circle"/>
 
 	<Space
@@ -35,7 +35,7 @@
 		android:layout_height="@dimen/circle_panel_radius"
 		android:background="@drawable/raise_circle"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
-		android:text="RAISE"
+		android:text="@string/raise"
 		android:textColor="@color/textcolor_circle"/>
 
 	<!--This can be the amount to continue-->
@@ -51,7 +51,7 @@
 		android:layout_height="@dimen/circle_panel_radius"
 		android:background="@drawable/call_circle"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
-		android:text="CALL"
+		android:text="@string/call"
 		android:textColor="@color/textcolor_circle"/>
 
 	<Space
@@ -67,7 +67,7 @@
 		android:layout_height="@dimen/circle_panel_radius"
 		android:background="@drawable/fold_circle"
 		android:minWidth="@dimen/abc_action_button_min_width_material"
-		android:text="FOLD"
+		android:text="@string/fold"
 		android:textColor="@color/textcolor_circle"/>
 
 	<Space

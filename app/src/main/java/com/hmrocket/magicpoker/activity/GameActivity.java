@@ -173,6 +173,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				// Raise/Call cmd enabled only if the player has above the minBet (if it's equal then only allin/Fold activated)
 				btnController[1].setEnabled(true); // Raise
 				btnController[2].setEnabled(true); // Call
+				btnController[2].setText(turn.getAmountToContinue() == player.getBet() ? R.string.check : R.string.call);
 			}
 			btnController[4].setText(Util.formatNumber(turn.getAmountToContinue() - player.getBet()));
 			//
