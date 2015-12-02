@@ -55,6 +55,8 @@ public class HumanPlayer extends Player {
 		super.call(amount);
 		// Human made a decision, continue
 		latch.countDown();
+		// latch won't reset so a new LatchCountDown must be created
+		latch = new CountDownLatch(1);
 	}
 
 	@Override
