@@ -175,7 +175,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				btnController[2].setEnabled(true); // Call
 				btnController[2].setText(turn.getAmountToContinue() == player.getBet() ? R.string.check : R.string.call);
 			}
-			btnController[4].setText(Util.formatNumber(turn.getAmountToContinue() - player.getBet()));
+			// The amount to add can't be more than cash
+			btnController[4].setText(Util.formatNumber(Math.min(player.getCash(), turn.getAmountToContinue() - player.getBet())));
 			//
 		}
 		tableView.getPlayerView(player.getSeat().getId()).setHighlight(true);

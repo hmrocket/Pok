@@ -155,8 +155,9 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_ADD);
 			// Raise amount must be at least the double
 			minRaise = getArguments().getLong(ARG_MIN_RAISE, amountToContinue * 2);
-			currentRaise = minRaise;
 			stack = getArguments().getLong(ARG_STACK);
+			// current raise can't be more what the player has as cash
+			currentRaise = Math.min(minRaise, stack);
 			minBet = getArguments().getLong(ARG_MIN_BET);
 		}
 		// decide wither to show ok,cancel,plus,minus buttons
