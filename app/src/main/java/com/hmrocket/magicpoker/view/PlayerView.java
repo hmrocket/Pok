@@ -213,6 +213,15 @@ public class PlayerView extends RelativeLayout {
 	}
 
 	/**
+	 * display info about player
+	 *
+	 * @param stringResId String resource id to show as info text
+	 */
+	public void setInfo(int stringResId) {
+		txInfo.setText(stringResId);
+	}
+
+	/**
 	 * Update the PlayerView to reflect and represent the object Player
 	 *
 	 * @param player

@@ -145,6 +145,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	@Override
 	public void playerBusted(Set<Player> player) {
 		// TODO if it's human request that he buy in or purchase chips to removed him from busted set
+		for (Player p : player)
+			tableView.getPlayerView(p.getSeat().getId()).setInfo(R.string.busted);
 	}
 
 	@Override

@@ -9,4 +9,5 @@
     <string name="tip_reraise_rule">Double the previous raise</string>
     <string name="start">start</string>
     <string name="skip">skip</string>
+    <string name="busted">BUSTED</string>
 </resources>
