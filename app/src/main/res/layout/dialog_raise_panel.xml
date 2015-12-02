@@ -61,11 +61,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
 			android:layout_weight="1.88"
-			app:circle_progress_color="@color/raise_70p"
 			app:end_angle="60"
-			app:pointer_color="@color/raise_70p"
-			app:pointer_halo_color="@color/raise_25p"
-			app:pointer_halo_color_ontouch="@color/raise"
 			app:progress="20"
 			app:start_angle="120"/>
 

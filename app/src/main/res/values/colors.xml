@@ -16,7 +16,22 @@
     <color name="fold">#EF5457</color>
     <color name="fold_70p">#B2EF5457</color>
     <color name="fold_25p">#3FEF5457</color>
-	<color name="textColor_disable">@color/white_30p</color>
 	<color name="white_30p">#4CFFFFFF</color>
+
+	<!-- define a color state, pressed, default and disabled color -->
+	<color name="allin_state_default">@color/allin</color>
+	<color name="allin_state_pressed">@color/allin_70p</color>
+	<color name="allin_state_disabled">@color/allin_25p</color>
+	<color name="raise_state_default">@color/raise</color>
+	<color name="raise_state_pressed">@color/raise_70p</color>
+	<color name="raise_state_disabled">@color/raise_25p</color>
+	<color name="call_state_default">@color/call</color>
+	<color name="call_state_pressed">@color/call_70p</color>
+	<color name="call_state_disabled">@color/call_25p</color>
+	<color name="fold_state_default">@color/fold</color>
+	<color name="fold_state_pressed">@color/fold_70p</color>
+	<color name="fold_state_disabled">@color/fold_25p</color>
+	<color name="textColor_disable">@color/white_30p</color>
+	<color name="textColor_default">@android:color/white</color>
 
 </resources>

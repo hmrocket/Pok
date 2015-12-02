@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -269,7 +270,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			currentRaise = stack;
 		} else {
 			// if(precisionRaiseMode) enable buttons in this state, both buttons can't be disabled in the same time
-			if (precisionRaiseMode == false) {
+			if (!precisionRaiseMode) {
 				// Do nothing
 			} else if (!btnMinus.isEnabled()) {
 				btnMinus.setEnabled(true);
@@ -297,34 +298,34 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * @param amount amountToContinue the user would like to raise
 	 */
 	protected void setRaiseColor(long amount) {
-		int color70, color, color25;
+		int circleColor, pressedColor, holoColor;
 		if (amount >= stack) {
 			// color all in
-			color70 = getResources().getColor(R.color.allin_70p);
-			color25 = getResources().getColor(R.color.allin_25p);
-			color = getResources().getColor(R.color.allin);
+			circleColor = ContextCompat.getColor(getActivity(), R.color.allin);
+			holoColor = ContextCompat.getColor(getActivity(), R.color.allin_25p);
+			pressedColor = ContextCompat.getColor(getActivity(), R.color.allin_70p);
 		} else if (amount >= this.minRaise) {
 			// color raise, must be twice bigger than amount to continue
-			color70 = getResources().getColor(R.color.raise_70p);
-			color25 = getResources().getColor(R.color.raise_25p);
-			color = getResources().getColor(R.color.raise);
+			circleColor = ContextCompat.getColor(getActivity(), R.color.raise);
+			holoColor = ContextCompat.getColor(getActivity(), R.color.raise_25p);
+			pressedColor = ContextCompat.getColor(getActivity(), R.color.raise_70p);
 		} else if (amount >= this.amountToContinue) {
 			// color call
-			color70 = getResources().getColor(R.color.call_70p);
-			color25 = getResources().getColor(R.color.call_25p);
-			color = getResources().getColor(R.color.call);
+			circleColor = ContextCompat.getColor(getActivity(), R.color.call);
+			holoColor = ContextCompat.getColor(getActivity(), R.color.call_25p);
+			pressedColor = ContextCompat.getColor(getActivity(), R.color.call_70p);
 		} else {
 			// color fold
-			color70 = getResources().getColor(R.color.fold_70p);
-			color25 = getResources().getColor(R.color.fold_25p);
-			color = getResources().getColor(R.color.fold);
+			circleColor = ContextCompat.getColor(getActivity(), R.color.fold);
+			holoColor = ContextCompat.getColor(getActivity(), R.color.fold_25p);
+			pressedColor = ContextCompat.getColor(getActivity(), R.color.fold_70p);
 		}
 
 		// set color depending the condition
-		circularSeekBar.setCircleProgressColor(color70);
-		circularSeekBar.setPointerHaloColor(color25);
-		circularSeekBar.setPointerHaloColorOnTouch(color);
-		circularSeekBar.setPointerColor(color70);
+		circularSeekBar.setCircleProgressColor(circleColor);
+		circularSeekBar.setPointerHaloColor(holoColor);
+		circularSeekBar.setPointerHaloColorOnTouch(pressedColor);
+		circularSeekBar.setPointerColor(pressedColor);
 	}
 
 
@@ -361,7 +362,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
 	public interface OnRaiseListener {
-		public void onRaiseDialogResult(long raiseValue);
+		void onRaiseDialogResult(long raiseValue);
 	}
 
 }
