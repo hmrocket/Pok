@@ -152,7 +152,15 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	@Override
 	public void gameWinners(boolean last, Set<Player> winners) {
 		// TODO animate last winning players
-		// TODO update PlayerView
+		for (Player p : winners) {
+			PlayerView playerView = tableView.getPlayerView(p.getSeat().getId());
+			// update players View
+			playerView.updateView(p);
+			if (last) {
+				playerView.setInfo(R.string.winner);
+			}
+		}
+
 	}
 
 	@Override

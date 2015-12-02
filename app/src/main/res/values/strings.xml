@@ -10,4 +10,5 @@
     <string name="start">start</string>
     <string name="skip">skip</string>
     <string name="busted">BUSTED</string>
+    <string name="winner">WINNER</string>
 </resources>
