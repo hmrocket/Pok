@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class PlayerView extends RelativeLayout {
 	// XXX Assure the View save it's state
 	private CardView cardView1;
 	private CardView cardView2;
+	private FrameLayout cardContainer;
 	private ImageView profileImage;
 	private TextView dealerFlag;
 	/**
@@ -44,17 +46,6 @@ public class PlayerView extends RelativeLayout {
 		init(context);
 	}
 
-	private void init(Context context) {
-		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
-		profileImage = (ImageView) findViewById(R.id.iv_profile);
-		cardView1 = (CardView) findViewById(R.id.cardView1);
-		cardView2 = (CardView) findViewById(R.id.cardView2);
-		txCash = (TextView) findViewById(R.id.tx_cash);
-		txInfo = (TextView) findViewById(R.id.tx_info);
-		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
-
-	}
-
 	public PlayerView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context);
@@ -69,6 +60,18 @@ public class PlayerView extends RelativeLayout {
 	public PlayerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
+	}
+
+	private void init(Context context) {
+		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
+		profileImage = (ImageView) findViewById(R.id.iv_profile);
+		cardView1 = (CardView) findViewById(R.id.cardView1);
+		cardView2 = (CardView) findViewById(R.id.cardView2);
+		txCash = (TextView) findViewById(R.id.tx_cash);
+		txInfo = (TextView) findViewById(R.id.tx_info);
+		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
+		cardContainer = (FrameLayout) findViewById(R.id.fl_cardview);
+
 	}
 
 	/**
@@ -247,11 +250,14 @@ public class PlayerView extends RelativeLayout {
 	 */
 	public void setHand(Hand hand) {
 		if (hand != null) {
+			cardContainer.setVisibility(VISIBLE);
 			cardView1.facedown(true);
 			cardView1.setCard(hand.getCard1());
 			cardView2.facedown(true);
 			cardView2.setCard(hand.getCard2());
 		} else {
+			// hide card container to adjust layout size and center
+			cardContainer.setVisibility(GONE);
 			cardView1.reset();
 			cardView2.reset();
 		}
@@ -261,6 +267,8 @@ public class PlayerView extends RelativeLayout {
 	 * reset the PlayerView
 	 */
 	public void reset() {
+		// hide card container to adjust layout size and center
+		cardContainer.setVisibility(GONE);
 		cardView1.reset();
 		cardView2.reset();
 		txCash.setText("");

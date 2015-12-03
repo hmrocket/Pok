@@ -49,27 +49,29 @@
 
 
 		<FrameLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_toEndOf="@+id/frame_iv_profile"
-		android:layout_toRightOf="@+id/frame_iv_profile">
-
-			<com.hmrocket.magicpoker.view.CardView
-			android:id="@+id/cardView1"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="30dp"
-			/>
-
-			<com.hmrocket.magicpoker.view.CardView
-			android:id="@+id/cardView2"
+			android:id="@+id/fl_cardview"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
-			android:layout_gravity="right|center_vertical"
-			android:layout_toEndOf="@+id/cardView1"
-			android:layout_toRightOf="@+id/cardView1"/>
+			android:layout_toEndOf="@+id/frame_iv_profile"
+			android:layout_toRightOf="@+id/frame_iv_profile"
+			android:visibility="gone">
+
+			<com.hmrocket.magicpoker.view.CardView
+				android:id="@+id/cardView1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginRight="30dp"
+				/>
+
+			<com.hmrocket.magicpoker.view.CardView
+				android:id="@+id/cardView2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_gravity="right|center_vertical"
+				android:layout_toEndOf="@+id/cardView1"
+				android:layout_toRightOf="@+id/cardView1"/>
 		</FrameLayout>
 	</RelativeLayout>
 
