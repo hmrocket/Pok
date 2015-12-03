@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,6 +32,7 @@ public class PlayerView extends RelativeLayout {
 	private CardView cardView2;
 	private FrameLayout cardContainer;
 	private ImageView profileImage;
+	private View profileContainer;
 	private TextView dealerFlag;
 	/**
 	 * TextView represent the player cash
@@ -71,6 +73,7 @@ public class PlayerView extends RelativeLayout {
 		txInfo = (TextView) findViewById(R.id.tx_info);
 		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
 		cardContainer = (FrameLayout) findViewById(R.id.fl_cardview);
+		profileContainer = findViewById(R.id.frame_iv_profile);
 
 	}
 
@@ -283,9 +286,9 @@ public class PlayerView extends RelativeLayout {
 	 */
 	public void setHighlight(boolean highlight) {
 		if (highlight)
-			profileImage.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.frame_player));
+			profileContainer.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.frame_player));
 		else
-			profileImage.setBackground(null);
+			profileContainer.setBackground(null);
 	}
 
 
