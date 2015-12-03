@@ -210,17 +210,19 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	public void onRound(RoundPhase roundPhase) {
 		// TODO animate card dealing on PRE_FLOP and Toast roundPhase name
 		for (Player player : PLAYERS) {
+			PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
 			if (roundPhase == RoundPhase.PRE_FLOP) {
 				tableView.setDealer(dataFragment.getTable().getDealer());
 
-				PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
 				if (player instanceof HumanPlayer) {
 					playerView.setHand(player.getHandHoldem().getHand());
 					playerView.showCards();
 				}
-			}
-			if (player.isPlaying())
-				tableView.getPlayerView(player.getSeat().getId()).setState(Player.PlayerState.ACTIVE);
+				// PRE_FLOP is called before onBlindPosted (before setup of the round and after setup of the game) so just update PlayerView
+				playerView.setEnabled(true);
+				playerView.updateView(player);
+			} else if (player.isPlaying())
+				playerView.setState(Player.PlayerState.ACTIVE);
 		}
 		Toast.makeText(this, roundPhase.name(), Toast.LENGTH_SHORT).show();
 	}
