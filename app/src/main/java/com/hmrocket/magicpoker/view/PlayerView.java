@@ -126,7 +126,7 @@ public class PlayerView extends RelativeLayout {
 	 */
 	public void setInfo(@NonNull Player player) {
 		if (player.getBet() > 0)
-			txInfo.setText(Long.toString(player.getBet()));
+			txInfo.setText(Util.formatNumber(player.getBet()));
 		else txInfo.setText(player.getName());
 	}
 
