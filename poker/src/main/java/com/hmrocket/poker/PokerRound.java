@@ -39,6 +39,26 @@ public class PokerRound extends Round {
 			System.out.println("minBet=" + minBet + ", dealerIndex=" + dealerIndex);
 	}
 
+	/**
+	 * Using the dealer's left player as baseline, get playing position of player in the game.
+	 *
+	 * @param players     list of player ordered from right to left (clock wise)
+	 * @param player      current player
+	 * @param dealerIndex last player index
+	 * @return get the position of a Player in the game
+	 */
+	protected static int getPosition(List<Player> players, Player player, int dealerIndex) {
+		int indexOf = players.indexOf(player);
+		if (indexOf == -1)
+			throw new IllegalArgumentException("The player doesn't exist in the list");
+		else {
+			int positionFromDealer = indexOf - dealerIndex;
+			// -1 it because deale risn't the one who start but the one who finish last
+			return positionFromDealer > 0 ? positionFromDealer - 1 : players.size() - 1 + positionFromDealer;
+
+		}
+	}
+
     /**
      * 1) setup round and called amount in that round
      * 2) Handle the first bets
@@ -72,14 +92,13 @@ public class PokerRound extends Round {
 		this.newRound(bigBlind);
 		if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
 		nextPhase();
-		if (roundEvent != null) roundEvent.onRound(phase);
 
 		while (phase != RoundPhase.SHOWDOWN && !isAllPlayersNotPlayingExceptOne()) {
+			if (roundEvent != null) roundEvent.onRound(phase);
 			if (PokerTools.DEBUG) System.out.println("Start: " + phase);
 			this.newRound(button); // new poker round (not super new round )
 			if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
 			nextPhase();
-			if (roundEvent != null) roundEvent.onRound(phase);
 
 		}
 		// The game isn't finished yet that's why is not a good idea to call end Of game here
@@ -103,26 +122,6 @@ public class PokerRound extends Round {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * Using the dealer's left player as baseline, get playing position of player in the game.
-	 *
-	 * @param players     list of player ordered from right to left (clock wise)
-	 * @param player      current player
-	 * @param dealerIndex last player index
-	 * @return get the position of a Player in the game
-	 */
-	protected static int getPosition(List<Player> players, Player player, int dealerIndex) {
-		int indexOf = players.indexOf(player);
-		if (indexOf == -1)
-			throw new IllegalArgumentException("The player doesn't exist in the list");
-		else {
-			int positionFromDealer = indexOf - dealerIndex;
-			// -1 it because deale risn't the one who start but the one who finish last
-			return positionFromDealer > 0 ? positionFromDealer - 1 : players.size() - 1 + positionFromDealer;
-
-		}
 	}
 
     /**
