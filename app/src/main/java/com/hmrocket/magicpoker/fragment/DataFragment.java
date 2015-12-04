@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.hmrocket.poker.GameEvent;
+import com.hmrocket.poker.HumanPlayer;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Table;
@@ -26,6 +27,7 @@ public class DataFragment extends Fragment {
 
 	private Table table;
 	private GameEvent gameEventListener;
+	private GameService gameService;
 	private Player playerTurn;
 	private Turn turn;
 	private Set<Player> bustedPlayer;
@@ -87,12 +89,19 @@ public class DataFragment extends Fragment {
 		// TODO add Bot around
 	}
 
+	@Override
+	public void onDestroy() {
+		if (gameService != null) gameService.terminate();
+		super.onDestroy();
+	}
+
 	public Table getTable() {
 		return table;
 	}
 
 	public void startGame() {
-		new GameService().execute();
+		gameService = new GameService();
+		gameService.execute();
 	}
 
 	public Player getPlayer() {
@@ -233,6 +242,18 @@ public class DataFragment extends Fragment {
 		@Override
 		public void onCommunityCardsChange(CommunityCards communityCards) {
 			publishProgress(ON_COMMUNITY_CARDS_CHANGED, communityCards);
+		}
+
+		/**
+		 * Terminate an AsyncTask that is running
+		 */
+		public void terminate() {
+			cancel(true);
+			for (Player p : table.getPlayers()) {
+				if (p instanceof HumanPlayer) {
+					((HumanPlayer) p).notResponsive();
+				}
+			}
 		}
 	}
 }
