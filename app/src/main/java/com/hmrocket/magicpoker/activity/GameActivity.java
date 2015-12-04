@@ -209,7 +209,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	@Override
 	public void onRound(RoundPhase roundPhase) {
 		// TODO animate card dealing on PRE_FLOP and Toast roundPhase name
-		for (Player player : PLAYERS) {
+		for (Player player : dataFragment.getTable().getPlayers()) {
 			PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
 			if (roundPhase == RoundPhase.PRE_FLOP) {
 				tableView.setDealer(dataFragment.getTable().getDealer());
