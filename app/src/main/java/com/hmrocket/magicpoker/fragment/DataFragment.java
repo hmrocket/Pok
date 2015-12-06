@@ -160,7 +160,7 @@ public class DataFragment extends Fragment {
 					gameEventListener.playerBusted((Set<Player>) values[1]);
 					break;
 				case GAME_WINNERS:
-					gameEventListener.gameWinners((boolean)values[1], (Set<Player>) values[2]);
+					gameEventListener.gameWinners((boolean) values[1], (Set<Player>) values[2]);
 					break;
 				case ON_PRE_TURN:
 					gameEventListener.onPreTurn((Player) values[1], (Turn) values[2]);
@@ -191,17 +191,20 @@ public class DataFragment extends Fragment {
 		@Override
 		public void gameEnded() {
 			publishProgress(GAME_ENDED);
+			delay();
 		}
 
 		@Override
 		public void playerBusted(Set<Player> players) {
 			bustedPlayer = players;
 			publishProgress(PLAYER_BUSTED, players);
+			delay();
 		}
 
 		@Override
 		public void gameWinners(boolean last, Set<Player> winners) {
 			publishProgress(GAME_WINNERS, last, winners);
+			delay();
 		}
 
 		@Override
@@ -209,6 +212,7 @@ public class DataFragment extends Fragment {
 			DataFragment.this.turn = turn;
 			DataFragment.this.playerTurn = player;
 			publishProgress(ON_PRE_TURN, player, turn);
+			if (!(player instanceof HumanPlayer)) delay();
 		}
 
 		@Override
@@ -216,32 +220,49 @@ public class DataFragment extends Fragment {
 			DataFragment.this.turn = null;
 			DataFragment.this.playerTurn = null;
 			publishProgress(ON_TURN_ENDED, player);
+			//if (!(player instanceof HumanPlayer)) delay();
 		}
 
 		@Override
 		public void onRound(RoundPhase roundPhase) {
 			publishProgress(ON_ROUND, roundPhase);
+			delay();
 		}
 
 		@Override
 		public void onBlindPosted(Player smallBlind, Player bigBlind) {
 			publishProgress(ON_BLIND_POSTED, smallBlind, bigBlind);
+			delay();
 		}
 
 		@Override
 		public void onShowdown(Set<Player> potentialWinners) {
 			publishProgress(ON_SHOWDOWN, potentialWinners);
+			delay();
 
 		}
 
 		@Override
 		public void onPotChanged(long potValue) {
 			publishProgress(ON_POT_CHANGED, potValue);
+			delay();
 		}
 
 		@Override
 		public void onCommunityCardsChange(CommunityCards communityCards) {
 			publishProgress(ON_COMMUNITY_CARDS_CHANGED, communityCards);
+			delay();
+		}
+
+		/**
+		 * Delay the game thread by 200ms
+		 */
+		private void delay() {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
 		/**
