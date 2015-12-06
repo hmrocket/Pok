@@ -104,6 +104,7 @@
 		android:layout_marginLeft="41dp"
 		android:layout_marginStart="41dp"
 		android:layout_marginTop="25dp"
+		android:visibility="invisible"
 		/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
@@ -115,6 +116,7 @@
 		android:layout_alignParentStart="true"
 		android:layout_marginBottom="25dp"
 		android:layout_marginLeft="60dp"
+		android:visibility="invisible"
 		/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
@@ -125,7 +127,8 @@
 		android:layout_alignParentRight="true"
 		android:layout_alignTop="@id/playerView3"
 		android:layout_marginEnd="41dp"
-		android:layout_marginRight="41dp"/>
+		android:layout_marginRight="41dp"
+		android:visibility="invisible"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
 		android:id="@+id/playerView8"
@@ -134,6 +137,7 @@
 		android:layout_alignEnd="@id/playerView6"
 		android:layout_alignRight="@id/playerView6"
 		android:layout_alignTop="@id/playerView1"
+		android:visibility="invisible"
 		/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
@@ -143,6 +147,7 @@
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
 		android:layout_centerVertical="true"
+		android:visibility="invisible"
 		/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
@@ -152,6 +157,7 @@
 		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
 		android:layout_alignTop="@id/playerView2"
+		android:visibility="invisible"
 		/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
@@ -159,17 +165,16 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"/>
+		android:layout_centerHorizontal="true"
+		android:visibility="invisible"
+		/>
 
-	<com.hmrocket.magicpoker.view.PlayerView
-		android:id="@+id/playerView5"
+	<android.support.v4.widget.Space
+		android:id="@+id/view_middle"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		android:layout_marginEnd="112dp"
-		android:layout_marginRight="112dp"
-		android:layout_toLeftOf="@id/playerView6"
-		android:layout_toStartOf="@id/playerView6"
+		android:layout_centerHorizontal="true"
 		/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
@@ -177,10 +182,24 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		android:layout_marginLeft="112dp"
-		android:layout_marginStart="112dp"
-		android:layout_toEndOf="@id/playerView1"
-		android:layout_toRightOf="@id/playerView1"
+		android:layout_centerHorizontal="true"
+		android:layout_marginEnd="112dp"
+		android:layout_marginRight="112dp"
+		android:layout_toLeftOf="@id/view_middle"
+		android:layout_toStartOf="@id/view_middle"
+		android:visibility="invisible"
 		/>
 
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView5"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_centerHorizontal="true"
+		android:layout_marginLeft="112dp"
+		android:layout_marginStart="112dp"
+		android:layout_toEndOf="@id/view_middle"
+		android:layout_toRightOf="@id/view_middle"
+		android:visibility="invisible"
+		/>
 </RelativeLayout>

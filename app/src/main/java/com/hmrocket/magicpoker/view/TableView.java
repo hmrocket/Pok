@@ -45,22 +45,6 @@ public class TableView extends RelativeLayout {
 		init();
 	}
 
-	public TableView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
-
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
-
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		init();
-	}
-
 	private void init() {
 		View view = inflate(getContext(), R.layout.table_view, this);
 		potView = (PotView) view.findViewById(R.id.potView);
@@ -85,6 +69,22 @@ public class TableView extends RelativeLayout {
 			cardView.facedown(false);
 			cardViews[i] = cardView;
 		}
+	}
+
+	public TableView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init();
 	}
 
 	/**
@@ -116,7 +116,6 @@ public class TableView extends RelativeLayout {
 	public void populate(List<Player> playerList) {
 		for (Player player : playerList) {
 			PlayerView playerView = playerViews[player.getSeat().getId()];
-			// TODO make the views invisble at the beggining
 			playerView.setVisibility(VISIBLE);
 			playerView.updateView(player);
 		}
