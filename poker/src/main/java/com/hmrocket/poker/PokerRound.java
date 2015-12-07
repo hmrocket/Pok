@@ -34,7 +34,7 @@ public class PokerRound extends Round {
 		this.roundEvent = roundEvent;
 		this.turn = new Turn(minBet, playersOrderedRightLeft.size());
 		this.dealerIndex = dealerIndex;
-		setup(minBet, playersOrderedRightLeft.get(dealerIndex));
+
 		if (PokerTools.DEBUG)
 			System.out.println("minBet=" + minBet + ", dealerIndex=" + dealerIndex);
 	}
@@ -59,15 +59,26 @@ public class PokerRound extends Round {
 		}
 	}
 
+	/**
+	 * setup the game and start rounds
+	 */
+	public void startGame() {
+		Player dealer = players.get(dealerIndex);
+		// TODO check if the event OnBlindPosted should be fired before PRE_FLOP
+		Player bigBlind = setup(turn.getMinBet(), dealer);
+		startGame(dealer, bigBlind);
+	}
+
     /**
      * 1) setup round and called amount in that round
      * 2) Handle the first bets
      * Add small blind and big blind before Round start
      * Note: the dealer isn't the one to start first is the big blind player
-	 * @param minBet
-	 * @param dealer
+	 * @param minBet smallest bet amount
+	 * @param dealer button of hte game
+	 * @return BigBlind player
 	 */
-	private void setup(long minBet, Player dealer) {
+	private Player setup(long minBet, Player dealer) {
 		phase = RoundPhase.PRE_FLOP;
 		if (roundEvent != null) roundEvent.onRound(phase);
 
@@ -79,7 +90,7 @@ public class PokerRound extends Round {
 		bigBlindPlayer.raise(minBet);
 		if (roundEvent != null) roundEvent.onBlindPosted(smallBlindPlayer, bigBlindPlayer);
 		turn.addMoneyOnTable(smallBlindPlayer.getBet() + bigBlindPlayer.getBet());
-		startGame(dealer, bigBlindPlayer);
+		return bigBlindPlayer;
 	}
 
     /**

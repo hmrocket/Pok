@@ -45,6 +45,7 @@ public class Game implements PokerRound.RoundEvent {
 			if (PokerTools.DEBUG) System.out.println(player);
 		}
 		pokerRound = new PokerRound(minBet, players, dealerIndex, this);
+		pokerRound.startGame();
 	}
 
 	public void removePlayer(Player player) {
@@ -97,6 +98,13 @@ public class Game implements PokerRound.RoundEvent {
 
 	@Override
 	public void onRound(RoundPhase roundPhase) {
+		if (roundPhase != RoundPhase.PRE_FLOP && roundPhase != RoundPhase.SHOWDOWN) {
+			// reset the playing player state to active for the new round
+			for (Player p : pokerRound.getPlayers()) {
+				if (p.isPlaying())
+					p.setState(Player.PlayerState.ACTIVE);
+			}
+		}
 		gameEventListener.onRound(roundPhase);
 	}
 

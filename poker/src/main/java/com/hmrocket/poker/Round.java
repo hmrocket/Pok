@@ -40,7 +40,7 @@ public class Round {
 	/**
 	 * return the left Player
 	 *
-	 * @param players must be ordered from right to left
+	 * @param players        must be ordered from right to left
 	 * @param player
 	 * @param skippedPlayers positive int represent the number of player skipped before returning left Player
 	 * @return Player on the left of <code>player</code>
@@ -180,4 +180,12 @@ public class Round {
 		reset();
 	}
 
+	/**
+	 * get all players
+	 *
+	 * @return players
+	 */
+	public List<Player> getPlayers() {
+		return players;
+	}
 }
