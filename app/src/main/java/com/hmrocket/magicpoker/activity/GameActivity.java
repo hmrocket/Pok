@@ -169,7 +169,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			// activate only possible commands
 			btnController[0].setEnabled(true); //AllIn
 			btnController[3].setEnabled(true); //Fold
-			if (player.getCash() + player.getBet() > turn.getMinBet()) {
+			if (player.getCash() + player.getBet() > turn.getMinRaise()) {
 				// Raise/Call cmd enabled only if the player has above the minBet (if it's equal then only allin/Fold activated)
 				btnController[1].setEnabled(true); // Raise
 				btnController[2].setEnabled(true); // Call
@@ -220,11 +220,10 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 					playerView.setHand(player.getHandHoldem().getHand());
 					playerView.showCards();
 				}
-				// PRE_FLOP is called before onBlindPosted (before setup of the round and after setup of the game) so just update PlayerView
+				// PRE_FLOP is called before onBlindPosted (before setup of the round and after setup of the game)
 				playerView.setEnabled(true);
-				playerView.updateView(player);
-			} else if (player.isPlaying())
-				playerView.setState(Player.PlayerState.ACTIVE);
+			}
+			playerView.updateView(player);
 		}
 		Toast.makeText(this, roundPhase.name(), Toast.LENGTH_SHORT).show();
 	}
