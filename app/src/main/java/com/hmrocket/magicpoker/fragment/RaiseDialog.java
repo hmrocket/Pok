@@ -152,13 +152,17 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_ADD);
-			// Raise amount must be at least the double
-			minRaise = getArguments().getLong(ARG_MIN_RAISE, amountToContinue * 2);
+			minBet = getArguments().getLong(ARG_MIN_BET);
 			stack = getArguments().getLong(ARG_STACK);
+			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_ADD);
+			// Raise amount must be at least the double of the last raise and if it's 0 then it's minBet
+			if (amountToContinue == 0) {
+				minRaise = minBet;
+			} else {
+				minRaise = getArguments().getLong(ARG_MIN_RAISE, amountToContinue * 2);
+			}
 			// current raise can't be more what the player has as cash
 			currentRaise = Math.min(minRaise, stack);
-			minBet = getArguments().getLong(ARG_MIN_BET);
 		}
 		// decide wither to show ok,cancel,plus,minus buttons
 		precisionRaiseMode = PreferenceManager.getDefaultSharedPreferences(getActivity())
