@@ -156,6 +156,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			PlayerView playerView = tableView.getPlayerView(p.getSeat().getId());
 			// update players View
 			playerView.updateView(p);
+			tableView.setInfo(Util.getStringId(p.getHandHoldem().getHandScore().getHandType()));
 			if (last) {
 				playerView.setInfo(R.string.winner);
 			}

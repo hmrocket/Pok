@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.poker.Player;
@@ -38,10 +39,30 @@ public class TableView extends RelativeLayout {
 	 * array contains 5 CardViews to represent the CommunityCards
 	 */
 	protected CardView[] cardViews;
+	/**
+	 * represent the game info (winning HandType, RoundPhase)
+	 */
+	protected TextView txInfo;
 
 
 	public TableView(Context context) {
 		super(context);
+		init();
+	}
+
+	public TableView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
 		init();
 	}
 
@@ -69,22 +90,8 @@ public class TableView extends RelativeLayout {
 			cardView.facedown(false);
 			cardViews[i] = cardView;
 		}
-	}
 
-	public TableView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
-
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
-
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		init();
+		txInfo = (TextView) findViewById(R.id.tx_tableInfo);
 	}
 
 	/**
@@ -186,6 +193,15 @@ public class TableView extends RelativeLayout {
 	}
 
 	/**
+	 * set text under the shared card
+	 *
+	 * @param stringResId String resource id
+	 */
+	public void setInfo(int stringResId) {
+		txInfo.setText(stringResId);
+	}
+
+	/**
 	 * reset the PotView, reset the 5 shared CardView and reset CardView from PlayerView
 	 */
 	public void clear() {
@@ -196,6 +212,7 @@ public class TableView extends RelativeLayout {
 		for (PlayerView p : playerViews) {
 			p.setHand(null);
 		}
+		txInfo.setText(null);
 	}
 
 }

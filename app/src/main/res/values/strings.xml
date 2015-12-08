@@ -16,4 +16,15 @@
 	<string name="call">CALL</string>
 	<string name="raise">RAISE</string>
 	<string name="all_in">ALL IN</string>
+	<!-- HandType name -->
+	<string name="high_card">HIGH CARD</string>
+	<string name="one_pair">ONE PAIR</string>
+	<string name="two_pairs">TWO PAIR</string>
+	<string name="three_of_a_kind">THREE OF A KIND</string>
+	<string name="straight">STRAIGHT\\</string>
+	<string name="flush">FLUSH</string>
+	<string name="full_house">FULL HOUSE</string>
+	<string name="four_of_a_kind">FOUR OF A KIND</string>
+	<string name="straight_flush">STRAIGHT FLUSH</string>
+	<string name="royal_flush">ROYAL FLUSH</string>
 </resources>

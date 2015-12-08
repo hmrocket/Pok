@@ -1,6 +1,9 @@
 package com.hmrocket.magicpoker;
 
+import android.support.annotation.NonNull;
+
 import com.hmrocket.poker.card.Card;
+import com.hmrocket.poker.card.HandType;
 
 import java.text.NumberFormat;
 
@@ -207,6 +210,37 @@ public final class Util {
 				}
 		}
 		return R.mipmap.backcover;
+	}
+
+	/**
+	 * get a String rescource id related to the specified HandType
+	 *
+	 * @param handType HandType
+	 * @return HandType's String id
+	 */
+	public static int getStringId(@NonNull HandType handType) {
+		switch (handType) {
+			case HIGH_CARD:
+				return R.string.high_card;
+			case ONE_PAIR:
+				return R.string.one_pair;
+			case TWO_PAIRS:
+				return R.string.two_pairs;
+			case THREE_OF_A_KIND:
+				return R.string.three_of_a_kind;
+			case STRAIGHT:
+				return R.string.straight;
+			case FLUSH:
+				return R.string.flush;
+			case FULL_HOUSE:
+				return R.string.full_house;
+			case FOUR_OF_A_KIND:
+				return R.string.four_of_a_kind;
+			case STRAIGHT_FLUSH:
+				return R.string.straight_flush;
+			default:
+				return R.string.royal_flush;
+		}
 	}
 
 	public static final class AppPreference {
