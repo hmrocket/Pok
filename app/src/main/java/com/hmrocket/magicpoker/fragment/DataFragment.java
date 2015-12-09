@@ -28,9 +28,6 @@ public class DataFragment extends Fragment {
 	private Table table;
 	private GameEvent gameEventListener;
 	private GameService gameService;
-	private Player playerTurn;
-	private Turn turn;
-	private Set<Player> bustedPlayer;
 
 
 	public static DataFragment newInstance(int tableCapacity, long minBet) {
@@ -105,15 +102,24 @@ public class DataFragment extends Fragment {
 	}
 
 	public Player getPlayer() {
-		return playerTurn;
+		return gameService == null ? null : gameService.playerTurn;
 	}
 
 	public Turn getTurn() {
-		return turn;
+		return gameService == null ? null : gameService.turn;
 	}
 
 	public Set<Player> getBustedPlayer() {
-		return bustedPlayer;
+		return gameService == null ? null : gameService.bustedPlayer;
+	}
+
+	/**
+	 * set the delay to 0
+	 */
+	public void skip() {
+		if (gameService != null) {
+			gameService.delay = 0;
+		}
 	}
 
 	/**
@@ -133,6 +139,11 @@ public class DataFragment extends Fragment {
 		private static final int ON_POT_CHANGED = 9;
 		private static final int ON_COMMUNITY_CARDS_CHANGED = 10;
 
+		private long delay;
+		private Player playerTurn;
+		private Turn turn;
+		private Set<Player> bustedPlayer;
+
 		@Override
 		protected Void doInBackground(Void... parms) {
 			table.startGame();
@@ -146,6 +157,8 @@ public class DataFragment extends Fragment {
 			super.onPreExecute();
 			// reset and setup needed variable for every hand
 			bustedPlayer = null;
+			// by default the animation delay is 500ms
+			delay = 500;
 			table.setGameEventListener(this);
 		}
 
@@ -209,16 +222,16 @@ public class DataFragment extends Fragment {
 
 		@Override
 		public void onPreTurn(Player player, Turn turn) {
-			DataFragment.this.turn = turn;
-			DataFragment.this.playerTurn = player;
+			this.turn = turn;
+			playerTurn = player;
 			publishProgress(ON_PRE_TURN, player, turn);
 			if (!(player instanceof HumanPlayer)) delay();
 		}
 
 		@Override
 		public void onTurnEnded(Player player) {
-			DataFragment.this.turn = null;
-			DataFragment.this.playerTurn = null;
+			turn = null;
+			playerTurn = null;
 			publishProgress(ON_TURN_ENDED, player);
 			//if (!(player instanceof HumanPlayer)) delay();
 		}
@@ -255,11 +268,11 @@ public class DataFragment extends Fragment {
 		}
 
 		/**
-		 * Delay the game thread by 200ms
+		 * Delay the game thread by 500ms default
 		 */
 		private void delay() {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(delay);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -275,6 +288,8 @@ public class DataFragment extends Fragment {
 					((HumanPlayer) p).notResponsive();
 				}
 			}
+			// skip the hand to the end to finish the game quickly
+			skip();
 		}
 	}
 }

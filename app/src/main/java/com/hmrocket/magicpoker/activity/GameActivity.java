@@ -107,6 +107,13 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				dataFragment.getPlayer().fold();
 				break;
 			case R.id.btn_start_skip_info:
+				// only one HumanPlayer
+				if (v.getTag() == 1) {
+					btnController[4].setEnabled(false);
+					v.setTag(null);
+					dataFragment.skip();
+					break;
+				}
 				// XXX DEBUG
 				if (dataFragment.getTable().getPlayers() == null || dataFragment.getTable().getPlayers().isEmpty()) {
 					for (int i = 0; i < PLAYERS.size(); i++)
@@ -198,9 +205,9 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			btnController[2].setEnabled(false); // call
 			btnController[3].setEnabled(false); //Fold
 			if (player.isOut()) {
-				// TODO implement skip by disabling animation and task delays
 				btnController[4].setEnabled(true);
 				btnController[4].setText(R.string.skip);
+				btnController[4].setTag(1);
 			} else {
 				// remove info (amount to add to continue
 				btnController[4].setText(null);
