@@ -30,7 +30,7 @@ import java.text.DecimalFormat;
  */
 public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCircularSeekBarChangeListener {
 
-	private static final String ARG_AMOUNT_TO_ADD = "amountToContinue";
+	private static final String ARG_AMOUNT_TO_CONTINUE = "amountToContinue";
 	private static final String ARG_STACK = "stack";
 	private static final String ARG_MIN_BET = "min_bet";
 	private static final DecimalFormat DF = new DecimalFormat("##.#");
@@ -90,15 +90,15 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * Use this factory method to create a new instance of
 	 * this fragment using the provided parameters.
 	 *
-	 * @param amountToAdd amountToAdd to match amountToContinue
+	 * @param amountToContinue amountToContinue (overall amount to match)
 	 * @param stack            Player's cash
 	 * @param minBet           Min Bet
 	 * @return A new instance of fragment RaiseDialog.
 	 */
-	public static RaiseDialog newInstance(long minBet, long stack, long amountToAdd) {
+	public static RaiseDialog newInstance(long minBet, long stack, long amountToContinue) {
 		RaiseDialog fragment = new RaiseDialog();
 		Bundle args = new Bundle();
-		args.putLong(ARG_AMOUNT_TO_ADD, amountToAdd);
+		args.putLong(ARG_AMOUNT_TO_CONTINUE, amountToContinue);
 		args.putLong(ARG_STACK, stack);
 		args.putLong(ARG_MIN_BET, minBet);
 		fragment.setArguments(args);
@@ -111,17 +111,17 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * Use this factory method to create a new instance of
 	 * this fragment using the provided parameters.
 	 *
-	 * @param player needed to get Player's stack (cash + current bet)
+	 * @param player needed to get Player's stack (cash)
 	 * @param turn   needed for MinBet, mim amount to match, min raise
 	 * @return A new instance of fragment RaiseDialog.
 	 */
 	public static RaiseDialog newInstance(Player player, Turn turn) {
 		RaiseDialog fragment = new RaiseDialog();
 		Bundle args = new Bundle();
-		// we will show the player the amount he must add to continue and not the amount to continue
-		args.putLong(ARG_AMOUNT_TO_ADD, turn.getAmountToContinue() - player.getBet());
+		// we will show the player the amount to continue and not the amount to add (avoid complication, user don't like math)
+		args.putLong(ARG_AMOUNT_TO_CONTINUE, turn.getAmountToContinue());
 		// we will show the player the amount he must add to be considered a raise
-		args.putLong(ARG_MIN_RAISE, turn.getMinRaise() - player.getBet());
+		args.putLong(ARG_MIN_RAISE, turn.getMinRaise());
 		// current stack and not the cash + bet
 		args.putLong(ARG_STACK, player.getCash());
 		args.putLong(ARG_MIN_BET, turn.getMinBet());
@@ -154,7 +154,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 		if (getArguments() != null) {
 			minBet = getArguments().getLong(ARG_MIN_BET);
 			stack = getArguments().getLong(ARG_STACK);
-			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_ADD);
+			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_CONTINUE);
 			// Raise amount equal to turn.getMinRaise()
 			minRaise = getArguments().getLong(ARG_MIN_RAISE, Turn.defaultMinRaise(amountToContinue, minBet));
 			// current raise can't be more what the player has as cash
@@ -241,6 +241,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 	 * 1- including enable/disable minus plus button
 	 * 2- change the color the Circular SeekBar (fold, call, raise, allin)
 	 * 3- set 3 TextView amount, percentage, stack
+	 *
 	 * @param raise amount to raise
 	 */
 	public void setRaise(long raise) {
@@ -280,7 +281,7 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			}
 			currentRaise = amount;
 		}
-		float progress = 100 * currentRaise / (float)stack;
+		float progress = 100 * currentRaise / (float) stack;
 
 		// set the progress of the circle only if needed; when the user change the progress isn't needed to update it again
 		if (updateCircleProgress) circularSeekBar.setProgress((int) progress);
