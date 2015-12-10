@@ -114,6 +114,15 @@ public class DataFragment extends Fragment {
 	}
 
 	/**
+	 * get RoundPhase of the game
+	 * XXX This is information can be obtained from Game Object
+	 *
+	 * @return RoundPhase
+	 */
+	public RoundPhase getRoundPhase() {
+		return gameService == null ? null : gameService.roundPhase;
+	}
+	/**
 	 * set the delay to 0
 	 */
 	public void skip() {
@@ -143,6 +152,7 @@ public class DataFragment extends Fragment {
 		private Player playerTurn;
 		private Turn turn;
 		private Set<Player> bustedPlayer;
+		private RoundPhase roundPhase;
 
 		@Override
 		protected Void doInBackground(Void... parms) {
@@ -160,6 +170,7 @@ public class DataFragment extends Fragment {
 			// by default the animation delay is 500ms
 			delay = 500;
 			table.setGameEventListener(this);
+			roundPhase = null;
 		}
 
 		@Override
@@ -238,6 +249,7 @@ public class DataFragment extends Fragment {
 
 		@Override
 		public void onRound(RoundPhase roundPhase) {
+			this.roundPhase = roundPhase;
 			publishProgress(ON_ROUND, roundPhase);
 			delay();
 		}

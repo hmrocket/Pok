@@ -163,7 +163,9 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			PlayerView playerView = tableView.getPlayerView(p.getSeat().getId());
 			// update players View
 			playerView.updateView(p);
-			tableView.setInfo(Util.getStringId(p.getHandHoldem().getHandScore().getHandType()));
+			// show winning hand info only if the roundphase is showdown
+			if (dataFragment.getRoundPhase() == RoundPhase.SHOWDOWN)
+				tableView.setInfo(Util.getStringId(p.getHandHoldem().getHandScore().getHandType()));
 			if (last) {
 				playerView.setInfo(R.string.winner);
 			}
