@@ -78,6 +78,21 @@ public class Turn {
 	}
 
 	/**
+	 * Calculate the default min re-raise
+	 *
+	 * @param amountToContinue amount to call (amount to match)
+	 * @param minBet           smallest amount you can bet
+	 * @return Double of amountToContinue, minBet if amountToContinue equal to 0
+	 */
+	public static long defaultMinRaise(long amountToContinue, long minBet) {
+		if (amountToContinue != 0) {
+			return 2 * amountToContinue;
+		} else {
+			return minBet;
+		}
+	}
+
+	/**
 	 * Reset Turn Stat
 	 *
 	 * @param minBet
@@ -106,10 +121,11 @@ public class Turn {
 	/**
 	 * The minimum amount of money a player need to put on the table to consider a raise
 	 *
-	 * @return 2 * {@link #getAmountToContinue() amountToContinue}
+	 * @return 2 * {@link #getAmountToContinue() amountToContinue} or minimal Bet if amountToContinue is 0
+	 * @see #defaultMinRaise(long, long)
 	 */
 	public long getMinRaise() {
-		return 2 * amountToContinue;
+		return defaultMinRaise(amountToContinue, minBet);
 	}
 
 	public long getAmountToContinue() {

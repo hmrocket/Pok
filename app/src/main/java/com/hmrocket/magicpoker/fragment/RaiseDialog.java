@@ -155,12 +155,8 @@ public class RaiseDialog extends DialogFragment implements CircularSeekBar.OnCir
 			minBet = getArguments().getLong(ARG_MIN_BET);
 			stack = getArguments().getLong(ARG_STACK);
 			amountToContinue = getArguments().getLong(ARG_AMOUNT_TO_ADD);
-			// Raise amount must be at least the double of the last raise and if it's 0 then it's minBet
-			if (amountToContinue == 0) {
-				minRaise = minBet;
-			} else {
-				minRaise = getArguments().getLong(ARG_MIN_RAISE, amountToContinue * 2);
-			}
+			// Raise amount equal to turn.getMinRaise()
+			minRaise = getArguments().getLong(ARG_MIN_RAISE, Turn.defaultMinRaise(amountToContinue, minBet));
 			// current raise can't be more what the player has as cash
 			currentRaise = Math.min(minRaise, stack);
 		}
