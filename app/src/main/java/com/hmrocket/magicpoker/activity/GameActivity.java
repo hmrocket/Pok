@@ -116,8 +116,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				}
 				// XXX DEBUG
 				if (dataFragment.getTable().getPlayers() == null || dataFragment.getTable().getPlayers().isEmpty()) {
-					for (int i = 0; i < PLAYERS.size(); i++)
-						dataFragment.getTable().addPlayer(PLAYERS.get(i), i);
+					dataFragment.getTable().populate(PLAYERS);
 					tableView.populate(PLAYERS);
 				}
 				// remove busted player if any

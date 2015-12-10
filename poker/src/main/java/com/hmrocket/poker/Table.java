@@ -3,6 +3,7 @@ package com.hmrocket.poker;
 import com.hmrocket.poker.card.CommunityCards;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +37,29 @@ public class Table implements GameEvent {
         this.seatsAvailable = capacity;
         this.minBet = minBet;
         this.game = new Game(this);
+	}
+
+	/**
+	 * Proportionately distribute players around the table
+	 * the already sitting players won't be removed
+	 *
+	 * @param players collection of players to add to the table
+	 */
+	public void populate(Collection<Player> players) {
+		// preference placement is on the right then left
+		int[] seatIdsOrganized = null;
+		if (players.size() <= 5) {
+			int[] seatIdsOrganized5Max = new int[]{0, 5, 4, 7, 2};
+			seatIdsOrganized = seatIdsOrganized5Max;
+		} else if (players.size() <= 7) {
+			int[] seatIdsOrganized7Max = new int[]{0, 5, 4, 8, 1, 6, 3};
+			seatIdsOrganized = seatIdsOrganized7Max;
+		}
+		int i = 0;
+		for (Player p : players) {
+			addPlayer(p, seatIdsOrganized == null ? i : seatIdsOrganized[i]);
+			i++;
+		}
 	}
 
 	/**
