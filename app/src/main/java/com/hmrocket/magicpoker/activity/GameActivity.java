@@ -179,11 +179,15 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			// activate only possible commands
 			btnController[0].setEnabled(true); //AllIn
 			btnController[3].setEnabled(true); //Fold
-			if (player.getCash() + player.getBet() > turn.getMinRaise()) {
-				// Raise/Call cmd enabled only if the player has above the minBet (if it's equal then only allin/Fold activated)
-				btnController[1].setEnabled(true); // Raise
+			long maxBet = player.getCash() + player.getBet();
+			// Call cmd enabled only if the player has above amountToContinue (if it's equal or less then only allin/Fold activated)
+			if (maxBet > turn.getAmountToContinue()) {
 				btnController[2].setEnabled(true); // Call
 				btnController[2].setText(turn.getAmountToContinue() == player.getBet() ? R.string.check : R.string.call);
+				// Raise cmd enabled only if the player has above the minBet (if it's equal or less then only allin/Call/Fold activated)
+				if (maxBet > turn.getMinRaise()) {
+					btnController[1].setEnabled(true); // Raise
+				}
 			}
 			// The amount to add can't be more than cash
 			long amountToAdd = Math.min(player.getCash(), turn.getAmountToContinue() - player.getBet());
