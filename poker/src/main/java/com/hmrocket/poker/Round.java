@@ -68,7 +68,7 @@ public class Round {
 	}
 
 	public Player nextTurn() {
-		if (isCompleted()) {
+		if (isRoundCompleted()) {
 			return null;
 		} else {
 			turnLeft--;
@@ -107,6 +107,15 @@ public class Round {
 	}
 
 	protected boolean isCompleted() {
+		return isRoundCompleted();
+	}
+
+	/**
+	 * Assure encapsulation
+	 *
+	 * @return true if the round is completed, false if there's more turn to be played
+	 */
+	private boolean isRoundCompleted() {
 		if (turnLeft <= 0) {
 			return true;
 		} else return false;
@@ -142,7 +151,7 @@ public class Round {
 	 * @param player
 	 */
 	void addPlayer(Player player, int index) {
-		if (isCompleted() == false)
+		if (isRoundCompleted() == false)
 			throw new IllegalStateException("No Player can be add while the round isn't completed");
 
 		// and adjust turn
