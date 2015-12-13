@@ -230,6 +230,7 @@ public class DataFragment extends Fragment {
 					break;
 				case ON_SHOWDOWN:
 					gameEventListener.onShowdown((Set<Player>) values[1]);
+					soundManager.playCardFlip();
 					break;
 				case ON_POT_CHANGED:
 					gameEventListener.onPotChanged((long) values[1]);
