@@ -33,3 +33,6 @@ wiki page
 
 ----->Credit:
 Matt Joseph: CircularSeekBar https://github.com/devadvance/circularseekbar
+->Sound
+LittleRobotSoundFactory
+Tomlija

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.hmrocket.magicpoker.SoundManager;
 import com.hmrocket.poker.GameEvent;
 import com.hmrocket.poker.HumanPlayer;
 import com.hmrocket.poker.Player;
@@ -28,6 +29,7 @@ public class DataFragment extends Fragment {
 	private Table table;
 	private GameEvent gameEventListener;
 	private GameService gameService;
+	private SoundManager soundManager;
 
 
 	public static DataFragment newInstance(int tableCapacity, long minBet) {
@@ -42,26 +44,14 @@ public class DataFragment extends Fragment {
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
-		// GameEvent interface must be implemented by the activity
-		try {
-			gameEventListener = (GameEvent) context;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(context.toString()
-					+ " must implement GameEvent");
-		}
+		onAttachCode(context);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onAttach(Activity context) {
 		super.onAttach(context);
-		// GameEvent interface must be implemented by the activity
-		try {
-			gameEventListener = (GameEvent) context;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(context.toString()
-					+ " must implement GameEvent");
-		}
+		onAttachCode(context);
 	}
 
 	// this method is only called once for this fragment
@@ -80,16 +70,39 @@ public class DataFragment extends Fragment {
 		populateTable();
 	}
 
-	private void populateTable() {
-		// TODO load HumanPlayer info (no image)
+	@Override
+	public void onStart() {
+		super.onStart();
+		soundManager.loadGameMusic(getActivity());
+	}
 
-		// TODO add Bot around
+	@Override
+	public void onStop() {
+		super.onStop();
+		soundManager.unloadGameMusic(getActivity());
 	}
 
 	@Override
 	public void onDestroy() {
 		if (gameService != null) gameService.terminate();
 		super.onDestroy();
+	}
+
+	private void populateTable() {
+		// TODO load HumanPlayer info (no image)
+
+		// TODO add Bot around
+	}
+
+	private void onAttachCode(Context context) {
+		// GameEvent interface must be implemented by the activity
+		try {
+			gameEventListener = (GameEvent) context;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(context.toString()
+					+ " must implement GameEvent");
+		}
+		soundManager = SoundManager.create();
 	}
 
 	public Table getTable() {
@@ -122,6 +135,7 @@ public class DataFragment extends Fragment {
 	public RoundPhase getRoundPhase() {
 		return gameService == null ? null : gameService.roundPhase;
 	}
+
 	/**
 	 * set the delay to 0
 	 */
@@ -184,16 +198,32 @@ public class DataFragment extends Fragment {
 					gameEventListener.playerBusted((Set<Player>) values[1]);
 					break;
 				case GAME_WINNERS:
-					gameEventListener.gameWinners((boolean) values[1], (Set<Player>) values[2]);
+					boolean last = (boolean) values[1];
+					Set<Player> players = (Set<Player>) values[2];
+					if (last) {
+						// play the winning sound only if the winner is human
+						for (Player p : players)
+							if (p instanceof HumanPlayer) {
+								soundManager.playWinSound();
+								break;
+							}
+					}
+					gameEventListener.gameWinners(last, players);
+
 					break;
 				case ON_PRE_TURN:
 					gameEventListener.onPreTurn((Player) values[1], (Turn) values[2]);
 					break;
 				case ON_TURN_ENDED:
-					gameEventListener.onTurnEnded((Player) values[1]);
+					Player player = (Player) values[1];
+					soundManager.playActionSound(player.getState());
+					gameEventListener.onTurnEnded(player);
 					break;
 				case ON_ROUND:
-					gameEventListener.onRound((RoundPhase) values[1]);
+					RoundPhase roundPhase = (RoundPhase) values[1];
+					if (roundPhase == RoundPhase.PRE_FLOP)
+						soundManager.playShuffleCards();
+					gameEventListener.onRound(roundPhase);
 					break;
 				case ON_BLIND_POSTED:
 					gameEventListener.onBlindPosted((Player) values[1], (Player) values[2]);
@@ -205,7 +235,14 @@ public class DataFragment extends Fragment {
 					gameEventListener.onPotChanged((long) values[1]);
 					break;
 				case ON_COMMUNITY_CARDS_CHANGED:
-					gameEventListener.onCommunityCardsChange((CommunityCards) values[1]);
+					CommunityCards communityCards = (CommunityCards) values[1];
+					if (communityCards.getRiver() != null)
+						soundManager.playCardDraw(RoundPhase.RIVER);
+					else if (communityCards.getTurn() != null)
+						soundManager.playCardDraw(RoundPhase.TURN);
+					else soundManager.playCardDraw(RoundPhase.FLOP);
+
+					gameEventListener.onCommunityCardsChange(communityCards);
 					break;
 				default:
 					break;

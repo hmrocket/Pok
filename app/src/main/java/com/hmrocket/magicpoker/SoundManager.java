@@ -12,26 +12,27 @@ import android.support.annotation.NonNull;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
 
+import java.util.HashMap;
+
 /**
  * @since 09/Dec/2015 - mhamed
  */
 public class SoundManager {
 
-	private static final int SOUND_ID_CARD_FLIP = 0;
-	// Action sound
-	private static final int SOUND_ID_FOLD = 1;
-	private static final int SOUND_ID_RAISE = 2;
-	private static final int SOUND_ID_CALL = 3;
-	private static final int SOUND_ID_CHECK = 4;
-	private static final int SOUND_ID_ALL_IN = 5;
-	// CommunityCard sound
-	private static final int SOUND_ID_DRAW_FLOP = 6;
-	private static final int SOUND_ID_DRAW_TURN = 7;
-	private static final int SOUND_ID_DRAW_RIVER = 8;
+	private static final int MAX_STEAM = 2;
+	private static final int[] RAISE_SOUND_RES = new int[]{R.raw.chipsstack1, R.raw.chipsstack2, R.raw.chipsstack3, R.raw.chipsstack4, R.raw.chipsstack5, R.raw.chipsstack6};
 
-	private static final int SOUND_ID_WIN = 9;
+	/**
+	 * Represent the index of the current RAISE_SOUND_RES played/will be player
+	 * Note: we pick different raise sound every time
+	 */
+	private int raiseSoundIndex;
 
 	private SoundPool soundPool;
+	/**
+	 * Map resource id to it's the Sound id after it load
+	 */
+	private HashMap<Integer, Integer> mapSoundId;
 	private float rate;
 
 
@@ -43,6 +44,31 @@ public class SoundManager {
 		}
 		// rate normal playback
 		rate = 1;
+		raiseSoundIndex = -1;
+		mapSoundId = new HashMap<>();
+	}
+
+	/**
+	 * construct the SoundManager  depending on the api version of the device
+	 *
+	 * @return SoundPool of max 9 stream, for game usage specificlly action and event type of sonification
+	 */
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private SoundPool buildSoundPool() {
+		AudioAttributes audioAttributes = new AudioAttributes.Builder()
+				.setUsage(AudioAttributes.USAGE_GAME)
+				.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+				.build();
+
+		return new SoundPool.Builder()
+				.setMaxStreams(MAX_STEAM)
+				.setAudioAttributes(audioAttributes)
+				.build();
+	}
+
+	@SuppressWarnings("deprecation")
+	public SoundPool buildBeforeAPI21() {
+		return new SoundPool(MAX_STEAM, AudioManager.STREAM_MUSIC, 0);
 	}
 
 	/**
@@ -73,37 +99,29 @@ public class SoundManager {
 	 * @param context the context of the app need to load the audio resource
 	 */
 	public void loadGameMusic(Context context) {
-		// TODO add sound resource
-		int[] soundsRes = new int[]{};
+		int[] soundsRes = new int[]{R.raw.cardfan1, // shuffle (game start)
+				R.raw.win_wohoo, // Human player win (game end)
+				R.raw.cardslide1, R.raw.cardslide2, R.raw.cardslide3, R.raw.cardslide4, R.raw.cardslide5, // community card
+				R.raw.chipshandle5_allin, R.raw.check, R.raw.chipshandle6_call, R.raw.fold_weaponswipe01, // 4 move
+				R.raw.chipsstack1, R.raw.chipsstack2, R.raw.chipsstack3, R.raw.chipsstack4, R.raw.chipsstack5, R.raw.chipsstack6, // raise move
+				R.raw.levelup, // progress
+		};
 		for (int res : soundsRes) {
-			soundPool.load(context, res, 1);
+			mapSoundId.put(res, soundPool.load(context, res, 1));
 		}
-		throw new UnsupportedOperationException("No yet implemented");
 	}
 
 	/**
-	 * construct the SoundManager  depending on the api version of the device
+	 * method to unload game music from the ram
 	 *
-	 * @return SoundPool of max 9 stream, for game usage specificlly action and event type of sonification
+	 * @param context the context of the app need to unload the audio resource
 	 */
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	private SoundPool buildSoundPool() {
-		AudioAttributes audioAttributes = new AudioAttributes.Builder()
-				.setUsage(AudioAttributes.USAGE_GAME)
-				.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-				.build();
-
-		return new SoundPool.Builder()
-				.setMaxStreams(9)
-				.setAudioAttributes(audioAttributes)
-				.build();
+	public void unloadGameMusic(Context context) {
+		for (int id : mapSoundId.values()) {
+			soundPool.unload(id);
+		}
+		mapSoundId.clear();
 	}
-
-	@SuppressWarnings("deprecation")
-	public SoundPool buildBeforeAPI21() {
-		return new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
-	}
-
 
 	public void adjustSound(Activity activity) {
 		// AudioManager audio settings for adjusting the volume
@@ -124,30 +142,37 @@ public class SoundManager {
 		switch (playerState) {
 			case FOLD:
 				//int soundID, float leftVolume, float rightVolume, int priority, int loop, float rate
-				soundPool.play(SOUND_ID_FOLD, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.fold_weaponswipe01), 1f, 1f, 1, 0, rate);
 				break;
 			case RAISE:
-				soundPool.play(SOUND_ID_RAISE, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(getRaiseSoundRes()), 1f, 1f, 1, 0, rate);
 				break;
 			case CALL:
-				soundPool.play(SOUND_ID_CALL, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.chipshandle6_call), 1f, 1f, 1, 0, rate);
 				break;
 			case CHECK:
-				soundPool.play(SOUND_ID_CHECK, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.check), 1f, 1f, 1, 0, rate);
 				break;
 			case ALL_IN:
-				soundPool.play(SOUND_ID_ALL_IN, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.chipshandle5_allin), 1f, 1f, 1, 0, rate);
 				break;
 			default:
 				break;
 		}
 	}
 
+	private int getRaiseSoundRes() {
+		raiseSoundIndex++;
+		if (raiseSoundIndex == RAISE_SOUND_RES.length)
+			raiseSoundIndex = 0;
+		return RAISE_SOUND_RES[raiseSoundIndex];
+	}
+
 	/**
 	 * play a winning sound
 	 */
 	public void playWinSound() {
-		soundPool.play(SOUND_ID_WIN, 1f, 1f, 1, 0, rate);
+		soundPool.play(mapSoundId.get(R.raw.win_wohoo), 1f, 1f, 1, 0, rate);
 	}
 
 	/**
@@ -158,13 +183,15 @@ public class SoundManager {
 	public void playCardDraw(RoundPhase roundPhase) {
 		switch (roundPhase) {
 			case FLOP:
-				soundPool.play(SOUND_ID_DRAW_FLOP, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.cardslide1), 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.cardslide2), 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.cardslide3), 1f, 1f, 1, 0, rate);
 				break;
 			case TURN:
-				soundPool.play(SOUND_ID_DRAW_TURN, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.cardslide4), 1f, 1f, 1, 0, rate);
 				break;
 			case RIVER:
-				soundPool.play(SOUND_ID_DRAW_RIVER, 1f, 1f, 1, 0, rate);
+				soundPool.play(mapSoundId.get(R.raw.cardslide5), 1f, 1f, 1, 0, rate);
 				break;
 			default:
 				// no sound on SHOWDOWN and PRE_FLOP
@@ -174,10 +201,17 @@ public class SoundManager {
 	}
 
 	/**
-	 * play flip card sound
+	 * play Level up sound
 	 */
-	public void playCardFlip() {
-		soundPool.play(SOUND_ID_CARD_FLIP, 1f, 1f, 1, 0, rate);
+	public void playLevelUp() {
+		soundPool.play(mapSoundId.get(R.raw.levelup), 1f, 1f, 1, 0, rate);
+	}
+
+	/**
+	 * play shuffle cards sound
+	 */
+	public void playShuffleCards() {
+		soundPool.play(mapSoundId.get(R.raw.cardfan1), 1f, 1f, 1, 0, rate);
 	}
 
 	/**
