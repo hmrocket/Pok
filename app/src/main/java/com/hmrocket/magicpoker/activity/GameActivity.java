@@ -145,6 +145,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	public void gameEnded() {
 		// ask the player if he would like to continue playing
 		btnController[4].setEnabled(true);
+		btnController[4].setTag(null); // remove skip tag
 		btnController[4].setText(R.string.start);
 	}
 
