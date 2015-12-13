@@ -86,7 +86,7 @@ public class Game implements PokerRound.RoundEvent {
 
 	@Override
 	public void onRound(RoundPhase roundPhase) {
-		if (roundPhase != RoundPhase.PRE_FLOP && roundPhase != RoundPhase.SHOWDOWN) {
+		if (roundPhase != RoundPhase.PRE_FLOP) {
 			// reset the playing player state to active for the new round
 			for (Player p : pokerRound.getPlayers()) {
 				if (p.isPlaying())

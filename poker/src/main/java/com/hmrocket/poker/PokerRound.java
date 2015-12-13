@@ -125,10 +125,10 @@ public class PokerRound extends Round {
 	}
 
 	private void nextPhase() {
-		if (phase != RoundPhase.SHOWDOWN) {
+		if (phase != RoundPhase.RIVER) {
 			phase = RoundPhase.values()[phase.ordinal() + 1];
 			turn.setPhase(phase);
-		} else System.out.println("Next Round called at Showdown");
+		} else System.out.println("Next Round called at RIVER");
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class PokerRound extends Round {
 	@Override
 	protected boolean isCompleted() {
 
-		return super.isCompleted() || phase == RoundPhase.SHOWDOWN || isGameContinue;
+		return super.isCompleted() || isGameContinue;
 	}
 
 	@Override
