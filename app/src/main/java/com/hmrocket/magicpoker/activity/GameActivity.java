@@ -255,6 +255,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			playerView.setHand(player.getHandHoldem().getHand());
 			playerView.showCards();
 		}
+		tableView.showInfo(true);
 	}
 
 	@Override

@@ -219,6 +219,18 @@ public class TableView extends RelativeLayout {
 			p.setHand(null);
 		}
 		txInfo.setText(null);
+		showInfo(false);
+	}
+
+	/**
+	 * show/ hide text view under the shared card
+	 *
+	 * @param show false will hide the textView info, true will set it to visible
+	 */
+	public void showInfo(boolean show) {
+		if (show)
+			txInfo.setVisibility(VISIBLE);
+		else txInfo.setVisibility(INVISIBLE);
 	}
 
 }
