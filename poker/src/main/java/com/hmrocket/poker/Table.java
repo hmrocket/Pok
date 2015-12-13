@@ -126,15 +126,6 @@ public class Table implements GameEvent {
 	}
 
 	/**
-	 * Get the dealer
-	 *
-	 * @return dealer seatId
-	 */
-	public int getDealer() {
-		return dealer;
-	}
-
-	/**
 	 * Get Players on the Table
 	 * @return list of added Players (ordered from right to left)
 	 */
@@ -147,6 +138,15 @@ public class Table implements GameEvent {
 		}
 		// Return a list of Player in the game (ordered from right to left)
 		return playersInGame;
+	}
+
+	/**
+	 * Get the dealer
+	 *
+	 * @return dealer seatId
+	 */
+	public int getDealer() {
+		return dealer;
 	}
 
 	/**
@@ -212,8 +212,8 @@ public class Table implements GameEvent {
 	}
 
 	@Override
-	public void onCommunityCardsChange(CommunityCards communityCards) {
-		if (lisGameEvent != null) lisGameEvent.onCommunityCardsChange(communityCards);
+	public void onCommunityCardsChange(RoundPhase roundPhase, CommunityCards communityCards) {
+		if (lisGameEvent != null) lisGameEvent.onCommunityCardsChange(roundPhase, communityCards);
 	}
 
 	/**

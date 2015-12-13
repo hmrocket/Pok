@@ -33,8 +33,8 @@ public interface GameEvent {
 	/**
 	 * Called by PokerRound before the player start his turn
 	 *
-	 * @param player           Player current turn
-	 * @param turn contains info about this turn like the last bet amount and the min raise amount
+	 * @param player Player current turn
+	 * @param turn   contains info about this turn like the last bet amount and the min raise amount
 	 */
 	void onPreTurn(final Player player, final Turn turn);
 
@@ -75,9 +75,10 @@ public interface GameEvent {
 	void onPotChanged(long potValue);
 
 	/**
-	 * Called when new card dealt face up in the center of the table
+	 * Called when new card dealt face up in the center of the table, we added RoundPhase as parameter to facilitate knowing which card did changed
 	 *
-	 * @param communityCards
+	 * @param communityCards shared cards
+	 * @param roundPhase     round phase represent more what card are changed rather than the actual game phase
 	 */
-	void onCommunityCardsChange(CommunityCards communityCards);
+	void onCommunityCardsChange(RoundPhase roundPhase, CommunityCards communityCards);
 }

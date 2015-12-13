@@ -235,14 +235,11 @@ public class DataFragment extends Fragment {
 					gameEventListener.onPotChanged((long) values[1]);
 					break;
 				case ON_COMMUNITY_CARDS_CHANGED:
-					CommunityCards communityCards = (CommunityCards) values[1];
-					if (communityCards.getRiver() != null)
-						soundManager.playCardDraw(RoundPhase.RIVER);
-					else if (communityCards.getTurn() != null)
-						soundManager.playCardDraw(RoundPhase.TURN);
-					else soundManager.playCardDraw(RoundPhase.FLOP);
+					roundPhase = (RoundPhase) values[1];
+					CommunityCards communityCards = (CommunityCards) values[2];
+					soundManager.playCardDraw(roundPhase);
 
-					gameEventListener.onCommunityCardsChange(communityCards);
+					gameEventListener.onCommunityCardsChange(roundPhase, communityCards);
 					break;
 				default:
 					break;
@@ -311,8 +308,8 @@ public class DataFragment extends Fragment {
 		}
 
 		@Override
-		public void onCommunityCardsChange(CommunityCards communityCards) {
-			publishProgress(ON_COMMUNITY_CARDS_CHANGED, communityCards);
+		public void onCommunityCardsChange(RoundPhase roundPhase, CommunityCards communityCards) {
+			publishProgress(ON_COMMUNITY_CARDS_CHANGED, roundPhase, communityCards);
 			delay();
 		}
 

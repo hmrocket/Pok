@@ -70,15 +70,15 @@ public class Game implements PokerRound.RoundEvent {
 			switch (phase) {
 				case PRE_FLOP:
 					communityCards.setFlop(deck.dealFlop());
-					gameEventListener.onCommunityCardsChange(communityCards);
+					gameEventListener.onCommunityCardsChange(RoundPhase.FLOP, communityCards);
 					break;
 				case FLOP:
 					communityCards.setTurn(deck.drawCard());
-					gameEventListener.onCommunityCardsChange(communityCards);
+					gameEventListener.onCommunityCardsChange(RoundPhase.TURN, communityCards);
 					break;
 				case TURN:
 					communityCards.setRiver(deck.drawCard());
-					gameEventListener.onCommunityCardsChange(communityCards);
+					gameEventListener.onCommunityCardsChange(RoundPhase.RIVER, communityCards);
 					break;
 				case RIVER: // Game ended // the game not always ends here !
 					showdown();
@@ -159,12 +159,13 @@ public class Game implements PokerRound.RoundEvent {
 		switch (missingCard) {
 			case 5:
 				communityCards.setFlop(deck.dealFlop());
+				gameEventListener.onCommunityCardsChange(RoundPhase.FLOP, communityCards);
 			case 2:
 				communityCards.setTurn(deck.drawCard());
+				gameEventListener.onCommunityCardsChange(RoundPhase.TURN, communityCards);
 			case 1:
 				communityCards.setRiver(deck.drawCard());
-				// fire a call back after all cards are set
-				gameEventListener.onCommunityCardsChange(communityCards);
+				gameEventListener.onCommunityCardsChange(RoundPhase.RIVER, communityCards);
 		}
 		endGame();
 	}

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.poker.Player;
+import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.card.CommunityCards;
 import com.hmrocket.poker.card.Flop;
 
@@ -50,22 +51,6 @@ public class TableView extends RelativeLayout {
 		init();
 	}
 
-	public TableView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
-
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
-
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		init();
-	}
-
 	private void init() {
 		View view = inflate(getContext(), R.layout.table_view, this);
 		potView = (PotView) view.findViewById(R.id.potView);
@@ -92,6 +77,22 @@ public class TableView extends RelativeLayout {
 		}
 
 		txInfo = (TextView) findViewById(R.id.tx_tableInfo);
+	}
+
+	public TableView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init();
 	}
 
 	/**
@@ -153,23 +154,28 @@ public class TableView extends RelativeLayout {
 		for (int i = seatId + 1; i < playerViews.length; i++)
 			playerViews[i].setDealer(false);
 	}
+
 	/**
 	 * set the shared card on the TableView
 	 *
 	 * @param communityCards communityCards object hold the shared card on the table
+	 * @param roundPhase phase round of the game
 	 */
-	public void setCommunityCardsView(@NonNull CommunityCards communityCards) {
-		Flop flop = communityCards.getFlop();
-		if (flop != null) {
-			cardViews[0].setCard(flop.getCard1());
-			cardViews[1].setCard(flop.getCard2());
-			cardViews[2].setCard(flop.getCard3());
+	public void setCommunityCardsView(RoundPhase roundPhase, @NonNull CommunityCards communityCards) {
+		switch (roundPhase) {
+			case FLOP:
+				Flop flop = communityCards.getFlop();
+				cardViews[0].setCard(flop.getCard1());
+				cardViews[1].setCard(flop.getCard2());
+				cardViews[2].setCard(flop.getCard3());
+				break;
+			case TURN:
+				cardViews[3].setCard(communityCards.getTurn());
+				break;
+			case RIVER:
+				cardViews[4].setCard(communityCards.getRiver());
+				break;
 		}
-		if (communityCards.getTurn() != null) {
-			cardViews[3].setCard(communityCards.getTurn());
-		}
-		if (communityCards.getRiver() != null)
-			cardViews[4].setCard(communityCards.getRiver());
 	}
 
 	/**

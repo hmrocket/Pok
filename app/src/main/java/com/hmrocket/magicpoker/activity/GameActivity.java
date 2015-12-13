@@ -265,8 +265,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	}
 
 	@Override
-	public void onCommunityCardsChange(CommunityCards communityCards) {
+	public void onCommunityCardsChange(RoundPhase roundPhase, CommunityCards communityCards) {
 		// flip shared cards
-		tableView.setCommunityCardsView(communityCards);
+		tableView.setCommunityCardsView(roundPhase, communityCards);
 	}
 }
