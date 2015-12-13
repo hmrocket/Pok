@@ -15,23 +15,29 @@ import java.util.List;
  */
 public class PokerRound extends Round {
 
-    private RoundPhase phase;
-    private RoundEvent roundEvent;
+	private RoundPhase phase;
+	private RoundEvent roundEvent;
 	private Turn turn;
+	/**
+	 * flag if it's false it won't start the next round
+	 */
+	private boolean isGameContinue;
 	private int dealerIndex;
 
-    // Only table or game should create this if we will pass this object to the player
-    public PokerRound(List<Player> playersOrderedRightLeft, Player dealer) {
-        super(playersOrderedRightLeft, dealer);
-    }
+	// Only table or game should create this if we will pass this object to the player
+	public PokerRound(List<Player> playersOrderedRightLeft, Player dealer) {
+		super(playersOrderedRightLeft, dealer);
+	}
 
-    public PokerRound(List<Player> playersOrderedRightLeft, int dealer) {
-        super(playersOrderedRightLeft, dealer);
-    }
+	public PokerRound(List<Player> playersOrderedRightLeft, int dealer) {
+		super(playersOrderedRightLeft, dealer);
+	}
 
 	public PokerRound(long minBet, List<Player> playersOrderedRightLeft, int dealerIndex, RoundEvent roundEvent) {
 		super(playersOrderedRightLeft, dealerIndex);
+		// must be non null
 		this.roundEvent = roundEvent;
+		if (roundEvent == null) throw new IllegalArgumentException("round event must be non null");
 		this.turn = new Turn(minBet, playersOrderedRightLeft.size());
 		this.dealerIndex = dealerIndex;
 
@@ -63,24 +69,26 @@ public class PokerRound extends Round {
 	 * setup the game and start rounds
 	 */
 	public void startGame() {
+		isGameContinue = false;
 		Player dealer = players.get(dealerIndex);
 		// TODO check if the event OnBlindPosted should be fired before PRE_FLOP
 		Player bigBlind = setup(turn.getMinBet(), dealer);
 		startGame(dealer, bigBlind);
 	}
 
-    /**
-     * 1) setup round and called amount in that round
-     * 2) Handle the first bets
-     * Add small blind and big blind before Round start
-     * Note: the dealer isn't the one to start first is the big blind player
+	/**
+	 * 1) setup round and called amount in that round
+	 * 2) Handle the first bets
+	 * Add small blind and big blind before Round start
+	 * Note: the dealer isn't the one to start first is the big blind player
+	 *
 	 * @param minBet smallest bet amount
 	 * @param dealer button of hte game
 	 * @return BigBlind player
 	 */
 	private Player setup(long minBet, Player dealer) {
 		phase = RoundPhase.PRE_FLOP;
-		if (roundEvent != null) roundEvent.onRound(phase);
+		roundEvent.onRound(phase);
 
 		Player smallBlindPlayer = getLeftPlayer(dealer);
 		smallBlindPlayer.raise(minBet / 2); // XXX Failed: 2 (nullpointer)
@@ -88,27 +96,28 @@ public class PokerRound extends Round {
 		// big blnd is the last one to finish first round (only first round after it's the dealer)
 		Player bigBlindPlayer = getLeftPlayer(smallBlindPlayer);
 		bigBlindPlayer.raise(minBet);
-		if (roundEvent != null) roundEvent.onBlindPosted(smallBlindPlayer, bigBlindPlayer);
+		roundEvent.onBlindPosted(smallBlindPlayer, bigBlindPlayer);
 		turn.addMoneyOnTable(smallBlindPlayer.getBet() + bigBlindPlayer.getBet());
 		return bigBlindPlayer;
 	}
 
-    /**
-     * Play all Poker Rounds until showdown or until all player folded except one
+	/**
+	 * Play all Poker Rounds until showdown or until all player folded except one
+	 *
 	 * @param button button or dealer is the Player to act last (last position)
 	 */
 	protected void startGame(Player button, Player bigBlind) {
 		// on the PRE_FLOP big blind Player is the
 		if (PokerTools.DEBUG) System.out.println("Start: " + phase);
 		this.newRound(bigBlind);
-		if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
+		isGameContinue = roundEvent.onRoundFinish(phase, players);
 		nextPhase();
 
-		while (phase != RoundPhase.SHOWDOWN && !isAllPlayersNotPlayingExceptOne()) {
-			if (roundEvent != null) roundEvent.onRound(phase);
+		while (isGameContinue) {
+			roundEvent.onRound(phase);
 			if (PokerTools.DEBUG) System.out.println("Start: " + phase);
 			this.newRound(button); // new poker round (not super new round )
-			if (roundEvent != null) roundEvent.onRoundFinish(phase, players);
+			isGameContinue = roundEvent.onRoundFinish(phase, players);
 			nextPhase();
 
 		}
@@ -117,43 +126,30 @@ public class PokerRound extends Round {
 
 	private void nextPhase() {
 		if (phase != RoundPhase.SHOWDOWN) {
-			phase =  RoundPhase.values()[phase.ordinal() + 1];
+			phase = RoundPhase.values()[phase.ordinal() + 1];
 			turn.setPhase(phase);
-		}
-		else System.out.println("Next Round called at Showdown");
+		} else System.out.println("Next Round called at Showdown");
 	}
 
-	protected boolean isAllPlayersNotPlayingExceptOne() {
-		int numberOfPlayerPlaying = 0;
-		for (Player player :
-				players) {
-			if (player.isPlaying()) {
-				numberOfPlayerPlaying++;
-				if (numberOfPlayerPlaying > 1) return false;
-			}
-		}
-		return true;
-	}
-
-    /**
-     * @return next Player still in the game
-     */
-    @Override
-    public Player nextTurn() {
-        Player nextPlayer = null;
-        do {
+	/**
+	 * @return next Player still in the game
+	 */
+	@Override
+	public Player nextTurn() {
+		Player nextPlayer = null;
+		do {
 			// loop until you find a player active
 			Player player = super.nextTurn();
 			if (player == null)
-			break;
+				break;
 			else if (player.isPlaying()) {
 				nextPlayer = player;
 				break;
 			}
 			// while Round not finished continue
-        } while (super.isCompleted() == false);
-        return nextPlayer;
-    }
+		} while (super.isCompleted() == false);
+		return nextPlayer;
+	}
 
 	/**
 	 * Get left <u>not out Player</u>
@@ -187,7 +183,7 @@ public class PokerRound extends Round {
 	@Override
 	protected boolean isCompleted() {
 
-		return super.isCompleted() || phase == RoundPhase.SHOWDOWN || isAllPlayersNotPlayingExceptOne();
+		return super.isCompleted() || phase == RoundPhase.SHOWDOWN || isGameContinue;
 	}
 
 	@Override
@@ -213,7 +209,7 @@ public class PokerRound extends Round {
 			// get the position of the player in this game
 			// we use dealerIndex and not Button cause button might be bigBlind at first not dealer
 			int playerPosition = getPosition(players, playerToStart, dealerIndex);
-			if (roundEvent != null) roundEvent.onPreTurn(playerToStart, turn);
+			roundEvent.onPreTurn(playerToStart, turn);
 			turn.turnStarted(playerToStart, playerPosition);
 			playerToStart.play(turn); // player play a move
 			if (PokerTools.DEBUG) System.out.println(playerToStart);
@@ -224,24 +220,25 @@ public class PokerRound extends Round {
 			}
 			// update calledAmount and Start new raising Round
 			turn.turnEnded(playerToStart);
-			if (roundEvent != null) roundEvent.onTurnEnded(playerToStart);
+			roundEvent.onTurnEnded(playerToStart);
 			playerToStart = nextTurn();
 		} while (playerToStart != null);
 	}
 
-    protected interface RoundEvent {
+	protected interface RoundEvent {
 		/**
 		 * Called after a PokerRound was finished
 		 *
 		 * @param phase   Phase of the PokerRound
 		 * @param players All players who played this game
+		 * @return if the next round should start or not
 		 */
-		void onRoundFinish(RoundPhase phase, List<Player> players);
+		boolean onRoundFinish(RoundPhase phase, List<Player> players);
 
 		/**
 		 * Called by PokerRound before the player start his turn
 		 *
-		 * @param player           Player current turn
+		 * @param player Player current turn
 		 * @param @param turn contains info about this turn like the last bet amount and the min raise amount
 		 */
 		void onPreTurn(final Player player, final Turn turn);

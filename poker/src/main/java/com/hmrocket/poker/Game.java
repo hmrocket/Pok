@@ -56,34 +56,22 @@ public class Game implements PokerRound.RoundEvent {
 	 * Poker Round only ends when (1) only one player is left or
 	 * (2) all remaining players have matched the highest total bet made during the round.
 	 */
-	@Override // TODO Optimize isAllPlayersExceptOneFolded isn't needed t
-	public void onRoundFinish(RoundPhase phase, List<Player> players) {
+	@Override
+	public boolean onRoundFinish(RoundPhase phase, List<Player> players) {
 		long potValue = pot.getValue();
 		pot.update();
 		// fire a callback only if the Pot value changed
 		if (potValue != pot.getValue()) gameEventListener.onPotChanged(pot.getValue());
 
 		// distinct two case end game and showdown
-		if (isAllPlayersExceptOneFolded(players)) endGame();
-		else if (isAllPlayersNotPlayingExceptOne(players)) showdown();
-		else
-			switch (phase) {
-				case PRE_FLOP:
-					communityCards.setFlop(deck.dealFlop());
-					gameEventListener.onCommunityCardsChange(RoundPhase.FLOP, communityCards);
-					break;
-				case FLOP:
-					communityCards.setTurn(deck.drawCard());
-					gameEventListener.onCommunityCardsChange(RoundPhase.TURN, communityCards);
-					break;
-				case TURN:
-					communityCards.setRiver(deck.drawCard());
-					gameEventListener.onCommunityCardsChange(RoundPhase.RIVER, communityCards);
-					break;
-				case RIVER: // Game ended // the game not always ends here !
-					showdown();
-					break;
-			}
+		if (isAllPlayersExceptOneFolded(players)) {
+			endGame();
+			return false;
+		} else if (phase == RoundPhase.RIVER || isAllPlayersNotPlayingExceptOne(players)) {
+			showdown();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -104,6 +92,21 @@ public class Game implements PokerRound.RoundEvent {
 				if (p.isPlaying())
 					p.setState(Player.PlayerState.ACTIVE);
 			}
+		}
+		// update shared card
+		switch (roundPhase) {
+			case FLOP:
+				communityCards.setFlop(deck.dealFlop());
+				gameEventListener.onCommunityCardsChange(RoundPhase.FLOP, communityCards);
+				break;
+			case TURN:
+				communityCards.setTurn(deck.drawCard());
+				gameEventListener.onCommunityCardsChange(RoundPhase.TURN, communityCards);
+				break;
+			case RIVER:
+				communityCards.setRiver(deck.drawCard());
+				gameEventListener.onCommunityCardsChange(RoundPhase.RIVER, communityCards);
+				break;
 		}
 		gameEventListener.onRound(roundPhase);
 	}
