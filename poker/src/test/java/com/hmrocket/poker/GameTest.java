@@ -161,7 +161,7 @@ public class GameTest extends TestCase implements GameEvent {
 	}
 
 	@Override
-	public void onCommunityCardsChange(CommunityCards communityCards) {
+	public void onCommunityCardsChange(RoundPhase roundPhase, CommunityCards communityCards) {
 
 	}
 }
