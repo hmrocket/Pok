@@ -6,13 +6,32 @@
 			  android:gravity="center"
 			  android:orientation="vertical">
 
-	<TextView
-		android:id="@+id/tx_info"
+	<ViewSwitcher
+		android:id="@+id/vs_info"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="info"
-		android:textColor="@color/textcolor_circle"
-		android:textSize="14dp"/>
+		android:inAnimation="@android:anim/fade_in"
+		android:outAnimation="@android:anim/fade_out"
+		>
+
+		<TextView
+			android:id="@+id/tx_info"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:text="info"
+			android:textColor="@color/textcolor_circle"
+			android:textSize="14dp"/>
+
+		<com.hmrocket.magicpoker.view.PotView
+			android:id="@+id/potView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+
+			/>
+
+	</ViewSwitcher>
+
 
 	<RelativeLayout
 		android:layout_width="wrap_content"

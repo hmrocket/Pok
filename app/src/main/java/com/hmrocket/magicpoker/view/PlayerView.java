@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.magicpoker.Util;
@@ -39,13 +40,37 @@ public class PlayerView extends RelativeLayout {
 	 */
 	private TextView txCash;
 	/**
-	 * Text on the top of the PlayerImage it contains either player's bet or player's name
+	 * Text on the top of the PlayerImage it contains player's name
 	 */
 	private TextView txInfo;
+	/**
+	 * PotView on the top of the PlayerImage it contains player's bet
+	 */
+	private PotView potView;
+	/**
+	 * ViewSwitcher  to switch between potView and textView
+	 */
+	private ViewSwitcher vsInfo;
 
 	public PlayerView(Context context) {
 		super(context);
 		init(context);
+	}
+
+	private void init(Context context) {
+		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
+		profileImage = (ImageView) findViewById(R.id.iv_profile);
+		cardView1 = (CardView) findViewById(R.id.cardView1);
+		cardView2 = (CardView) findViewById(R.id.cardView2);
+		txCash = (TextView) findViewById(R.id.tx_cash);
+		txInfo = (TextView) findViewById(R.id.tx_info);
+		potView = (PotView) findViewById(R.id.potView);
+		vsInfo = (ViewSwitcher) findViewById(R.id.vs_info);
+		vsInfo.getInAnimation().setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+		vsInfo.getOutAnimation().setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
+		cardContainer = (FrameLayout) findViewById(R.id.fl_cardview);
+		profileContainer = findViewById(R.id.frame_iv_profile);
 	}
 
 	public PlayerView(Context context, AttributeSet attrs) {
@@ -62,19 +87,6 @@ public class PlayerView extends RelativeLayout {
 	public PlayerView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context);
-	}
-
-	private void init(Context context) {
-		LayoutInflater.from(context).inflate(R.layout.player_view, this, true);
-		profileImage = (ImageView) findViewById(R.id.iv_profile);
-		cardView1 = (CardView) findViewById(R.id.cardView1);
-		cardView2 = (CardView) findViewById(R.id.cardView2);
-		txCash = (TextView) findViewById(R.id.tx_cash);
-		txInfo = (TextView) findViewById(R.id.tx_info);
-		dealerFlag = (TextView) findViewById(R.id.tx_dealerFlag);
-		cardContainer = (FrameLayout) findViewById(R.id.fl_cardview);
-		profileContainer = findViewById(R.id.frame_iv_profile);
-
 	}
 
 	/**
@@ -125,9 +137,15 @@ public class PlayerView extends RelativeLayout {
 	 * @param player player you would like to this veiw to represent
 	 */
 	public void setInfo(@NonNull Player player) {
-		if (player.getBet() > 0)
-			txInfo.setText(Util.formatNumber(player.getBet()));
-		else txInfo.setText(player.getName());
+		int viewToDisplay;
+		if (player.getBet() > 0) {
+			potView.setAmount(player.getBet());
+			viewToDisplay = 1;
+		} else {
+			txInfo.setText(player.getName());
+			viewToDisplay = 0;
+		}
+		updateViewSwitcherInfo(viewToDisplay);
 	}
 
 	/**
@@ -204,6 +222,17 @@ public class PlayerView extends RelativeLayout {
 
 	}
 
+	/**
+	 * switch between Info text and info bet (PotView)
+	 * @param position the view position to display
+	 */
+	private void updateViewSwitcherInfo(int position) {
+		if (position > vsInfo.getDisplayedChild()) {
+			vsInfo.showNext();
+		} else if (position < vsInfo.getDisplayedChild())
+			vsInfo.showPrevious();
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
@@ -225,6 +254,7 @@ public class PlayerView extends RelativeLayout {
 	 */
 	public void setInfo(int stringResId) {
 		txInfo.setText(stringResId);
+		updateViewSwitcherInfo(0);
 	}
 
 	/**
