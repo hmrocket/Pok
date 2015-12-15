@@ -173,14 +173,18 @@ public final class HandScoreCalculator {
 		// it's the same code as straight but we ignore any card that hasn't the same Suit as flushSuit
 		for (int i = 0; i < cards.length; i++) {
 			Card card = cards[i];
-			if (flushSuit.compareTo(card.getSuit()) != 0)
+			if (flushSuit.compareTo(card.getSuit()) != 0 || straightRank.compareTo(card.getRank()) < 0)
 				continue;
 
 			Rank currentRank = card.getRank();
 			int consecutiveCards = 1;
 			int j;
 			for (j = i + 1; j < cards.length; j++) {
-				Rank nextCardRank = cards[j].getRank();
+				Card nextCard = cards[j];
+				Rank nextCardRank = nextCard.getRank();
+				// the loop will be also broken if the suit doesn't much
+				if (flushSuit.compareTo(nextCard.getSuit()) != 0)
+					break;
 				if (currentRank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
 					consecutiveCards++;
 					currentRank = nextCardRank;
@@ -193,9 +197,23 @@ public final class HandScoreCalculator {
 				i = j - 1;
 				continue;
 			} else {
-				boolean straightFrom5to1 = (consecutiveCards == 4
-						&& cards[i].getRank() == Rank.FIVE && cards[0].getRank() == Rank.ACE);
-				if (straightFrom5to1)
+				boolean straightFlushFrom5to1 = (consecutiveCards == 4 && cards[i].getRank() == Rank.FIVE);
+				if (straightFlushFrom5to1) {
+					// check if there's an Ace with the same suit at the top ordered list
+					for (Card c : cards) {
+						if (c.getRank() == Rank.ACE) {
+							// we found an Ace with the same flush suit means we have a Flush_Straight to 5
+							if (c.getSuit() == flushSuit)
+								break;
+						} else {
+							// no more Ace expected, straightFlushFrom5to1 is impossible (note card is ordered)
+							straightFlushFrom5to1 = false;
+							break;
+						}
+					}
+				}
+
+				if (straightFlushFrom5to1)
 					consecutiveCards++;
 				if (consecutiveCards > 4) {
 					Rank rankStraightFlush = cards[i].getRank();
