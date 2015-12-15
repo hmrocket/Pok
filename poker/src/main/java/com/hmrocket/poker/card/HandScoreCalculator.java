@@ -244,7 +244,7 @@ public final class HandScoreCalculator {
 		if (maxOccurrence == 4)
 			handType = HandType.FOUR_OF_A_KIND;
 		else if (maxOccurrence == 3)
-			handType = map.containsValue(2) ? HandType.FULL_HOUSE : HandType.THREE_OF_A_KIND;
+			handType = map.containsValue(2) || maxCount >= 2 ? HandType.FULL_HOUSE : HandType.THREE_OF_A_KIND;
 		else if (maxOccurrence == 2)
 			handType = maxCount >= 2 ? HandType.TWO_PAIRS : HandType.ONE_PAIR; // using maxCount we will know if there is only one pair or two
 		else handType = HandType.HIGH_CARD;
