@@ -12,8 +12,8 @@ import java.util.List;
  */
 public final class HandScoreCalculator {
 
-    private HandScoreCalculator() {
-    }
+	private HandScoreCalculator() {
+	}
 
 	public static HandScore getHandScore(Hand hand, CommunityCards communityCards) {
 		if (communityCards != null) {
@@ -31,8 +31,8 @@ public final class HandScoreCalculator {
 		}
 	}
 
-    public static HandScore getHandScore(Hand hand) {
-        if (hand.isPair()) {
+	public static HandScore getHandScore(Hand hand) {
+		if (hand.isPair()) {
 			return new HandScore(HandType.ONE_PAIR, hand.getCard1().getRank());
 		} else {
 			ArrayList<Card> kicker = new ArrayList<>();
@@ -99,7 +99,7 @@ public final class HandScoreCalculator {
 	 * @param cards
 	 * @return {@link Suit} of the flush, null if no flush can be constructed from <code>cards</code>cards
 	 */
-	private static Suit checkFlush(Card... cards) {
+	public static Suit checkFlush(Card... cards) {
 		if (cards == null || cards.length < 5) return null;
 		int hearts = 0, clubs = 0, diamonds = 0, spades = 0;
 		for (Card card : cards) {
@@ -163,6 +163,9 @@ public final class HandScoreCalculator {
 
 	/**
 	 * Call this method if you have straight and flush but you are not sure if it's StraightFlush
+	 * <p>Note: This function is like removing all cards that aren't from the same suit as <code>flushSuit</code>
+	 * and check for straight
+	 * </p>
 	 *
 	 * @param cards        ordered descending
 	 * @param straightRank rank of the straight
@@ -182,13 +185,14 @@ public final class HandScoreCalculator {
 			for (j = i + 1; j < cards.length; j++) {
 				Card nextCard = cards[j];
 				Rank nextCardRank = nextCard.getRank();
-				// the loop will be also broken if the suit doesn't much
-				if (flushSuit.compareTo(nextCard.getSuit()) != 0)
-					break;
-				if (currentRank.ordinal() - nextCardRank.ordinal() == 1) { // if rank and nextRank are consecutive
+				int diff = currentRank.ordinal() - nextCardRank.ordinal();
+				if (diff == 1) { // if rank and nextRank are consecutive
+					// don't considered any card with a different suit (see regressionTest on this test class)
+					if (flushSuit.compareTo(nextCard.getSuit()) != 0)
+						continue;
 					consecutiveCards++;
 					currentRank = nextCardRank;
-				} else if (currentRank.ordinal() - nextCardRank.ordinal() != 0) { // if not same rank break, (straight chain is broken)
+				} else if (diff != 0) { // if not same rank break, (straight chain is broken)
 					break;
 				}
 			}
@@ -313,6 +317,7 @@ public final class HandScoreCalculator {
 	 * Get the Flush Rank and kickers
 	 * It turns out there's kickers in Flush:
 	 * Credit: http://poker.stackexchange.com/questions/1501/does-the-top-5-cards-rule-apply-to-a-flush/
+	 *
 	 * @param flushSuit
 	 * @param hand
 	 * @param ordCards
