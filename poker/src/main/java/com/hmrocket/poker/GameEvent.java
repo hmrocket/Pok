@@ -24,11 +24,11 @@ public interface GameEvent {
 
 	/**
 	 * Called by Pot whenever there's some got a money from the pot
-	 *
-	 * @param last    if false winner are just LevelWinner, ther will be other callback of gameWinners, true if these winner(s) win the last pot
+	 *  @param last    if false winner are just LevelWinner, ther will be other callback of gameWinners, true if these winner(s) win the last pot
 	 * @param winners can be level winners (side pot winner) or game winners
+	 * @param winAmount The amount of money won by every player
 	 */
-	void gameWinners(boolean last, Set<Player> winners);
+	void gameWinners(boolean last, Set<Player> winners, long winAmount);
 
 	/**
 	 * Called by PokerRound before the player start his turn

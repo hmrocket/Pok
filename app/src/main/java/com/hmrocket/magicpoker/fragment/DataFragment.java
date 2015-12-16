@@ -208,7 +208,7 @@ public class DataFragment extends Fragment {
 								break;
 							}
 					}
-					gameEventListener.gameWinners(last, players);
+					gameEventListener.gameWinners(last, players, (long) values[3]);
 
 					break;
 				case ON_PRE_TURN:
@@ -261,8 +261,8 @@ public class DataFragment extends Fragment {
 		}
 
 		@Override
-		public void gameWinners(boolean last, Set<Player> winners) {
-			publishProgress(GAME_WINNERS, last, winners);
+		public void gameWinners(boolean last, Set<Player> winners, long winAmount) {
+			publishProgress(GAME_WINNERS, last, winners, winAmount);
 			delay();
 		}
 

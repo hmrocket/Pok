@@ -98,8 +98,8 @@ public class Pot {
 			SidePot sidePot = sidePots.peek();
 			sidePot.setValue(sidePot.getValue() + mainPot.value);
 		} else {
-			distribute(levelWinners, mainPot.value);
-			broadcastWin(levelWinners, sidePots.isEmpty(), gameEvents);
+			long win = distribute(levelWinners, mainPot.value);
+			broadcastWin(levelWinners, win, sidePots.isEmpty(), gameEvents);
 		}
 
 		//As long there is SidePot, (money) on the table, Add cash to winners
@@ -108,8 +108,8 @@ public class Pot {
 			// Add MainPot winners with SidePot all in players and re-evaluate the winners
 			levelWinners.addAll(sidePot.getAllInPlayers());
 			levelWinners = PokerTools.getWinners(levelWinners);
-			distribute(levelWinners, sidePot.getValue());
-			broadcastWin(levelWinners, sidePots.isEmpty(), gameEvents);
+			long win = distribute(levelWinners, sidePot.getValue());
+			broadcastWin(levelWinners, win, sidePots.isEmpty(), gameEvents);
 
 			// every SidePot - check if there is busted players
 			// (players went all among and lost)
@@ -128,10 +128,11 @@ public class Pot {
 	 *
 	 * @param winners  Set of player who has won the Pot
 	 * @param potValue Value of winning
+	 * @return Level winning amount ²
 	 */
-	private void distribute(Set<Player> winners, long potValue) {
+	private long distribute(Set<Player> winners, long potValue) {
 		if (potValue <= 0)
-			return; // Nothing to distribute
+			return 0; // Nothing to distribute
 		// remove potValue from the MainPot (it's okay if it become negative value getValue() = main + side will give a positive correct value)
 		mainPot.value -= potValue;
 		// distribute level pot To Winners
@@ -139,19 +140,22 @@ public class Pot {
 		for (Player winner : winners) {
 			winner.addCash(levelWinValue);
 		}
-
+		return levelWinValue;
 	}
 
 	/**
 	 * BroadCast the event of the someone won either a SidePot or MainPot
 	 * Also broadcast that the pot value has changed
+	 *
 	 * @param levelWinners level winners
-	 * @param gameEvents GameEvent listeners
+	 * @param winAmount    the amount of money every player will win
+	 * @param last         true if this will be the last callback (last pot)
+	 * @param gameEvents   GameEvent listeners
 	 */
-	private void broadcastWin(Set<Player> levelWinners, boolean last, GameEvent... gameEvents) {
+	private void broadcastWin(Set<Player> levelWinners, long winAmount, boolean last, GameEvent... gameEvents) {
 		if (gameEvents != null)
 			for (GameEvent gameEvent : gameEvents) {
-				gameEvent.gameWinners(last, levelWinners);
+				gameEvent.gameWinners(last, levelWinners, winAmount);
 				gameEvent.onPotChanged(getValue());
 			}
 	}

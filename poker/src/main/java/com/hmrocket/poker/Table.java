@@ -176,9 +176,9 @@ public class Table implements GameEvent {
 	}
 
 	@Override
-	public void gameWinners(boolean last, Set<Player> winners) {
+	public void gameWinners(boolean last, Set<Player> winners, long winAmount) {
 		// Table just need a callback when a player doesn't have enough money to bet and should be removed from the table
-		if (lisGameEvent != null) lisGameEvent.gameWinners(last, winners);
+		if (lisGameEvent != null) lisGameEvent.gameWinners(last, winners, winAmount);
 	}
 
 	@Override

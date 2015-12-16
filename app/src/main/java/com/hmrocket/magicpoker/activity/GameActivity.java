@@ -157,10 +157,12 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	}
 
 	@Override
-	public void gameWinners(boolean last, Set<Player> winners) {
+	public void gameWinners(boolean last, Set<Player> winners, long winAmount) {
 		// TODO animate last winning players
 		for (Player p : winners) {
 			PlayerView playerView = tableView.getPlayerView(p.getSeat().getId());
+			// transfer the amount to winner playerView
+			tableView.movePot(p, winAmount);
 			// update players View
 			playerView.updateView(p);
 			// show winning hand info only if the round phase is showdown (if showdown not called the info text will be invisible)
