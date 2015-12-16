@@ -6,6 +6,9 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -96,16 +99,6 @@ public class TableView extends RelativeLayout {
 	}
 
 	/**
-	 * Get the PlayerView affect to that seat
-	 *
-	 * @param seatId seat number on the table should be between 0 and less than {@link #MAX_PLAYERS}
-	 * @return PlayerView number <code>seatId</code>
-	 */
-	public PlayerView getPlayerView(int seatId) {
-		return playerViews[seatId];
-	}
-
-	/**
 	 * affect a player to a PlayerView in the TableView
 	 * Note: The player must be affected to a seat, getSeat must not return null
 	 *
@@ -159,7 +152,7 @@ public class TableView extends RelativeLayout {
 	 * set the shared card on the TableView
 	 *
 	 * @param communityCards communityCards object hold the shared card on the table
-	 * @param roundPhase phase round of the game
+	 * @param roundPhase     phase round of the game
 	 */
 	public void setCommunityCardsView(RoundPhase roundPhase, @NonNull CommunityCards communityCards) {
 		switch (roundPhase) {
@@ -233,4 +226,60 @@ public class TableView extends RelativeLayout {
 		else txInfo.setVisibility(INVISIBLE);
 	}
 
+	/**
+	 * Create and move a PotView from the position of the table potView to the Winner Player
+	 *
+	 * @param winner playerView to translate certain amount to
+	 * @param value  the value of the pot transferred
+	 */
+	public void movePot(Player winner, long value) {
+		// create a PotView
+		final PotView potView = new PotView(getContext());
+		potView.setLayoutParams(new ViewGroup.LayoutParams(this.potView.getWidth(), this.potView.getHeight()));
+		potView.setAmount(value);
+
+		int[] potLocation = new int[2];
+		this.potView.getLocationOnScreen(potLocation);
+		int[] playerLocation = new int[2];
+		getPlayerView(winner.getSeat().getId()).getLocationInWindow(playerLocation);
+
+
+		// animate from potView to the player seat
+		// XXX for some reason I can get hold of the right position of PotView
+		//potLocation[0] = this.potView.getRight();
+		potLocation[1] = this.potView.getBottom();
+
+		TranslateAnimation anim = new TranslateAnimation(potLocation[0], playerLocation[0], potLocation[1], playerLocation[1]);
+		TableView.this.addView(potView);
+
+		boolean isCloseToPot = winner.getSeat().getId() == 4 || winner.getSeat().getId() == 5;
+		anim.setDuration(isCloseToPot ? 1000 : 2000);
+		anim.setInterpolator(getContext(), android.R.interpolator.linear);
+		anim.setFillAfter(true);
+		anim.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				TableView.this.removeView(potView);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
+		potView.startAnimation(anim);
+	}
+
+	/**
+	 * Get the PlayerView affect to that seat
+	 *
+	 * @param seatId seat number on the table should be between 0 and less than {@link #MAX_PLAYERS}
+	 * @return PlayerView number <code>seatId</code>
+	 */
+	public PlayerView getPlayerView(int seatId) {
+		return playerViews[seatId];
+	}
 }

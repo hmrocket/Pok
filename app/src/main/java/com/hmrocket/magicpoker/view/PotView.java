@@ -27,6 +27,10 @@ public class PotView extends LinearLayout {
 
 	public PotView(Context context, AttributeSet attributeset) {
 		super(context, attributeset);
+		init(context);
+	}
+
+	private void init(Context context) {
 		LayoutInflater.from(context).inflate(R.layout.pot_view, this, true);
 		potAmountLabel = (TextView) findViewById(R.id.tx_PotAmount);
 		potChips = (ChipView) findViewById(R.id.chipsView_Pot);
@@ -34,15 +38,18 @@ public class PotView extends LinearLayout {
 
 	public PotView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
+		init(context);
 	}
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public PotView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
+		init(context);
 	}
 
 	public PotView(Context context) {
 		super(context);
+		init(context);
 	}
 
 	public long getAmount() {
