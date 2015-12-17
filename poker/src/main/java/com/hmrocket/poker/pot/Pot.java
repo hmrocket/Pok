@@ -54,18 +54,20 @@ public class Pot {
 
 		//////// Set Up the sidePots first, If there is any new ones
 
-		Set<Player> allInPlayers = PokerTools.findAllInPlayers(mainPot.potentialWinners);
+		// first remove/get all ALL_IN players from the main pot
+		Set<Player> allInPlayers = PokerTools.removeAllInPlayers(mainPot.potentialWinners);
 		Player allInPlayer;
 
 		while (allInPlayers.isEmpty() == false) {
 			allInPlayer = Collections.min(allInPlayers, Player.BET_COMPARATOR);
 			allInPlayers.remove(allInPlayer);
-			mainPot.potentialWinners.remove(allInPlayer); // even if you didn't removed it it's okay (he's bet is already 0)
 
 			// SidePot is created from min allInPlayer and MainPot cause the value of of MainPot will be transferred to the SidePot
 			SidePot sidePot = new SidePot(allInPlayer, mainPot);
 
-			sidePot.consumeBets(mainPot);
+			// consume bets from the main pot and the other allin Players
+			sidePot.consumeBets(mainPot.potentialWinners);
+			sidePot.consumeBets(allInPlayers);
 
 			sidePots.add(sidePot);
 			sidePotsTotalValue += sidePot.getValue();

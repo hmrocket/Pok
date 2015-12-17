@@ -28,6 +28,24 @@ public class SidePot implements Comparable<SidePot> {
         addBet(allInPlayer); // addAllInPlayer(player); and set the bet to 0
     }
 
+	/**
+	 * Add player bet to this SidePot (Player Bet will be reduiced after this operation),
+	 * If the went all in with the same value he will be added to this pot
+	 *
+	 * @param player
+	 */
+	public void addBet(Player player) {
+		if (player.getBet() > allInValue) {
+			value += allInValue;
+			player.setBet(player.getBet() - allInValue);
+		} else {
+			if (player.getBet() == allInValue && player.getState() == Player.PlayerState.ALL_IN) {
+				addAllInPlayer(player);
+			}
+			value += player.getBet();
+			player.setBet(0);
+		}
+	}
 
 	/**
 	 * read class description
@@ -70,30 +88,11 @@ public class SidePot implements Comparable<SidePot> {
 
     public void setValue(long value) {
         this.value = value;
-    }
-
-    /**
-     * Add player bet to this SidePot (Player Bet will be reduiced after this operation),
-	 * If the went all in with the same value he will be added to this pot
-	 *
-	 * @param player
-	 */
-	public void addBet(Player player) {
-		if (player.getBet() > allInValue) {
-			value += allInValue;
-			player.setBet(player.getBet() - allInValue);
-		} else {
-			if (player.getBet() == allInValue && player.getState() == Player.PlayerState.ALL_IN) {
-				addAllInPlayer(player);
-			}
-			value += player.getBet();
-			player.setBet(0);
-		}
 	}
 
-    public void consumeBets(MainPot mainPot) {
-        Iterator<Player> iterator = mainPot.potentialWinners.iterator();
-        while (iterator.hasNext()) {
+	public void consumeBets(Set<Player> playerSet) {
+		Iterator<Player> iterator = playerSet.iterator();
+		while (iterator.hasNext()) {
             Player player = iterator.next();
             if (player.getBet() > allInValue) {
                 value += allInValue;
@@ -104,8 +103,8 @@ public class SidePot implements Comparable<SidePot> {
                 }
                 value += player.getBet();
                 player.setBet(0);
-                if (player.isPlaying() == false)
-                    iterator.remove(); // player should be removed from potential winner if he folded
+				if (!player.isPlaying())
+					iterator.remove(); // player should be removed from potential winner if he folded
             }
         }
     }

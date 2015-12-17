@@ -56,6 +56,25 @@ public class PokerTools {
         return players;
     }
 
+	/**
+	 * Remove all in players
+	 *
+	 * @param playersInGame list of players
+	 * @return return a Set of ALLIN players (player that are removed)
+	 */
+	public static Set<Player> removeAllInPlayers(Set<Player> playersInGame) {
+		Set<Player> allinPlayers = new HashSet<>();
+		Iterator<Player> iterator = playersInGame.iterator();
+		while (iterator.hasNext()) {
+			Player next = iterator.next();
+			if (next.getState() == Player.PlayerState.ALL_IN) {
+				iterator.remove();
+				allinPlayers.add(next);
+			}
+		}
+		return allinPlayers;
+	}
+
     /**
      * @param potentialWinnersInTheGame players who has chance of winning, use {@link Player#isOut()}
      * @return one or more winning hand players, null if the potentialWinners is empty or null
