@@ -92,8 +92,7 @@ public final class HandOddsCalculator {
 			// deal river if wasn't dealt
 			// add the rest of the card,
 			CommunityCards communityCards = handHoldemPlayer.getCommunityCards();
-			int missingCard = communityCards == null || communityCards.getFlop() == null ? 5 :
-					(communityCards.getTurn() == null ? 2 : (communityCards.getRiver() == null ? 1 : 0));
+			int missingCard = communityCards == null ? CommunityCards.TEXAS_HOLDEM_COUNT : communityCards.getMissingCardCount();
 			switch (missingCard) {
 				case 5:
 					cc.setFlop(deck.dealFlop());

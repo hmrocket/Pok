@@ -164,9 +164,7 @@ public class Game implements PokerRound.RoundEvent {
 	private void showdown() {
 		gameEventListener.onShowdown(pot.getPotentialWinners());
 		// add the rest of the card
-		int missingCard = communityCards.getFlop() == null ? 5 :
-				(communityCards.getTurn() == null ? 2 : (communityCards.getRiver() == null ? 1 : 0));
-		switch (missingCard) {
+		switch (communityCards.getMissingCardCount()) {
 			case 5:
 				communityCards.setFlop(deck.dealFlop());
 				gameEventListener.onCommunityCardsChange(RoundPhase.FLOP, communityCards);
