@@ -80,6 +80,21 @@ public class Turn {
 	}
 
 	/**
+	 * Calculate the default min re-raise
+	 *
+	 * @param amountToContinue amount to call (amount to match)
+	 * @param minBet           smallest amount you can bet
+	 * @return Double of amountToContinue, minBet if amountToContinue equal to 0
+	 */
+	public static long defaultMinRaise(long amountToContinue, long minBet) {
+		if (amountToContinue != 0) {
+			return 2 * amountToContinue;
+		} else {
+			return minBet;
+		}
+	}
+
+	/**
 	 * Reset Turn Stat
 	 *
 	 * @param minBet
@@ -113,21 +128,6 @@ public class Turn {
 	 */
 	public long getMinRaise() {
 		return defaultMinRaise(amountToContinue, minBet);
-	}
-
-	/**
-	 * Calculate the default min re-raise
-	 *
-	 * @param amountToContinue amount to call (amount to match)
-	 * @param minBet           smallest amount you can bet
-	 * @return Double of amountToContinue, minBet if amountToContinue equal to 0
-	 */
-	public static long defaultMinRaise(long amountToContinue, long minBet) {
-		if (amountToContinue != 0) {
-			return 2 * amountToContinue;
-		} else {
-			return minBet;
-		}
 	}
 
 	public long getAmountToContinue() {
@@ -293,6 +293,20 @@ public class Turn {
 	 */
 	protected void subMoneyOnTable(long money) {
 		moneyOnTable -= money;
+	}
+
+	/**
+	 * call this to setup the blind conditions, like to check if there's an allin player (increment allin) and to add blinds money to the table
+	 *
+	 * @param smallBlindPlayer blind player
+	 * @param bigBlindPlayer   blind player
+	 */
+	public void onBlindPosted(Player smallBlindPlayer, Player bigBlindPlayer) {
+		addMoneyOnTable(smallBlindPlayer.getBet() + bigBlindPlayer.getBet());
+		if (smallBlindPlayer.getState() == Player.PlayerState.ALL_IN)
+			incrementPlayersAllIn();
+		if (bigBlindPlayer.getState() == Player.PlayerState.ALL_IN)
+			incrementPlayersAllIn();
 	}
 
 	/**

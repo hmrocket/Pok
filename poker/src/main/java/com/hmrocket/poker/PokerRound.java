@@ -92,7 +92,7 @@ public class PokerRound extends Round {
 		Player bigBlindPlayer = getLeftPlayer(smallBlindPlayer);
 		bigBlindPlayer.raise(minBet);
 		roundEvent.onBlindPosted(smallBlindPlayer, bigBlindPlayer);
-		turn.addMoneyOnTable(smallBlindPlayer.getBet() + bigBlindPlayer.getBet());
+		turn.onBlindPosted(smallBlindPlayer, bigBlindPlayer);
 		return bigBlindPlayer;
 	}
 
