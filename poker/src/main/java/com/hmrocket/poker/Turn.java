@@ -2,6 +2,8 @@ package com.hmrocket.poker;
 
 import com.hmrocket.poker.ai.PokerPosition;
 
+import java.util.List;
+
 /**
  * Created by hmrocket on 08/10/2015.
  */
@@ -78,21 +80,6 @@ public class Turn {
 	}
 
 	/**
-	 * Calculate the default min re-raise
-	 *
-	 * @param amountToContinue amount to call (amount to match)
-	 * @param minBet           smallest amount you can bet
-	 * @return Double of amountToContinue, minBet if amountToContinue equal to 0
-	 */
-	public static long defaultMinRaise(long amountToContinue, long minBet) {
-		if (amountToContinue != 0) {
-			return 2 * amountToContinue;
-		} else {
-			return minBet;
-		}
-	}
-
-	/**
 	 * Reset Turn Stat
 	 *
 	 * @param minBet
@@ -126,6 +113,21 @@ public class Turn {
 	 */
 	public long getMinRaise() {
 		return defaultMinRaise(amountToContinue, minBet);
+	}
+
+	/**
+	 * Calculate the default min re-raise
+	 *
+	 * @param amountToContinue amount to call (amount to match)
+	 * @param minBet           smallest amount you can bet
+	 * @return Double of amountToContinue, minBet if amountToContinue equal to 0
+	 */
+	public static long defaultMinRaise(long amountToContinue, long minBet) {
+		if (amountToContinue != 0) {
+			return 2 * amountToContinue;
+		} else {
+			return minBet;
+		}
 	}
 
 	public long getAmountToContinue() {
@@ -197,6 +199,30 @@ public class Turn {
 
 	public boolean isEveryoneFoldOnPreflop() {
 		return playersFolded == roundRally;
+	}
+
+	/**
+	 * Check if all player not playing except one
+	 * Note: This might see like a double of game.isAllPlayersNotPlayingExceptOne but it's not
+	 * this method don't handle situation when the player is out (Inactive, zzz...)
+	 *
+	 * @return true if only one is playing, false otherwise
+	 * @see Game#isAllPlayersNotPlayingExceptOne(List)
+	 */
+	public boolean isAllPlayersNotPlayingExceptOne() {
+		return playerCount - playersFolded - playersAllIn == 1;
+	}
+
+	/**
+	 * Check if all player folded except one
+	 * Note: This might see like a double of game.isAllPlayersNotPlayingExceptOne but it's not
+	 * this method don't handle situation when the player is out (Inactive, zzz...)
+	 *
+	 * @return true if one player didn't fold while the other are out
+	 * @see Game#isAllPlayersExceptOneFolded(List)
+	 */
+	public boolean isAllPlayersFoldedExceptOne() {
+		return playerCount - playersFolded == 1;
 	}
 
 	public long getPotValue() {

@@ -18,10 +18,6 @@ public class PokerRound extends Round {
 	private RoundPhase phase;
 	private RoundEvent roundEvent;
 	private Turn turn;
-	/**
-	 * flag if it's false it won't start the next round
-	 */
-	private boolean isGameContinue;
 	private int dealerIndex;
 
 	// Only table or game should create this if we will pass this object to the player
@@ -69,7 +65,6 @@ public class PokerRound extends Round {
 	 * setup the game and start rounds
 	 */
 	public void startGame() {
-		isGameContinue = false;
 		Player dealer = players.get(dealerIndex);
 		// TODO check if the event OnBlindPosted should be fired before PRE_FLOP
 		Player bigBlind = setup(turn.getMinBet(), dealer);
@@ -110,14 +105,14 @@ public class PokerRound extends Round {
 		// on the PRE_FLOP big blind Player is the
 		if (PokerTools.DEBUG) System.out.println("Start: " + phase);
 		this.newRound(bigBlind);
-		isGameContinue = roundEvent.onRoundFinish(phase, players);
+		roundEvent.onRoundFinish(phase, players);
 		nextPhase();
 
-		while (isGameContinue) {
+		while (!isCompleted()) {
 			roundEvent.onRound(phase);
 			if (PokerTools.DEBUG) System.out.println("Start: " + phase);
 			this.newRound(button); // new poker round (not super new round )
-			isGameContinue = roundEvent.onRoundFinish(phase, players);
+			roundEvent.onRoundFinish(phase, players);
 			nextPhase();
 
 		}
@@ -125,10 +120,10 @@ public class PokerRound extends Round {
 	}
 
 	private void nextPhase() {
-		if (phase != RoundPhase.RIVER) {
+		if (phase != RoundPhase.SHOWDOWN) {
 			phase = RoundPhase.values()[phase.ordinal() + 1];
 			turn.setPhase(phase);
-		} else System.out.println("Next Round called at RIVER");
+		} else System.out.println("Next Round called at SHOWDOWN");
 	}
 
 	/**
@@ -147,7 +142,7 @@ public class PokerRound extends Round {
 				break;
 			}
 			// while Round not finished continue
-		} while (super.isCompleted() == false);
+		} while (!super.isCompleted());
 		return nextPlayer;
 	}
 
@@ -174,7 +169,7 @@ public class PokerRound extends Round {
 	@Override
 	public Player getLeftPlayer(Player player, int skippedPlayers) {
 		Player nextPlayingPlayer = super.getLeftPlayer(player, skippedPlayers);
-		while (nextPlayingPlayer.isPlaying() == false) {
+		while (!nextPlayingPlayer.isPlaying()) {
 			nextPlayingPlayer = super.getLeftPlayer(nextPlayingPlayer);
 		}
 		return nextPlayingPlayer;
@@ -183,7 +178,7 @@ public class PokerRound extends Round {
 	@Override
 	protected boolean isCompleted() {
 
-		return super.isCompleted() || isGameContinue;
+		return phase == RoundPhase.SHOWDOWN || turn.isAllPlayersFoldedExceptOne() || turn.isAllPlayersNotPlayingExceptOne();
 	}
 
 	@Override
@@ -222,7 +217,7 @@ public class PokerRound extends Round {
 			turn.turnEnded(playerToStart);
 			roundEvent.onTurnEnded(playerToStart);
 			playerToStart = nextTurn();
-		} while (playerToStart != null);
+		} while (playerToStart != null && !turn.isAllPlayersFoldedExceptOne());
 	}
 
 	protected interface RoundEvent {
@@ -233,7 +228,7 @@ public class PokerRound extends Round {
 		 * @param players All players who played this game
 		 * @return if the next round should start or not
 		 */
-		boolean onRoundFinish(RoundPhase phase, List<Player> players);
+		void onRoundFinish(RoundPhase phase, List<Player> players);
 
 		/**
 		 * Called by PokerRound before the player start his turn
@@ -252,6 +247,7 @@ public class PokerRound extends Round {
 
 		/**
 		 * Called when a new RoundPhase about to start
+		 * Note called on SHOWDOWN
 		 *
 		 * @param roundPhase Started RoundPhase
 		 */

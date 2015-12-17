@@ -57,7 +57,7 @@ public class Game implements PokerRound.RoundEvent {
 	 * (2) all remaining players have matched the highest total bet made during the round.
 	 */
 	@Override
-	public boolean onRoundFinish(RoundPhase phase, List<Player> players) {
+	public void onRoundFinish(RoundPhase phase, List<Player> players) {
 		long potValue = pot.getValue();
 		pot.update();
 		// fire a callback only if the Pot value changed
@@ -66,12 +66,9 @@ public class Game implements PokerRound.RoundEvent {
 		// distinct two case end game and showdown
 		if (isAllPlayersExceptOneFolded(players)) {
 			endGame();
-			return false;
 		} else if (phase == RoundPhase.RIVER || isAllPlayersNotPlayingExceptOne(players)) {
 			showdown();
-			return false;
 		}
-		return true;
 	}
 
 	@Override
@@ -116,6 +113,12 @@ public class Game implements PokerRound.RoundEvent {
 		gameEventListener.onBlindPosted(smallBlind, bigBlind);
 	}
 
+	/**
+	 * This is method handle situation like Player inactive and zzz unlike turn#isAllPlayersExceptOneFolded
+	 *
+	 * @param players player list
+	 * @return true if all the player is folded except one, false otherwise
+	 */
 	private boolean isAllPlayersExceptOneFolded(List<Player> players) {
 		int numberOfPlayerNotOut = 0;
 		for (Player player :
@@ -142,7 +145,11 @@ public class Game implements PokerRound.RoundEvent {
 		}
 	}
 
-	// TODO reuse the code see PokerRound
+	/**
+	 * This is method handle situation like Player inactive and zzz unlike turn#isAllPlayersExceptOneFolded
+	 * @param players player list
+	 * @return true if all the player not playing except one, false otherwise
+	 */
 	protected boolean isAllPlayersNotPlayingExceptOne(List<Player> players) {
 		int numberOfPlayerPlaying = 0;
 		for (Player player : players) {
