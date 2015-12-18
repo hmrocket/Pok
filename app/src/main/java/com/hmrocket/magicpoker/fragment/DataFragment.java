@@ -209,7 +209,9 @@ public class DataFragment extends Fragment {
 							}
 					}
 					gameEventListener.gameWinners(last, players, (long) values[3]);
-
+					// play moving chips sound n times
+					for (int i = 0; i < players.size(); i++)
+						soundManager.playMoveChipsSound();
 					break;
 				case ON_PRE_TURN:
 					gameEventListener.onPreTurn((Player) values[1], (Turn) values[2]);

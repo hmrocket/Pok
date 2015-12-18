@@ -100,7 +100,7 @@ public class SoundManager {
 	 */
 	public void loadGameMusic(Context context) {
 		int[] soundsRes = new int[]{R.raw.cardfan1, // shuffle (game start)
-				R.raw.win_wohoo, R.raw.card_flip, // Human player win (game end), showdown
+				R.raw.win_wohoo, R.raw.card_flip, R.raw.chips_moving, // Human player win (game end), showdown
 				R.raw.cardslide1, R.raw.cardslide2, R.raw.cardslide3, R.raw.cardslide4, R.raw.cardslide5, // community card
 				R.raw.chipshandle5_allin, R.raw.check, R.raw.chipshandle6_call, R.raw.fold_weaponswipe01, // 4 move
 				R.raw.chipsstack1, R.raw.chipsstack2, R.raw.chipsstack3, R.raw.chipsstack4, R.raw.chipsstack5, R.raw.chipsstack6, // raise move
@@ -175,6 +175,12 @@ public class SoundManager {
 		soundPool.play(mapSoundId.get(R.raw.win_wohoo), 1f, 1f, 1, 0, rate);
 	}
 
+	/**
+	 * play a move chips to winner sound
+	 */
+	public void playMoveChipsSound() {
+		soundPool.play(mapSoundId.get(R.raw.chips_moving), 1f, 1f, 1, 0, rate);
+	}
 	/**
 	 * play a sound specific to a round
 	 *
