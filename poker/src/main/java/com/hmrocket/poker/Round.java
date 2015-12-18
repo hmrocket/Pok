@@ -25,6 +25,15 @@ public class Round {
 		init(playersOrderedRightLeft, playersOrderedRightLeft.indexOf(playerToStart), true);
 	}
 
+	private void init(List<Player> playersOrderedRightLeft, int playerToStart, boolean rightToLeft) {
+		if (playerToStart >= playersOrderedRightLeft.size() || playerToStart < 0)
+			throw new InvalidParameterException("Invalid player starter");
+		this.players = playersOrderedRightLeft;
+		playerTurn = turnStart = playerToStart;
+		turnLeft = playersOrderedRightLeft.size() - 1;
+		turnIncrement = rightToLeft ? 1 : -1;
+	}
+
 	protected Round(List<Player> playersOrderedRightLeft, int playerToStart) {
 		init(playersOrderedRightLeft, playerToStart, true);
 	}
@@ -35,6 +44,46 @@ public class Round {
 
 	protected Round(List<Player> playersOrdered, int playerTurn, boolean rightToLeft) {
 		init(playersOrdered, playerTurn, rightToLeft);
+	}
+
+	public Player nextTurn() {
+		if (isRoundCompleted()) {
+			return null;
+		} else {
+			turnLeft--;
+			increment();
+			return players.get(playerTurn);
+		}
+	}
+
+	/**
+	 * Assure encapsulation
+	 *
+	 * @return true if the round is completed, false if there's more turn to be played
+	 */
+	private boolean isRoundCompleted() {
+		if (turnLeft <= 0) {
+			return true;
+		} else return false;
+	}
+
+	private void increment() {
+		playerTurn += turnIncrement;
+		if (playerTurn >= players.size()) {
+			playerTurn = 0;
+		} else if (playerTurn < 0) {
+			playerTurn = players.size() - 1;
+		}
+	}
+
+	/**
+	 * The Player on the left of <code>player</code> without incrementing the turn
+	 * or considering if the Round was completed or not
+	 *
+	 * @return The Player on the left of <code>player</code>
+	 */
+	public Player getLeftPlayer(Player player) {
+		return Round.getLeftPlayer(players, player, 0);
 	}
 
 	/**
@@ -58,35 +107,6 @@ public class Round {
 		else return players.get(nextPlayerIndex);
 	}
 
-	private void init(List<Player> playersOrderedRightLeft, int playerToStart, boolean rightToLeft) {
-		if (playerToStart >= playersOrderedRightLeft.size() || playerToStart < 0)
-			throw new InvalidParameterException("Invalid player starter");
-		this.players = playersOrderedRightLeft;
-		playerTurn = turnStart = playerToStart;
-		turnLeft = playersOrderedRightLeft.size() - 1;
-		turnIncrement = rightToLeft ? 1 : -1;
-	}
-
-	public Player nextTurn() {
-		if (isRoundCompleted()) {
-			return null;
-		} else {
-			turnLeft--;
-			increment();
-			return players.get(playerTurn);
-		}
-	}
-
-	/**
-	 * The Player on the left of <code>player</code> without incrementing the turn
-	 * or considering if the Round was completed or not
-	 *
-	 * @return The Player on the left of <code>player</code>
-	 */
-	public Player getLeftPlayer(Player player) {
-		return getLeftPlayer(player, 0);
-	}
-
 	/**
 	 * @param player
 	 * @param skippedPlayers positive number (can be zero) represent the number of player skipped
@@ -97,28 +117,8 @@ public class Round {
 		return Round.getLeftPlayer(players, player, skippedPlayers);
 	}
 
-	private void increment() {
-		playerTurn += turnIncrement;
-		if (playerTurn >= players.size()) {
-			playerTurn = 0;
-		} else if (playerTurn < 0) {
-			playerTurn = players.size() - 1;
-		}
-	}
-
 	protected boolean isCompleted() {
 		return isRoundCompleted();
-	}
-
-	/**
-	 * Assure encapsulation
-	 *
-	 * @return true if the round is completed, false if there's more turn to be played
-	 */
-	private boolean isRoundCompleted() {
-		if (turnLeft <= 0) {
-			return true;
-		} else return false;
 	}
 
 	protected void reverseRoundSens() {
