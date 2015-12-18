@@ -98,14 +98,15 @@ public class Pot {
 		levelWinners = PokerTools.getWinners(mainPot.potentialWinners);
 		if (levelWinners == null || levelWinners.isEmpty()) {
 			SidePot sidePot = sidePots.peek();
+			// don't worry about MainPot.value it will be consume on distribute
 			sidePot.setValue(sidePot.getValue() + mainPot.value);
-		} else {
+		} else if (mainPot.value != 0) {
 			long win = distribute(levelWinners, mainPot.value);
 			broadcastWin(levelWinners, win, sidePots.isEmpty(), gameEvents);
 		}
 
 		//As long there is SidePot, (money) on the table, Add cash to winners
-		while (sidePots.isEmpty() == false) {
+		while (!sidePots.isEmpty()) {
 			SidePot sidePot = sidePots.pop();
 			// Add MainPot winners with SidePot all in players and re-evaluate the winners
 			levelWinners.addAll(sidePot.getAllInPlayers());
@@ -157,7 +158,9 @@ public class Pot {
 	private void broadcastWin(Set<Player> levelWinners, long winAmount, boolean last, GameEvent... gameEvents) {
 		if (gameEvents != null)
 			for (GameEvent gameEvent : gameEvents) {
-				gameEvent.gameWinners(last, levelWinners, winAmount);
+				// multi thread safe, create a new HashSet cause levelWinners can be modified later
+				// it's okay for busted list cause it won't be changed
+				gameEvent.gameWinners(last, new HashSet<>(levelWinners), winAmount);
 				gameEvent.onPotChanged(getValue());
 			}
 	}
