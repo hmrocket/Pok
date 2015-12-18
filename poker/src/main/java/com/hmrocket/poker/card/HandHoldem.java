@@ -3,6 +3,7 @@ package com.hmrocket.poker.card;
 import java.lang.ref.WeakReference;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -16,6 +17,11 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 	// XXX you can change to strong Reference
 	private WeakReference<CommunityCards> communityCardsWeakReference;
 	private HandScore handScore;
+	/**
+	 * This represent a list of most important card that constitute this HandScore
+	 * This is an optional parameter that is not needed in the process to determine the HandScore
+	 */
+	private Set<Card> best5Cards;
 
 	public HandHoldem(Hand hand) {
 		this.hand = hand;
@@ -29,6 +35,11 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	public HandHoldem(Card card1, Card card2, CommunityCards communityCards) {
 		this.hand = new Hand(card1, card2);
+		setCommunityCards(communityCards);
+	}
+
+	public HandHoldem(Hand hand, CommunityCards communityCards) {
+		this.hand = hand;
 		setCommunityCards(communityCards);
 	}
 
@@ -56,28 +67,23 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		handScore = null;
 	}
 
-	public HandHoldem(Hand hand, CommunityCards communityCards) {
-		this.hand = hand;
-		setCommunityCards(communityCards);
-	}
-
 	public Hand getHand() {
 		return hand;
 	}
 
 	public Flop getFlop() { // No setter cause this is a reference
 		CommunityCards communityCards = communityCardsWeakReference.get();
-		return communityCards == null ? null : this.communityCardsWeakReference.get().getFlop();
+		return communityCards == null ? null : communityCards.getFlop();
 	}
 
 	public Card getTurn() {  // No setter cause this is a reference
 		CommunityCards communityCards = communityCardsWeakReference.get();
-		return communityCards == null ? null : this.communityCardsWeakReference.get().getTurn();
+		return communityCards == null ? null : communityCards.getTurn();
 	}
 
 	public Card getRiver() { // No setter cause this is a reference
 		CommunityCards communityCards = communityCardsWeakReference.get();
-		return communityCards == null ? null : this.communityCardsWeakReference.get().getRiver();
+		return communityCards == null ? null : communityCards.getRiver();
 	}
 
 	public int winPercentage() throws OperationNotSupportedException {
@@ -97,6 +103,13 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		if (handScore == null) // Lazy getter (Calculate the score when needed)
 			handScore = HandScoreCalculator.getHandScore(hand, communityCardsWeakReference.get());
 		return handScore;
+	}
+
+	public Set<Card> getBest5Cards() {
+		if (best5Cards == null) {
+			best5Cards = HandScoreCalculator.get5BestCard(getHandScore(), hand, getCommunityCards());
+		}
+		return best5Cards;
 	}
 
 	@Override

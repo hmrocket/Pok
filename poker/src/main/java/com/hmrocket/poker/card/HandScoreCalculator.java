@@ -3,8 +3,11 @@ package com.hmrocket.poker.card;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * poker arnaqueur - poker crook
@@ -351,4 +354,127 @@ public final class HandScoreCalculator {
 
 	}
 
+	public static Set<Card> get5BestCard(HandScore handScore, Hand hand, CommunityCards cc) {
+		if (handScore == null || hand == null || cc == null || cc.getMissingCardCount() != 0)
+			throw new IllegalArgumentException("all arguments must be nonnull and shared cards count should be " + CommunityCards.TEXAS_HOLDEM_COUNT);
+
+		Set<Card> best = new HashSet<>(5);
+		List<Card> cards = new ArrayList<>(7);
+		cards.add(hand.getCard1());
+		cards.add(hand.getCard2());
+		cards.add(cc.getRiver());
+		cards.add(cc.getTurn());
+		cards.add(cc.getFlop().getCard1());
+		cards.add(cc.getFlop().getCard2());
+		cards.add(cc.getFlop().getCard3());
+		Collections.sort(cards, Collections.reverseOrder());
+		// get
+		switch (handScore.getHandType()) {
+			case HIGH_CARD:
+				// take the 5 first card
+				best.addAll(cards.subList(0, 5));
+				break;
+			case ONE_PAIR:
+				// take one pair then same as high card
+				set5BestPlusMostOccurredCard(best, cards, handScore.getRank(), 2);
+				break;
+			case TWO_PAIRS:
+				// take two pair then add top card (same as HIgh card)
+				// take one pair then same as high card
+				int pairsAdded = 0;
+				Iterator<Card> iterator = cards.iterator();
+				do {
+					Card c = iterator.next();
+					// always add card as long two pairs were Added or there's enough space to add them
+					if (pairsAdded > 1 || best.size() < 2 + 2 * pairsAdded)
+						best.add(c);
+					// FIXME we need more info about second par rank
+					if (c.getRank() == handScore.getRank()) {
+						pairsAdded++;
+						best.add(iterator.next());
+					}
+				} while (best.size() != 5);
+				break;
+			case THREE_OF_A_KIND:
+				// take THREE_OF_A_KIND then add top card (same as HIgh card)
+				// take one pair then same as high card
+				set5BestPlusMostOccurredCard(best, cards, handScore.getRank(), 3);
+				break;
+
+			case FULL_HOUSE:
+				// take cards with the same rank + kickers
+				break;
+
+			case FOUR_OF_A_KIND:
+				// take 4 card with a certain rank
+				set5BestPlusMostOccurredCard(best, cards, handScore.getRank(), 4);
+				break;
+			case STRAIGHT_FLUSH:
+			case ROYAL_FLUSH:
+				// apply flush then apply straight
+			case FLUSH:
+				// take top 5 card with equal to handscore suit
+				// TODO HandScore should store the suit of a flush
+				int suits[] = new int[4];
+				for (Card c : cards) {
+					suits[c.getSuit().ordinal()]++;
+				}
+				Suit suit = null;
+				for (int i = 0; i < suits.length; i++) {
+
+					if (suits[i] > 4) {
+						suit = Suit.values()[i];
+						break;
+					}
+				}
+				iterator = cards.iterator();
+				boolean straightFlush = handScore.getHandType() != HandType.FLUSH;
+				do {
+					Card c = iterator.next();
+					if (c.getSuit() == suit)
+						best.add(c);
+					else if (straightFlush) iterator.remove();
+
+				} while (iterator.hasNext());
+				// don't break it's ROYAL_FLUSH or STRAIGHT_FLUSH
+				if (!straightFlush) break;
+			case STRAIGHT:
+				// copy 5 cards with unique Rank starting from HandScore rank
+				Rank previousRank = null;
+				best.clear();
+				for (Card c : cards) {
+					if (handScore.getRank().compareTo(c.getRank()) >= 0 && previousRank != c.getRank())
+						best.add(c);
+				}
+				break;
+		}
+
+
+		return best;
+	}
+
+	/**
+	 * @param best               a non null Set with a 5 card capacity
+	 * @param reverseOrderedCard hand's card + shared card reverse ordered (Rank order)
+	 * @param mostOccuRank       most occurred rank (i.e THREE_OF_A_KIND has a rank that's repeated 3 times)
+	 * @param occurrence         times that rank occurred
+	 */
+	private static void set5BestPlusMostOccurredCard(Set<Card> best, List<Card> reverseOrderedCard, Rank mostOccuRank, int occurrence) {
+		int n = 0;
+		Iterator<Card> iterator = reverseOrderedCard.iterator();
+		do {
+			Card c = iterator.next();
+			// always add card as long the pair card were Added or there's enough space to add them later
+			if (n == occurrence || best.size() < 5 - occurrence)
+				best.add(c);
+
+			if (c.getRank() == mostOccuRank) {
+				for (n = 0; n < occurrence; n++) {
+					best.add(iterator.next());
+				}
+			}
+
+		} while (best.size() < 5);
+
+	}
 }
