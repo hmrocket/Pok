@@ -178,7 +178,7 @@ public class PokerRound extends Round {
 	@Override
 	protected boolean isCompleted() {
 
-		return phase == RoundPhase.SHOWDOWN || turn.isAllPlayersFoldedExceptOne() || turn.isAllPlayersNotPlayingExceptOne();
+		return phase == RoundPhase.SHOWDOWN || turn.isAllPlayersFoldedExceptOne() || turn.isLess2PlayersPlaying();
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class Game implements PokerRound.RoundEvent {
 		// distinct two case end game and showdown
 		if (isAllPlayersExceptOneFolded(players)) {
 			endGame();
-		} else if (phase == RoundPhase.RIVER || isAllPlayersNotPlayingExceptOne(players)) {
+		} else if (phase == RoundPhase.RIVER || isLess2PlayersPlaying(players)) {
 			showdown();
 		}
 	}
@@ -146,11 +146,12 @@ public class Game implements PokerRound.RoundEvent {
 	}
 
 	/**
-	 * This is method handle situation like Player inactive and zzz unlike turn#isAllPlayersExceptOneFolded
+	 * Check if less than two player are playing, This showdown condition (second end of game condition).
+	 * This is method handle situation like Player inactive and zzz unlike turn#isLess2PlayersPlaying
 	 * @param players player list
-	 * @return true if all the player not playing except one, false otherwise
+	 * @return true if less than two players are playing, false otherwise
 	 */
-	protected boolean isAllPlayersNotPlayingExceptOne(List<Player> players) {
+	protected boolean isLess2PlayersPlaying(List<Player> players) {
 		int numberOfPlayerPlaying = 0;
 		for (Player player : players) {
 			if (player.isPlaying()) {

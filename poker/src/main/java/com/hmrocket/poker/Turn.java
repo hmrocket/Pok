@@ -80,21 +80,6 @@ public class Turn {
 	}
 
 	/**
-	 * Calculate the default min re-raise
-	 *
-	 * @param amountToContinue amount to call (amount to match)
-	 * @param minBet           smallest amount you can bet
-	 * @return Double of amountToContinue, minBet if amountToContinue equal to 0
-	 */
-	public static long defaultMinRaise(long amountToContinue, long minBet) {
-		if (amountToContinue != 0) {
-			return 2 * amountToContinue;
-		} else {
-			return minBet;
-		}
-	}
-
-	/**
 	 * Reset Turn Stat
 	 *
 	 * @param minBet
@@ -128,6 +113,21 @@ public class Turn {
 	 */
 	public long getMinRaise() {
 		return defaultMinRaise(amountToContinue, minBet);
+	}
+
+	/**
+	 * Calculate the default min re-raise
+	 *
+	 * @param amountToContinue amount to call (amount to match)
+	 * @param minBet           smallest amount you can bet
+	 * @return Double of amountToContinue, minBet if amountToContinue equal to 0
+	 */
+	public static long defaultMinRaise(long amountToContinue, long minBet) {
+		if (amountToContinue != 0) {
+			return 2 * amountToContinue;
+		} else {
+			return minBet;
+		}
 	}
 
 	public long getAmountToContinue() {
@@ -202,20 +202,21 @@ public class Turn {
 	}
 
 	/**
-	 * Check if all player not playing except one
-	 * Note: This might see like a double of game.isAllPlayersNotPlayingExceptOne but it's not
+	 * Check if less than two player are playing
+	 * This is the second condition of ending a game.
+	 * Note: This might see like a double of game.isLess2PlayersPlaying but it's not
 	 * this method don't handle situation when the player is out (Inactive, zzz...)
 	 *
-	 * @return true if only one is playing, false otherwise
-	 * @see Game#isAllPlayersNotPlayingExceptOne(List)
+	 * @return true showndown condition is valid (if only one or less is playing), false otherwise
+	 * @see Game#isLess2PlayersPlaying(List)
 	 */
-	public boolean isAllPlayersNotPlayingExceptOne() {
-		return playerCount - playersFolded - playersAllIn == 1;
+	public boolean isLess2PlayersPlaying() {
+		return playerCount - playersFolded - playersAllIn < 2;
 	}
 
 	/**
 	 * Check if all player folded except one
-	 * Note: This might see like a double of game.isAllPlayersNotPlayingExceptOne but it's not
+	 * Note: This might see like a double of game.isLess2PlayersPlaying but it's not
 	 * this method don't handle situation when the player is out (Inactive, zzz...)
 	 *
 	 * @return true if one player didn't fold while the other are out
@@ -310,6 +311,23 @@ public class Turn {
 	}
 
 	/**
+	 * track the money on the table
+	 *
+	 * @param money money a player will add to the table
+	 */
+	protected void addMoneyOnTable(long money) {
+		moneyOnTable += money;
+	}
+
+	/**
+	 * Increment the number of player ALL-IN in this RoundPhase and in total
+	 */
+	public void incrementPlayersAllIn() {
+		roundPlayersAllIn++;
+		this.playersAllIn++;
+	}
+
+	/**
 	 * After a player plays use this method to refresh Turn object
 	 * update teh stats about players Folded, AllIn, Raised
 	 *
@@ -344,14 +362,6 @@ public class Turn {
 	}
 
 	/**
-	 * Increment the number of player ALL-IN in this RoundPhase and in total
-	 */
-	public void incrementPlayersAllIn() {
-		roundPlayersAllIn++;
-		this.playersAllIn++;
-	}
-
-	/**
 	 * Increment the number of player folded in this RoundPhase and in total
 	 */
 	public void incrementPlayersFolded() {
@@ -364,15 +374,6 @@ public class Turn {
 	 */
 	public void incrementRoundRaise() {
 		roundPlayerRaised++;
-	}
-
-	/**
-	 * track the money on the table
-	 *
-	 * @param money money a player will add to the table
-	 */
-	protected void addMoneyOnTable(long money) {
-		moneyOnTable += money;
 	}
 
 	public int getRoundPlayerRaised() {
