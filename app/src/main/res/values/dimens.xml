@@ -4,4 +4,7 @@
 	<dimen name="width_pot">160dp</dimen>
 	<dimen name="height_pot">50dp</dimen>
 	<dimen name="circle_panel_radius">65dp</dimen>
+	<dimen name="margin_player_parent_horizontal">25dp</dimen>
+	<dimen name="margin_player_parent_vertical">25dp</dimen>
+	<dimen name="margin_player5_player4">112dp</dimen>
 </resources>

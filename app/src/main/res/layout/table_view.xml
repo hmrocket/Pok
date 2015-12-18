@@ -116,9 +116,9 @@
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
 		android:layout_alignParentTop="true"
-		android:layout_marginLeft="41dp"
-		android:layout_marginStart="41dp"
-		android:layout_marginTop="25dp"
+		android:layout_marginLeft="@dimen/margin_player_parent_horizontal"
+		android:layout_marginStart="@dimen/margin_player_parent_horizontal"
+		android:layout_marginTop="@dimen/margin_player_parent_vertical"
 		android:visibility="invisible"
 		/>
 
@@ -129,8 +129,9 @@
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentLeft="true"
 		android:layout_alignParentStart="true"
-		android:layout_marginBottom="25dp"
-		android:layout_marginLeft="60dp"
+		android:layout_marginBottom="@dimen/margin_player_parent_vertical"
+		android:layout_marginLeft="@dimen/margin_player_parent_horizontal"
+		android:layout_marginStart="@dimen/margin_player_parent_horizontal"
 		android:visibility="invisible"
 		/>
 
@@ -140,18 +141,22 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
-		android:layout_alignTop="@id/playerView3"
-		android:layout_marginEnd="41dp"
-		android:layout_marginRight="41dp"
+		android:layout_alignParentTop="true"
+		android:layout_marginEnd="@dimen/margin_player_parent_horizontal"
+		android:layout_marginRight="@dimen/margin_player_parent_horizontal"
+		android:layout_marginTop="@dimen/margin_player_parent_vertical"
 		android:visibility="invisible"/>
 
 	<com.hmrocket.magicpoker.view.PlayerView
 		android:id="@+id/playerView8"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignEnd="@id/playerView6"
-		android:layout_alignRight="@id/playerView6"
-		android:layout_alignTop="@id/playerView1"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_marginBottom="@dimen/margin_player_parent_vertical"
+		android:layout_marginEnd="@dimen/margin_player_parent_horizontal"
+		android:layout_marginRight="@dimen/margin_player_parent_horizontal"
 		android:visibility="invisible"
 		/>
 
@@ -171,7 +176,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentEnd="true"
 		android:layout_alignParentRight="true"
-		android:layout_alignTop="@id/playerView2"
+		android:layout_centerVertical="true"
 		android:visibility="invisible"
 		/>
 
@@ -198,8 +203,8 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
-		android:layout_marginEnd="112dp"
-		android:layout_marginRight="112dp"
+		android:layout_marginEnd="@dimen/margin_player5_player4"
+		android:layout_marginRight="@dimen/margin_player5_player4"
 		android:layout_toLeftOf="@id/view_middle"
 		android:layout_toStartOf="@id/view_middle"
 		android:visibility="invisible"
@@ -211,8 +216,8 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
-		android:layout_marginLeft="112dp"
-		android:layout_marginStart="112dp"
+		android:layout_marginLeft="@dimen/margin_player5_player4"
+		android:layout_marginStart="@dimen/margin_player5_player4"
 		android:layout_toEndOf="@id/view_middle"
 		android:layout_toRightOf="@id/view_middle"
 		android:visibility="invisible"
