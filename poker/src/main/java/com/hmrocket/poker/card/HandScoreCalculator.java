@@ -77,15 +77,15 @@ public final class HandScoreCalculator {
 		handScore = checkRecurrences(cards);
 
 		if (handScore.getHandType() == HandType.FOUR_OF_A_KIND || handScore.getHandType() == HandType.FULL_HOUSE) {
-			handScore.setKickers(searchKickers(hand, handScore));
+			handScore.setKickers(searchKickers(cards, handScore));
 			return handScore;
 		} else if (suit != null)
 			// get Flush Rank and Kickers
-			return getFlushHandScore(suit, hand, cards);
+			return getFlushHandScore(suit, cards);
 		else if (rank != null)
 			return new HandScore(HandType.STRAIGHT, rank);
-		else { // TWO PAIR or ONE_PAIR or HIGH_CARD
-			handScore.setKickers(searchKickers(hand, handScore));
+		else { // THREE_OF_A_KIND or TWO PAIR or ONE_PAIR or HIGH_CARD
+			handScore.setKickers(searchKickers(cards, handScore));
 			return handScore;
 		}
 	}
@@ -278,39 +278,64 @@ public final class HandScoreCalculator {
 	}
 
 	/**
-	 * Search for kickers in a Hand<br/>
-	 * ONLY HAND KICKERS ARE RETURNED, WINDOW CARDS are discarded.
+	 * Search for kickers<br/>
+	 * https://www.pagat.com/poker/rules/ranking.html
 	 *
-	 * @param hand
-	 * @param handScore
+	 * @param cards     a list of 7 card ordered (descending order)
+	 * @param handScore the score representing the hand
 	 * @return kickers that a Hand has to break a possible tie
 	 */
-	private static List<Card> searchKickers(Hand hand, HandScore handScore) {
+	private static List<Card> searchKickers(Card[] cards, HandScore handScore) {
 		List<Card> kickers = new ArrayList<>();
 		Card[] handCard;
+		int kickersCount = 4;
 
 		switch (handScore.getHandType()) {
-			case FOUR_OF_A_KIND: // 1 kicker max for this case
-				handCard = hand.getCards();
-				Arrays.sort(handCard, Collections.reverseOrder());
-				for (Card card : handCard)
-					if (card.getRank().compareTo(handScore.getRank()) != 0) {
+			case FOUR_OF_A_KIND: // 1 kicker for this case
+				kickersCount -= 1;
+			case THREE_OF_A_KIND: // 2 kickers for this case
+				kickersCount -= 1;
+			case ONE_PAIR: // 3 kickers
+				kickersCount -= 1;
+			case HIGH_CARD: // 4 kickers
+				for (Card card : cards)
+					if (card.getRank() != handScore.getRank()) {
 						kickers.add(card);
-						return kickers; // Return immediately
+						if (kickers.size() == kickersCount) return kickers; // Return immediately
 					}
 				break;
-			case THREE_OF_A_KIND: // 2 kickers max for this case
-			case TWO_PAIRS: // it can be 3 kickers here max for this case
-			case ONE_PAIR: // Best hand is constructed with 3 kickers but only hand kickers are considered Shared cards are discarded (means 2 kickers max)
-			case HIGH_CARD: // Best hand it can be constructed with 4 kickers but here 2 kickers max cause only Hand kickers are considered
-				handCard = hand.getCards();
-				Arrays.sort(handCard, Collections.reverseOrder()); // Descending order (higher Rank first)
-				for (Card card : handCard)
-					if (card.getRank().compareTo(handScore.getRank()) != 0) {
-						kickers.add(card);
-					}
-				break;
+			case FULL_HOUSE: // 2 kickers here
+			case TWO_PAIRS: // 3 kickers here
+				// take top card with a rank occurred two time or more
+				// we exclude cards with the same HandScore's Rank
+				// Note this code is taking a fact that a Pair with a different rank than HandScore must exist
+				for (int i = 0; i < cards.length; i++) {
+					Card c = cards[i];
 
+					if (c.getRank() != handScore.getRank()) {
+						Card nextC = cards[i + 1];
+						if (c.equalRank(nextC)) {
+							kickers.add(nextC);
+							kickers.add(c);
+							break;
+						}
+					}
+				}
+				if (handScore.getHandType() == HandType.FULL_HOUSE)
+					return kickers;
+				// TWO_PAIRS take top one pair also one high card
+				// we exclude cards with the same HandScore's Rank
+				// Note this code is taking a fact that a card with a different rank than HandScore and second Rank must exist
+				for (int i = 0; i < cards.length; i++) {
+					Card c = cards[i];
+
+					if (c.getRank() != handScore.getRank() && !c.equalRank(kickers.get(0))) {
+						// add kicker 3 after the second pair
+						kickers.add(c);
+						return kickers;
+					}
+				}
+				break;
 		}
 
 		return kickers.isEmpty() ? null : kickers;
@@ -321,12 +346,11 @@ public final class HandScoreCalculator {
 	 * It turns out there's kickers in Flush:
 	 * Credit: http://poker.stackexchange.com/questions/1501/does-the-top-5-cards-rule-apply-to-a-flush/
 	 *
-	 * @param flushSuit
-	 * @param hand
-	 * @param ordCards
+	 * @param flushSuit suit repeated 5 times on card
+	 * @param ordCards  7 cards reverse ordered
 	 * @return a HandScore specific for Flush HandType
 	 */
-	private static HandScore getFlushHandScore(Suit flushSuit, Hand hand, Card... ordCards) {
+	private static HandScore getFlushHandScore(Suit flushSuit, Card... ordCards) {
 		if (flushSuit == null) throw new IllegalArgumentException("FlushSuit can't be null");
 		Rank flushRank = null;
 		int cardsCount = 0;
@@ -336,10 +360,10 @@ public final class HandScoreCalculator {
 			// save max flush (Represent the rank)
 			if (card.getSuit() == flushSuit) {
 				if (flushRank == null) flushRank = card.getRank();
-				else if (hand.contains(card)) kickers.add(card);
+				else kickers.add(card);
 				cardsCount++;
 				if (cardsCount == 5)
-					return new HandScore(HandType.FLUSH, flushRank, kickers.isEmpty() ? null : kickers);
+					return new HandScore(HandType.FLUSH, flushRank, kickers);
 			}
 		}
 		return null;

@@ -126,9 +126,8 @@ public class HandScore implements Comparable<HandScore> {
         else // kickers cCrd must be in order
             for (int i = 0; i < kickers.size(); i++) {
                 int compareToKicker = kickers.get(i).compareTo(handScore.kickers.get(i));
-                if (compareToKicker == 0)
-                    continue;
-                else return compareToKicker;
+                if (compareToKicker != 0)
+                    return compareToKicker;
             }
         // All kickers are equal
         return 0;
