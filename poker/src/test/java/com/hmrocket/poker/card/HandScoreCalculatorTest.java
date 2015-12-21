@@ -14,6 +14,14 @@ import java.util.List;
  */
 public class HandScoreCalculatorTest extends TestCase {
 
+	List<Card> kickers;
+
+	@Override
+	public void setUp() throws Exception {
+		super.setUp();
+		kickers = new ArrayList<>();
+	}
+
 	/**
 	 * Testing getHandScore(Hand)
 	 *
@@ -44,22 +52,36 @@ public class HandScoreCalculatorTest extends TestCase {
 		// HIGH_CARD
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.DIAMONDS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
-		handScore = new HandScore(HandType.HIGH_CARD, Rank.ACE, Arrays.asList(hand.getCards()));
+		kickers.addAll(Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard1());
+		handScore = new HandScore(HandType.HIGH_CARD, Rank.ACE, kickers); // 4 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop));
 
 		// ONE_PAIR
+		kickers.clear();
 		flop = new Flop(new Card(Rank.JACK, Suit.HEARTS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
-		handScore = new HandScore(HandType.ONE_PAIR, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(hand.getCard2());
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard3());
+		handScore = new HandScore(HandType.ONE_PAIR, Rank.JACK, kickers); // 3 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop));
 
 		// TWO_PAIRS
+		kickers.clear();
 		flop = new Flop(new Card(Rank.JACK, Suit.HEARTS), new Card(Rank.TEN, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
-		handScore = new HandScore(HandType.TWO_PAIRS, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(hand.getCard2());
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard3());
+		handScore = new HandScore(HandType.TWO_PAIRS, Rank.JACK, kickers); // 3 kickers (2 pair first + top card)
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop));
 
 		// 3 kinds
+		kickers.clear();
 		flop = new Flop(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.JACK, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
-		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(flop.getCard3());
+		kickers.add(hand.getCard2());
+		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.JACK, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop));
 
 		// Straight
@@ -73,9 +95,14 @@ public class HandScoreCalculatorTest extends TestCase {
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop));
 
 		// Flush
+		kickers.clear();
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.CLUBS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
-		handScore = new HandScore(HandType.FLUSH, Rank.JACK, Arrays.asList(hand.getCard2()));
+		kickers.add(hand.getCard2());
+		kickers.add(flop.getCard1());
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard3());
+		handScore = new HandScore(HandType.FLUSH, Rank.JACK, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop));
 
 		// Royal flush
@@ -101,25 +128,40 @@ public class HandScoreCalculatorTest extends TestCase {
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.DIAMONDS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.THREE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
-		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(hand.getCard2());
+		kickers.add(flop.getCard2());
+		kickers.add(turn);
+		kickers.add(flop.getCard3());
+		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn));
 
 		// ONE_PAIR
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FIVE, Suit.HEARTS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
+		kickers.add(flop.getCard3());
+		kickers.addAll(Arrays.asList(hand.getCards()));
+		kickers.add(turn);
 		handScore = new HandScore(HandType.ONE_PAIR, Rank.FIVE, Arrays.asList(hand.getCards()));
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn));
 
 		// TWO_PAIRS
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.HEARTS), new Card(Rank.ACE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
-		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, Arrays.asList(hand.getCards()));
+		kickers.add(turn);
+		kickers.add(flop.getCard1());
+		kickers.add(hand.getCard1());
+		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, kickers); // 3 kickers = the second 2 pair + one card
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn));
 
 		// 3 kinds
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.CLUBS), new Card(Rank.FOUR, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.DIAMONDS);
-		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard3());
+		kickers.add(hand.getCard1());
+		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, kickers); // 2 kickers (high card)
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn));
 
 		// Straight
@@ -136,10 +178,15 @@ public class HandScoreCalculatorTest extends TestCase {
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn));
 
 		// Flush
+		kickers.clear();
 		hand = new Hand(new Card(Rank.JACK, Suit.DIAMONDS), new Card(Rank.TEN, Suit.CLUBS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
 		turn = new Card(Rank.NINE, Suit.CLUBS);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN);
+		kickers.add(turn);
+		kickers.add(flop.getCard3());
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard1());
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN, kickers); // 4 kickers = 4 top same suit card
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn));
 
 		// Royal flush
@@ -168,28 +215,42 @@ public class HandScoreCalculatorTest extends TestCase {
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.THREE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
-		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(river);
+		kickers.add(hand.getCard2());
+		kickers.add(turn);
+		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn, river));
 
 		// ONE_PAIR
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FIVE, Suit.HEARTS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
-		handScore = new HandScore(HandType.ONE_PAIR, Rank.FIVE, Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard3());
+		kickers.addAll(Arrays.asList(hand.getCards()));
+		kickers.add(river);
+		handScore = new HandScore(HandType.ONE_PAIR, Rank.FIVE, kickers); // 3 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn, river));
 
 		// TWO_PAIRS
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.HEARTS), new Card(Rank.ACE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		river = new Card(Rank.JACK, Suit.DIAMONDS);
-		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, Arrays.asList(hand.getCards()));
+		kickers.add(river);
+		kickers.add(hand.getCard1());
+		kickers.add(turn);
+		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn, river));
 
 		// 3 kinds
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.CLUBS), new Card(Rank.FOUR, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.DIAMONDS);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
-		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard3());
+		kickers.add(hand.getCard1());
+		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, kickers); // 2 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn, river));
 
 		// Straight
@@ -208,11 +269,14 @@ public class HandScoreCalculatorTest extends TestCase {
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn, river));
 
 		// Flush // thanks to this I found a bug (straight + flush doesn't mean == STRAIGHT_FLUSH)
+		kickers.clear();
 		hand = new Hand(new Card(Rank.JACK, Suit.DIAMONDS), new Card(Rank.TEN, Suit.CLUBS));
-		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
+		flop = new Flop(new Card(Rank.EIGHT, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.TWO, Suit.CLUBS));
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN);
+		kickers.add(turn);
+		kickers.addAll(Arrays.asList(flop.getCards()));
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, flop, turn, river));
 
 		// Royal flush
@@ -255,25 +319,39 @@ public class HandScoreCalculatorTest extends TestCase {
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.DIAMONDS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		communityCards = new CommunityCards(flop);
-		handScore = new HandScore(HandType.HIGH_CARD, Rank.ACE, Arrays.asList(hand.getCards()));
+		kickers.addAll(Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard1());
+		handScore = new HandScore(HandType.HIGH_CARD, Rank.ACE, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// ONE_PAIR
+		kickers.clear();
 		flop = new Flop(new Card(Rank.JACK, Suit.HEARTS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		communityCards.setFlop(flop);
-		handScore = new HandScore(HandType.ONE_PAIR, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(flop.getCard3());
+		kickers.add(hand.getCard2());
+		kickers.add(flop.getCard2());
+		handScore = new HandScore(HandType.ONE_PAIR, Rank.JACK, kickers); // 3 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// TWO_PAIRS
+		kickers.clear();
 		flop = new Flop(new Card(Rank.JACK, Suit.HEARTS), new Card(Rank.TEN, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		communityCards.setFlop(flop);
-		handScore = new HandScore(HandType.TWO_PAIRS, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(hand.getCard2());
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard3());
+		handScore = new HandScore(HandType.TWO_PAIRS, Rank.JACK, kickers); // 3 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// 3 kinds
+		kickers.clear();
 		flop = new Flop(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.JACK, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		communityCards.setFlop(flop);
-		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(flop.getCard3());
+		kickers.add(hand.getCard2());
+		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.JACK, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Straight
@@ -288,10 +366,13 @@ public class HandScoreCalculatorTest extends TestCase {
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Flush
+		kickers.clear();
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.CLUBS));
-		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
+		flop = new Flop(new Card(Rank.EIGHT, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.TWO, Suit.CLUBS));
 		communityCards.setFlop(flop);
-		handScore = new HandScore(HandType.FLUSH, Rank.JACK, Arrays.asList(hand.getCard2()));
+		kickers.add(hand.getCard2());
+		kickers.addAll(Arrays.asList(flop.getCards()));
+		handScore = new HandScore(HandType.FLUSH, Rank.JACK, kickers); // 4 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Royal flush
@@ -305,32 +386,48 @@ public class HandScoreCalculatorTest extends TestCase {
 		//XXX test same code testGetHandScore2 but using CommunityCard
 		Card turn;
 		// HIGH_CARD
+		kickers.clear();
 		hand = new Hand(new Card(Rank.JACK, Suit.CLUBS), new Card(Rank.TEN, Suit.DIAMONDS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.THREE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, null);
-		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(hand.getCard2());
+		kickers.add(flop.getCard2());
+		kickers.add(turn);
+		kickers.add(flop.getCard3());
+		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// ONE_PAIR
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FIVE, Suit.HEARTS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, null);
-		handScore = new HandScore(HandType.ONE_PAIR, Rank.FIVE, Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard3());
+		kickers.addAll(Arrays.asList(hand.getCards()));
+		kickers.add(turn);
+		handScore = new HandScore(HandType.ONE_PAIR, Rank.FIVE, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// TWO_PAIRS
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.HEARTS), new Card(Rank.ACE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, null);
-		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, Arrays.asList(hand.getCards()));
+		kickers.add(turn);
+		kickers.add(flop.getCard1());
+		kickers.add(hand.getCard1());
+		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, kickers); // 3 kickers = the second 2 pair + one card
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// 3 kinds
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.CLUBS), new Card(Rank.FOUR, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.DIAMONDS);
 		communityCards = new CommunityCards(flop, turn, null);
-		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard3());
+		kickers.add(hand.getCard1());
+		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, kickers); // 2 kickers (high card)
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Straight
@@ -349,11 +446,16 @@ public class HandScoreCalculatorTest extends TestCase {
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Flush
+		kickers.clear();
 		hand = new Hand(new Card(Rank.JACK, Suit.DIAMONDS), new Card(Rank.TEN, Suit.CLUBS));
 		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		communityCards = new CommunityCards(flop, turn, null);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN);
+		kickers.add(turn);
+		kickers.add(flop.getCard3());
+		kickers.add(flop.getCard2());
+		kickers.add(flop.getCard1());
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN, kickers); // 4 kickers = 4 top same suit card
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Royal flush
@@ -374,31 +476,45 @@ public class HandScoreCalculatorTest extends TestCase {
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, Collections.singletonList(hand.getCard2()));
+		kickers.add(river);
+		kickers.add(hand.getCard2());
+		kickers.add(turn);
+		handScore = new HandScore(HandType.HIGH_CARD, Rank.JACK, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// ONE_PAIR
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FIVE, Suit.HEARTS), new Card(Rank.FIVE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.ONE_PAIR, Rank.FIVE, Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard3());
+		kickers.addAll(Arrays.asList(hand.getCards()));
+		kickers.add(river);
+		handScore = new HandScore(HandType.ONE_PAIR, Rank.FIVE, kickers); // 3 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// TWO_PAIRS
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.HEARTS), new Card(Rank.ACE, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.SPADES);
 		river = new Card(Rank.JACK, Suit.DIAMONDS);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, Arrays.asList(hand.getCards()));
+		kickers.add(river);
+		kickers.add(hand.getCard1());
+		kickers.add(turn);
+		handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// 3 kinds
+		kickers.clear();
 		flop = new Flop(new Card(Rank.FOUR, Suit.CLUBS), new Card(Rank.FOUR, Suit.SPADES), new Card(Rank.ACE, Suit.HEARTS));
 		turn = new Card(Rank.FOUR, Suit.DIAMONDS);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, Arrays.asList(hand.getCards()));
+		kickers.add(flop.getCard3());
+		kickers.add(hand.getCard1());
+		handScore = new HandScore(HandType.THREE_OF_A_KIND, Rank.FOUR, kickers); // 2 kickers
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Straight
@@ -419,17 +535,16 @@ public class HandScoreCalculatorTest extends TestCase {
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 		// Flush // thanks to this I found a bug (straight + flush doesn't mean == STRAIGHT_FLUSH)
+		kickers.clear();
 		hand = new Hand(new Card(Rank.JACK, Suit.DIAMONDS), new Card(Rank.TEN, Suit.CLUBS));
-		flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
+		flop = new Flop(new Card(Rank.EIGHT, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.TWO, Suit.CLUBS));
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		river = new Card(Rank.SEVEN, Suit.SPADES);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.FLUSH, Rank.TEN); // No kickers cause Ten is the rank of the flush (not a kicker)
+		kickers.add(turn);
+		kickers.addAll(Arrays.asList(flop.getCards()));
+		handScore = new HandScore(HandType.FLUSH, Rank.TEN, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
-		communityCards.setRiver(new Card(Rank.ACE, Suit.CLUBS));
-		handScore = new HandScore(HandType.FLUSH, Rank.ACE, Arrays.asList(hand.getCard2())); // this case Ten is a kicker it belong to the flush
-		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
-
 
 		// Royal flush
 		hand = new Hand(new Card(Rank.JACK, Suit.SPADES), new Card(Rank.TEN, Suit.CLUBS));
@@ -444,32 +559,43 @@ public class HandScoreCalculatorTest extends TestCase {
 	}
 
 	/**
-	 * 1- test flush with no kicker cause the high rank of the flush is in the hand
-	 * 2- test flush with no kicker cause no card in the hand belong to the best hand
-	 * 3- nomal case suited hand
+	 * 1- test flush with 5 cards same suit
+	 * 2- test flush with 7 cards same suit
+	 * 3- test flush with 6 cards same suit
 	 *
 	 * @throws Exception
 	 */
 	public void testFlushScore() throws Exception {
 		// Flush - 1
 		Hand hand = new Hand(new Card(Rank.JACK, Suit.DIAMONDS), new Card(Rank.TEN, Suit.CLUBS));
-		Flop flop = new Flop(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
+		Flop flop = new Flop(new Card(Rank.EIGHT, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.TWO, Suit.CLUBS));
 		Card turn = new Card(Rank.NINE, Suit.CLUBS);
 		Card river = new Card(Rank.SEVEN, Suit.SPADES);
 		CommunityCards communityCards = new CommunityCards(flop, turn, river);
-		HandScore handScore = new HandScore(HandType.FLUSH, Rank.TEN); // No kickers cause Ten is the rank of the flush (not a kicker)
+		List<Card> kickers = new ArrayList<>();
+
+		kickers.add(turn);
+		kickers.addAll(Arrays.asList(flop.getCards()));
+		HandScore handScore = new HandScore(HandType.FLUSH, Rank.TEN, kickers);
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 		// Flush - 3
+		kickers.remove(flop.getCard1());
 		communityCards.setRiver(new Card(Rank.ACE, Suit.CLUBS));
-		handScore = new HandScore(HandType.FLUSH, Rank.ACE, Arrays.asList(hand.getCard2())); // this case Ten is a kicker it belong to the flush
+		kickers.add(hand.getCard2());
+		handScore = new HandScore(HandType.FLUSH, Rank.ACE, kickers); // 2 clubs is discarded, (lower)
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 		// Flush - 2
+		kickers.clear();
 		hand = new Hand(new Card(Rank.TWO, Suit.CLUBS), new Card(Rank.THREE, Suit.CLUBS));
 		flop = new Flop(new Card(Rank.ACE, Suit.CLUBS), new Card(Rank.FIVE, Suit.CLUBS), new Card(Rank.EIGHT, Suit.CLUBS));
 		turn = new Card(Rank.NINE, Suit.CLUBS);
 		river = new Card(Rank.SEVEN, Suit.CLUBS);
+		kickers.addAll(Arrays.asList(flop.getCards()));
+		kickers.remove(flop.getCard1());
+		kickers.add(turn);
+		kickers.add(river);
 		communityCards = new CommunityCards(flop, turn, river);
-		handScore = new HandScore(HandType.FLUSH, Rank.ACE); // No kickers cause (2)
+		handScore = new HandScore(HandType.FLUSH, Rank.ACE, kickers); // 2, 3 clubs is discarded, (lower)
 		assertEquals(handScore, HandScoreCalculator.getHandScore(hand, communityCards));
 
 	}
