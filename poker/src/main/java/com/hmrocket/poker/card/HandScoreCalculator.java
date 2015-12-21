@@ -391,85 +391,73 @@ public final class HandScoreCalculator {
 		cards.add(cc.getFlop().getCard1());
 		cards.add(cc.getFlop().getCard2());
 		cards.add(cc.getFlop().getCard3());
-		Collections.sort(cards, Collections.reverseOrder());
-		// get
+
+		// add all kickers and then search for main cards
+		best.addAll(handScore.getKickers());
+
 		switch (handScore.getHandType()) {
-			case HIGH_CARD:
-				// take the 5 first card
-				best.addAll(cards.subList(0, 5));
-				break;
-			case ONE_PAIR:
-				// take one pair then same as high card
-				set5BestPlusMostOccurredCard(best, cards, handScore.getRank(), 2);
-				break;
-			case TWO_PAIRS:
-				// take two pair then add top card (same as HIgh card)
-				// take one pair then same as high card
-				int pairsAdded = 0;
-				Iterator<Card> iterator = cards.iterator();
-				do {
-					Card c = iterator.next();
-					// always add card as long two pairs were Added or there's enough space to add them
-					if (pairsAdded > 1 || best.size() < 2 + 2 * pairsAdded)
-						best.add(c);
-					// FIXME we need more info about second par rank
+			// cards missing ?
+			case HIGH_CARD: // one card
+			case ONE_PAIR: // one card
+			case TWO_PAIRS: // one card
+			case THREE_OF_A_KIND: // 3 cards
+			case FULL_HOUSE: // 3 cards is missing
+			case FOUR_OF_A_KIND: // one card is missing
+				// add main top cards
+				for (Card c : cards) {
 					if (c.getRank() == handScore.getRank()) {
-						pairsAdded++;
-						best.add(iterator.next());
+						best.add(c);
 					}
-				} while (best.size() != 5);
-				break;
-			case THREE_OF_A_KIND:
-				// take THREE_OF_A_KIND then add top card (same as HIgh card)
-				// take one pair then same as high card
-				set5BestPlusMostOccurredCard(best, cards, handScore.getRank(), 3);
-				break;
+					if (best.size() == 5) {
+						return best;
+					}
 
-			case FULL_HOUSE:
-				// take cards with the same rank + kickers
-				break;
+				}
 
-			case FOUR_OF_A_KIND:
-				// take 4 card with a certain rank
-				set5BestPlusMostOccurredCard(best, cards, handScore.getRank(), 4);
+				break;
+			case FLUSH: // one card is missing
+				// add main top card with the same
+				Suit flushSuit = handScore.getKickers().get(0).getSuit();
+				for (Card c : cards) {
+					if (c.getRank() == handScore.getRank() && c.getSuit() == flushSuit) {
+						best.add(c);
+						return best;
+					}
+				}
 				break;
 			case STRAIGHT_FLUSH:
 			case ROYAL_FLUSH:
 				// apply flush then apply straight
-			case FLUSH:
 				// take top 5 card with equal to handscore suit
-				// TODO HandScore should store the suit of a flush
 				int suits[] = new int[4];
 				for (Card c : cards) {
 					suits[c.getSuit().ordinal()]++;
 				}
-				Suit suit = null;
+				flushSuit = null;
 				for (int i = 0; i < suits.length; i++) {
-
 					if (suits[i] > 4) {
-						suit = Suit.values()[i];
+						flushSuit = Suit.values()[i];
 						break;
 					}
 				}
-				iterator = cards.iterator();
-				boolean straightFlush = handScore.getHandType() != HandType.FLUSH;
+				Iterator<Card> iterator = cards.iterator();
 				do {
 					Card c = iterator.next();
-					if (c.getSuit() == suit)
-						best.add(c);
-					else if (straightFlush) iterator.remove();
+					if (c.getSuit() != flushSuit)
+						iterator.remove();
 
 				} while (iterator.hasNext());
-				// don't break it's ROYAL_FLUSH or STRAIGHT_FLUSH
-				if (!straightFlush) break;
+				// don't break, on ROYAL_FLUSH or STRAIGHT_FLUSH (after removing any card that aren't same suit we move to look for Straight)
 			case STRAIGHT:
 				// copy 5 cards with unique Rank starting from HandScore rank
+				Collections.sort(cards, Collections.reverseOrder());
 				Rank previousRank = null;
 				best.clear();
-				for (Card c : cards) {
-					if (handScore.getRank().compareTo(c.getRank()) >= 0 && previousRank != c.getRank())
+				for (Card c : cards)
+					if (handScore.getRank().compareTo(c.getRank()) >= 0 && previousRank != c.getRank()) {
 						best.add(c);
-				}
+						previousRank = c.getRank();
+					}
 				break;
 		}
 
@@ -477,28 +465,4 @@ public final class HandScoreCalculator {
 		return best;
 	}
 
-	/**
-	 * @param best               a non null Set with a 5 card capacity
-	 * @param reverseOrderedCard hand's card + shared card reverse ordered (Rank order)
-	 * @param mostOccuRank       most occurred rank (i.e THREE_OF_A_KIND has a rank that's repeated 3 times)
-	 * @param occurrence         times that rank occurred
-	 */
-	private static void set5BestPlusMostOccurredCard(Set<Card> best, List<Card> reverseOrderedCard, Rank mostOccuRank, int occurrence) {
-		int n = 0;
-		Iterator<Card> iterator = reverseOrderedCard.iterator();
-		do {
-			Card c = iterator.next();
-			// always add card as long the pair card were Added or there's enough space to add them later
-			if (n == occurrence || best.size() < 5 - occurrence)
-				best.add(c);
-
-			if (c.getRank() == mostOccuRank) {
-				for (n = 0; n < occurrence; n++) {
-					best.add(iterator.next());
-				}
-			}
-
-		} while (best.size() < 5);
-
-	}
 }

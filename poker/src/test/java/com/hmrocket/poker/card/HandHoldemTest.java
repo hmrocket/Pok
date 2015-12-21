@@ -115,7 +115,8 @@ public class HandHoldemTest extends TestCase {
 		assertNull(field.get(handHoldem));
 		// make sure the handScore is two pair and not Four of Kind
 		HandScore handScore = new HandScore(HandType.TWO_PAIRS, Rank.ACE);
-		assertEquals(handScore, handHoldem.getHandScore());
+		assertEquals(handScore.getHandType(), handHoldem.getHandScore().getHandType());
+		assertEquals(handScore.getRank(), handHoldem.getHandScore().getRank());
 		// change Old community card
 		communityCards.setTurn(new Card(Rank.FOUR, Suit.DIAMONDS));
 		assertNotNull(field.get(handHoldem));
