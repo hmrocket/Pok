@@ -160,7 +160,7 @@ public class HandHoldemTest extends TestCase {
 		assertEquals(HandScoreCalculator.getHandScore(hand, flop, turn), handHoldem.getHandScore());
 
 		// test when communityCard is null
-		// TODO when you set communityCards to null handScore isn't updated right away so be careful
+		// XXX when you set communityCards to null handScore isn't updated right away so be careful
 		// XXX but this shouldn't be a problem cause when you set communityCards to null we don't need
 		// XXX communityCards or handScore anymore
 		// communityCards = null;

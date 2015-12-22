@@ -55,6 +55,22 @@ public class TableView extends RelativeLayout {
 		init();
 	}
 
+	public TableView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init();
+	}
+
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+		init();
+	}
+
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init();
+	}
+
 	private void init() {
 		View view = inflate(getContext(), R.layout.table_view, this);
 		potView = (PotView) view.findViewById(R.id.potView);
@@ -81,22 +97,6 @@ public class TableView extends RelativeLayout {
 		}
 
 		txInfo = (TextView) findViewById(R.id.tx_tableInfo);
-	}
-
-	public TableView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
-
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init();
-	}
-
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-		super(context, attrs, defStyleAttr, defStyleRes);
-		init();
 	}
 
 	/**
@@ -301,9 +301,18 @@ public class TableView extends RelativeLayout {
 		enableCc[2] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getFlop().getCard3());
 		enableCc[3] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getTurn());
 		enableCc[4] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getRiver());
+		enableCommunityCard(enableCc);
+	}
+
+	/**
+	 * Enable/Disable shared cards on the table
+	 *
+	 * @param enable boolean list of 5 element to enable/disable communityCards
+	 */
+	public void enableCommunityCard(@NonNull boolean... enable) {
 		int i = 0;
 		for (CardView cc : cardViews) {
-			cc.setEnabled(enableCc[i++]);
+			cc.setEnabled(enable[i++]);
 		}
 	}
 }

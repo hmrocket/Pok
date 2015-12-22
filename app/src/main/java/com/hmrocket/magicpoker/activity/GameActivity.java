@@ -19,6 +19,7 @@ import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Turn;
 import com.hmrocket.poker.ai.bot.SafeBot;
 import com.hmrocket.poker.card.CommunityCards;
+import com.hmrocket.poker.card.HandScoreCalculator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,7 +170,13 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			if (last) {
 				playerView.setInfo(R.string.winner);
 				// FIXME highlightWinningCard only on Showdown
-				tableView.highlightWinningCard(playerView, p.getHandHoldem());
+				if (winners.size() > 1 && HandScoreCalculator.isCommunityCards5BestCard(p.getHandHoldem().getHandScore(), p.getHandHoldem().getCommunityCards())) {
+					// give priority on a tie, to highlight shared cards if they can represent the players HandScore
+					boolean[] enableCC = new boolean[5];
+					Arrays.fill(enableCC, true);
+					tableView.enableCommunityCard(enableCC);
+					playerView.enableCards(false, false);
+				} else tableView.highlightWinningCard(playerView, p.getHandHoldem());
 			}
 		}
 

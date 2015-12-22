@@ -378,6 +378,20 @@ public final class HandScoreCalculator {
 
 	}
 
+	/**
+	 * Check if CommunityCards can represent the same HandScore without the player cards
+	 *
+	 * @param handScore the hand score shared among multiple player on a tie
+	 * @param cc        Shared card on the table
+	 * @return true if the CommunityCards can be the 5 best card to represent the HandScore, false otherwise
+	 */
+	public static boolean isCommunityCards5BestCard(HandScore handScore, CommunityCards cc) {
+		if (cc == null || cc.getMissingCardCount() != 0 || handScore == null)
+			throw new IllegalArgumentException("CommunityCards must be complete and HandScore not null");
+
+		return handScore.compareTo(getHandScore(new Hand(cc.getTurn(), cc.getRiver()), cc.getFlop())) == 0;
+	}
+
 	public static Set<Card> get5BestCard(HandScore handScore, Hand hand, CommunityCards cc) {
 		if (handScore == null || hand == null || cc == null || cc.getMissingCardCount() != 0)
 			throw new IllegalArgumentException("all arguments must be nonnull and shared cards count should be " + CommunityCards.TEXAS_HOLDEM_COUNT);
