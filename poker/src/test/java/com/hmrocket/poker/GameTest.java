@@ -120,7 +120,7 @@ public class GameTest extends TestCase implements GameEvent {
 	}
 
 	@Override
-	public void gameWinners(boolean last, Set<Player> winners, long winAmount) {
+	public void gameWinners(boolean last, boolean isShowdown, Set<Player> winners, long winAmount) {
 		// someTime there is lost of fraction when winners are more than one
 		// we will track the limit of dollar might be lost be cause of the fraction
 		if (winners.size() > 1)

@@ -157,7 +157,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	}
 
 	@Override
-	public void gameWinners(boolean last, Set<Player> winners, long winAmount) {
+	public void gameWinners(boolean last, boolean isShowdown, Set<Player> winners, long winAmount) {
 		// TODO animate last winning players
 		for (Player p : winners) {
 			PlayerView playerView = tableView.getPlayerView(p.getSeat().getId());
@@ -169,14 +169,16 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			tableView.setInfo(Util.getStringId(p.getHandHoldem().getHandScore().getHandType()));
 			if (last) {
 				playerView.setInfo(R.string.winner);
-				// FIXME highlightWinningCard only on Showdown
-				if (winners.size() > 1 && HandScoreCalculator.isCommunityCards5BestCard(p.getHandHoldem().getHandScore(), p.getHandHoldem().getCommunityCards())) {
-					// give priority on a tie, to highlight shared cards if they can represent the players HandScore
-					boolean[] enableCC = new boolean[5];
-					Arrays.fill(enableCC, true);
-					tableView.enableCommunityCard(enableCC);
-					playerView.enableCards(false, false);
-				} else tableView.highlightWinningCard(playerView, p.getHandHoldem());
+				if (isShowdown) {
+					// display winner hand type and animate best 5 cards
+					if (winners.size() > 1 && HandScoreCalculator.isCommunityCards5BestCard(p.getHandHoldem().getHandScore(), p.getHandHoldem().getCommunityCards())) {
+						// give priority on a tie, to highlight shared cards if they can represent the players HandScore
+						boolean[] enableCC = new boolean[5];
+						Arrays.fill(enableCC, true);
+						tableView.enableCommunityCard(enableCC);
+						playerView.enableCards(false, false);
+					} else tableView.highlightWinningCard(playerView, p.getHandHoldem());
+				}
 			}
 		}
 
@@ -266,7 +268,6 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			playerView.setHand(player.getHandHoldem().getHand());
 			playerView.showCards();
 		}
-		tableView.showInfo(true);
 	}
 
 	@Override

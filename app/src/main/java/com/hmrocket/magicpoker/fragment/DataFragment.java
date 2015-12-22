@@ -199,7 +199,7 @@ public class DataFragment extends Fragment {
 					break;
 				case GAME_WINNERS:
 					boolean last = (boolean) values[1];
-					Set<Player> players = (Set<Player>) values[2];
+					Set<Player> players = (Set<Player>) values[3];
 					if (last) {
 						// play the winning sound only if the winner is human
 						for (Player p : players)
@@ -208,7 +208,7 @@ public class DataFragment extends Fragment {
 								break;
 							}
 					}
-					gameEventListener.gameWinners(last, players, (long) values[3]);
+					gameEventListener.gameWinners(last, (boolean) values[2], players, (long) values[4]);
 					// play moving chips sound n times
 					for (int i = 0; i < players.size(); i++)
 						soundManager.playMoveChipsSound();
@@ -263,8 +263,8 @@ public class DataFragment extends Fragment {
 		}
 
 		@Override
-		public void gameWinners(boolean last, Set<Player> winners, long winAmount) {
-			publishProgress(GAME_WINNERS, last, winners, winAmount);
+		public void gameWinners(boolean last, boolean isShowdown, Set<Player> winners, long winAmount) {
+			publishProgress(GAME_WINNERS, last, isShowdown, winners, winAmount);
 			delay();
 		}
 

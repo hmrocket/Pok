@@ -65,7 +65,7 @@ public class Game implements PokerRound.RoundEvent {
 
 		// distinct two case end game and showdown
 		if (isAllPlayersExceptOneFolded(players)) {
-			endGame();
+			endGame(false);
 		} else if (phase == RoundPhase.RIVER || isLess2PlayersPlaying(players)) {
 			showdown();
 		}
@@ -123,7 +123,7 @@ public class Game implements PokerRound.RoundEvent {
 		int numberOfPlayerNotOut = 0;
 		for (Player player :
 				players) {
-			if (player.isOut() == false) {
+			if (!player.isOut()) {
 				numberOfPlayerNotOut++;
 				if (numberOfPlayerNotOut > 1) return false;
 			}
@@ -132,10 +132,11 @@ public class Game implements PokerRound.RoundEvent {
 	}
 
 	/**
-	 * when
+	 * distribute pot and callback playerBusted() and gameEnded()
+	 * @param isShowdown true if the game is ended by a showdown, false otherwise
 	 */
-	private void endGame() {
-		Set<Player> busted = pot.distributeToWinners(gameEventListener);
+	private void endGame(boolean isShowdown) {
+		Set<Player> busted = pot.distributeToWinners(isShowdown, gameEventListener);
 		if (gameEventListener != null) {
 			if (!busted.isEmpty()) gameEventListener.playerBusted(busted);
 			gameEventListener.gameEnded();
@@ -176,7 +177,7 @@ public class Game implements PokerRound.RoundEvent {
 				communityCards.setRiver(deck.drawCard());
 				gameEventListener.onCommunityCardsChange(RoundPhase.RIVER, communityCards);
 		}
-		endGame();
+		endGame(true);
 	}
 
 }

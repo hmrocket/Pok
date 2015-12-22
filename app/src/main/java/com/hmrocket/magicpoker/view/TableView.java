@@ -213,7 +213,7 @@ public class TableView extends RelativeLayout {
 			p.setHand(null);
 		}
 		txInfo.setText(null);
-		showInfo(false);
+		// showInfo(false);
 	}
 
 	/**

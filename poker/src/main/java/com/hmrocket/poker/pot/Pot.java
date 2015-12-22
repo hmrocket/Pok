@@ -88,9 +88,11 @@ public class Pot {
 	/**
 	 * Distribute level pot To Winners
 	 *
+	 * @param isShowdown true if the game is ended by a showdown, false otherwise
+	 *                   @param gameEvents an array of game event listener
 	 * @return busted players if there's any
 	 */
-	public Set<Player> distributeToWinners(GameEvent... gameEvents) {
+	public Set<Player> distributeToWinners(boolean isShowdown, GameEvent... gameEvents) {
 		Set<Player> busted = new HashSet<Player>();
 		Set<Player> levelWinners;
 
@@ -102,7 +104,7 @@ public class Pot {
 			sidePot.setValue(sidePot.getValue() + mainPot.value);
 		} else if (mainPot.value != 0) {
 			long win = distribute(levelWinners, mainPot.value);
-			broadcastWin(levelWinners, win, sidePots.isEmpty(), gameEvents);
+			broadcastWin(sidePots.isEmpty(), isShowdown, levelWinners, win, gameEvents);
 		}
 
 		//As long there is SidePot, (money) on the table, Add cash to winners
@@ -112,7 +114,7 @@ public class Pot {
 			levelWinners.addAll(sidePot.getAllInPlayers());
 			levelWinners = PokerTools.getWinners(levelWinners);
 			long win = distribute(levelWinners, sidePot.getValue());
-			broadcastWin(levelWinners, win, sidePots.isEmpty(), gameEvents);
+			broadcastWin(sidePots.isEmpty(), isShowdown, levelWinners, win, gameEvents);
 
 			// every SidePot - check if there is busted players
 			// (players went all among and lost)
@@ -150,17 +152,18 @@ public class Pot {
 	 * BroadCast the event of the someone won either a SidePot or MainPot
 	 * Also broadcast that the pot value has changed
 	 *
+	 * @param last         true if this will be the last callback (last pot)
+	 * @param isShowdown   true if the game is ended by a showdown, false otherwise
 	 * @param levelWinners level winners
 	 * @param winAmount    the amount of money every player will win
-	 * @param last         true if this will be the last callback (last pot)
 	 * @param gameEvents   GameEvent listeners
 	 */
-	private void broadcastWin(Set<Player> levelWinners, long winAmount, boolean last, GameEvent... gameEvents) {
+	private void broadcastWin(boolean last, boolean isShowdown, Set<Player> levelWinners, long winAmount, GameEvent... gameEvents) {
 		if (gameEvents != null)
 			for (GameEvent gameEvent : gameEvents) {
 				// multi thread safe, create a new HashSet cause levelWinners can be modified later
 				// it's okay for busted list cause it won't be changed
-				gameEvent.gameWinners(last, new HashSet<>(levelWinners), winAmount);
+				gameEvent.gameWinners(last, isShowdown, new HashSet<>(levelWinners), winAmount);
 				gameEvent.onPotChanged(getValue());
 			}
 	}
