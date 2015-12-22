@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by hmrocket on 23/10/2015.
@@ -1016,5 +1017,46 @@ public class HandScoreCalculatorTest extends TestCase {
 				cards.remove(i);
 		}
 		assertTrue(handScore + ", " + hand + ", " + cc, !isStraight(cards));
+	}
+
+	/**
+	 * Mainly we will test, testGet5BestCard and it's combination with GetHandScore:
+	 * 1- randomy create a full CommunityCard and hand
+	 * 2- get 5 Best cards then test that those 5 card (hand + flop) give the same handScore
+	 *
+	 * @throws Exception
+	 */
+	public void testGet5BestCard() throws Exception {
+		Deck deck = new Deck();
+		Hand hand = new Hand(deck.drawCard(), deck.drawCard());
+		CommunityCards cc = new CommunityCards();
+		HandScore handScore;
+
+		final int iteration = 100000;
+		for (int i = 0; i < iteration; i++) {
+			cc.setFlop(deck.dealFlop());
+			cc.setTurn(deck.drawCard());
+			cc.setRiver(deck.drawCard());
+			handScore = HandScoreCalculator.getHandScore(hand, cc);
+
+			Set<Card> best5Cards = HandScoreCalculator.get5BestCard(handScore, hand, cc);
+			assertEquals("h: " + hand + ", cc: " + cc + ", handScore:" + handScore + ", best:" + Arrays.deepToString(best5Cards.toArray())
+					, 5, best5Cards.size());
+			Iterator<Card> iterator = best5Cards.iterator();
+			// if get5BestCard doesn't return a set of 5 card this will crash
+			CommunityCards ccBest5 = new CommunityCards(new Flop(iterator.next(), iterator.next(), iterator.next()));
+			Hand handBest5 = new Hand(iterator.next(), iterator.next());
+
+			HandScore handScoreBest5 = HandScoreCalculator.getHandScore(handBest5, ccBest5);
+			assertEquals("Ex: h: " + hand + ", cc: " + cc + ", handScore:" + handScore + ", best:" + Arrays.deepToString(best5Cards.toArray())
+					+ ", Re:  h: " + handBest5 + ", cc: " + ccBest5 + ", handScore:" + handScoreBest5
+					, 0, handScore.compareTo(handScoreBest5));
+
+			if (deck.getLeftCardsCount() < 5) {
+				deck.reset();
+				hand = new Hand(deck.drawCard(), deck.drawCard());
+			}
+		}
+
 	}
 }

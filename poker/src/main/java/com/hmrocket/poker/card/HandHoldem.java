@@ -1,6 +1,7 @@
 package com.hmrocket.poker.card;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -38,11 +39,6 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		setCommunityCards(communityCards);
 	}
 
-	public HandHoldem(Hand hand, CommunityCards communityCards) {
-		this.hand = hand;
-		setCommunityCards(communityCards);
-	}
-
 	public CommunityCards getCommunityCards() {
 		return communityCardsWeakReference.get();
 	}
@@ -65,6 +61,11 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		} else communityCardsWeakReference = new WeakReference<CommunityCards>(null);
 		// Community card changed (update) reset the HandScore
 		handScore = null;
+	}
+
+	public HandHoldem(Hand hand, CommunityCards communityCards) {
+		this.hand = hand;
+		setCommunityCards(communityCards);
 	}
 
 	public Hand getHand() {
@@ -105,13 +106,6 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		return handScore;
 	}
 
-	public Set<Card> getBest5Cards() {
-		if (best5Cards == null) {
-			best5Cards = HandScoreCalculator.get5BestCard(getHandScore(), hand, getCommunityCards());
-		}
-		return best5Cards;
-	}
-
 	@Override
 	public void update(Observable o, Object arg) {
 		// Will be called whenever ComunityCards change
@@ -122,16 +116,28 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	@Override
 	public String toString() {
+		// XXX toString are consuming remove them on release build
 		String hand = this.hand.toString();
 		String communityCardsWeakReference;
-		if (this.communityCardsWeakReference.get() != null)
-			communityCardsWeakReference = this.communityCardsWeakReference.get().toString();
-		else
+		String bestCards = null;
+		if (getCommunityCards() != null) {
+			communityCardsWeakReference = getCommunityCards().toString();
+			if (getCommunityCards().getMissingCardCount() == 0)
+				bestCards = "Best5: " + Arrays.deepToString(getBest5Cards().toArray());
+		} else
 			communityCardsWeakReference = "";
 		String handScore = this.getHandScore().toString();
 		return "{hand=" + hand +
 				communityCardsWeakReference +
 				handScore +
+				bestCards +
 				'}';
+	}
+
+	public Set<Card> getBest5Cards() {
+		if (best5Cards == null) {
+			best5Cards = HandScoreCalculator.get5BestCard(getHandScore(), hand, getCommunityCards());
+		}
+		return best5Cards;
 	}
 }

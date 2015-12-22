@@ -393,7 +393,7 @@ public final class HandScoreCalculator {
 		cards.add(cc.getFlop().getCard3());
 
 		// add all kickers and then search for main cards
-		best.addAll(handScore.getKickers());
+		if (handScore.getKickers() != null) best.addAll(handScore.getKickers());
 
 		switch (handScore.getHandType()) {
 			// cards missing ?
@@ -452,12 +452,20 @@ public final class HandScoreCalculator {
 				// copy 5 cards with unique Rank starting from HandScore rank
 				Collections.sort(cards, Collections.reverseOrder());
 				Rank previousRank = null;
-				best.clear();
-				for (Card c : cards)
+				iterator = cards.iterator();
+
+				// if the Straight rank is 5 the first card must be ACE
+				if (handScore.getRank() == Rank.FIVE)
+					best.add(iterator.next());
+				do {
+					Card c = iterator.next();
 					if (handScore.getRank().compareTo(c.getRank()) >= 0 && previousRank != c.getRank()) {
 						best.add(c);
 						previousRank = c.getRank();
+						if (best.size() == 5)
+							break;
 					}
+				} while (iterator.hasNext());
 				break;
 		}
 
