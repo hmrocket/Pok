@@ -17,6 +17,7 @@ import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.card.CommunityCards;
 import com.hmrocket.poker.card.Flop;
+import com.hmrocket.poker.card.HandHoldem;
 
 import java.util.List;
 
@@ -281,5 +282,28 @@ public class TableView extends RelativeLayout {
 	 */
 	public PlayerView getPlayerView(int seatId) {
 		return playerViews[seatId];
+	}
+
+	/**
+	 * Highlight 5 best cards, so the user recognize the HandType
+	 *
+	 * @param playerView player to highlight cards
+	 * @param handHoldem hand of the player
+	 */
+	public void highlightWinningCard(@NonNull PlayerView playerView, @NonNull HandHoldem handHoldem) {
+		boolean enableHand1 = handHoldem.getBest5Cards().contains(handHoldem.getHand().getCard1());
+		boolean enableHand2 = handHoldem.getBest5Cards().contains(handHoldem.getHand().getCard2());
+		playerView.enableCards(enableHand1, enableHand2);
+
+		boolean[] enableCc = new boolean[5];
+		enableCc[0] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getFlop().getCard1());
+		enableCc[1] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getFlop().getCard2());
+		enableCc[2] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getFlop().getCard3());
+		enableCc[3] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getTurn());
+		enableCc[4] = handHoldem.getBest5Cards().contains(handHoldem.getCommunityCards().getRiver());
+		int i = 0;
+		for (CardView cc : cardViews) {
+			cc.setEnabled(enableCc[i++]);
+		}
 	}
 }

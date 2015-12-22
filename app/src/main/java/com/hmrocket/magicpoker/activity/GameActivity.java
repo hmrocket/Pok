@@ -88,7 +88,6 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 
 	@Override
 	public void onClick(View v) {
-		// TODO handle onClick
 		switch (v.getId()) {
 			case R.id.btn_allin:
 				dataFragment.getPlayer().allIn();
@@ -169,6 +168,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			tableView.setInfo(Util.getStringId(p.getHandHoldem().getHandScore().getHandType()));
 			if (last) {
 				playerView.setInfo(R.string.winner);
+				// FIXME highlightWinningCard only on Showdown
+				tableView.highlightWinningCard(playerView, p.getHandHoldem());
 			}
 		}
 

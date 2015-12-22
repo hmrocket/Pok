@@ -109,6 +109,7 @@ public class CardView extends ImageView {
 	public void reset() {
 		cardId = -1;
 		setImageBitmap(null);
+		setEnabled(true);
 	}
 
 	@Override

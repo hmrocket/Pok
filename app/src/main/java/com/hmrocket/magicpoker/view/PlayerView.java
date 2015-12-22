@@ -321,5 +321,15 @@ public class PlayerView extends RelativeLayout {
 			profileContainer.setBackground(null);
 	}
 
+	/**
+	 * Enable/disable PlayerView's Cards
+	 *
+	 * @param enableCard1 false will gray the PlayerView Card1, default state otherwise
+	 * @param enableCard2 false will gray the PlayerView Card2, default state otherwise
+	 */
+	public void enableCards(boolean enableCard1, boolean enableCard2) {
+		cardView1.setEnabled(enableCard1);
+		cardView2.setEnabled(enableCard2);
+	}
 
 }
