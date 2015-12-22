@@ -4,8 +4,6 @@ import junit.framework.TestCase;
 
 import java.lang.reflect.Field;
 
-import javax.naming.OperationNotSupportedException;
-
 /**
  * Created by mhamed on 15-10-23.
  */
@@ -175,12 +173,8 @@ public class HandHoldemTest extends TestCase {
 	}
 
 	public void testWinPercentage() throws Exception {
-		try {
-			handHoldem.winPercentage();
-			assertTrue("winPercentage() didn't throw an OperationNotSupportedException", false);
-		} catch (Exception e) {
-			assertTrue(e instanceof OperationNotSupportedException);
-		}
+		// handHoldem.winPercentage();
+		// no need to test this is more in HandOddCalculator test scope
 	}
 
 	public void testCompareTo() throws Exception {

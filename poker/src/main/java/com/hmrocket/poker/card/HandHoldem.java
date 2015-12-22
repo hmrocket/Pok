@@ -1,12 +1,13 @@
 package com.hmrocket.poker.card;
 
+import com.hmrocket.poker.ai.HandOdds;
+import com.hmrocket.poker.ai.HandOddsCalculator;
+
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
-
-import javax.naming.OperationNotSupportedException;
 
 /**
  * Created by hmrocket on 04/10/2015.
@@ -39,6 +40,11 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		setCommunityCards(communityCards);
 	}
 
+	public HandHoldem(Hand hand, CommunityCards communityCards) {
+		this.hand = hand;
+		setCommunityCards(communityCards);
+	}
+
 	public CommunityCards getCommunityCards() {
 		return communityCardsWeakReference.get();
 	}
@@ -63,11 +69,6 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		handScore = null;
 	}
 
-	public HandHoldem(Hand hand, CommunityCards communityCards) {
-		this.hand = hand;
-		setCommunityCards(communityCards);
-	}
-
 	public Hand getHand() {
 		return hand;
 	}
@@ -87,8 +88,16 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 		return communityCards == null ? null : communityCards.getRiver();
 	}
 
-	public int winPercentage() throws OperationNotSupportedException {
-		throw new OperationNotSupportedException();
+	/**
+	 * get the percentage that this hand will win against number player
+	 *
+	 * @param playerCount total players on this game
+	 * @return the percentage of winning the game with this hand
+	 */
+	public int winPercentage(int playerCount) {
+		HandOddsCalculator handOddsCalculator = new HandOddsCalculator(100);
+		HandOdds handOdds = handOddsCalculator.getHandOdds(playerCount, this);
+		return (int) (handOdds.getHandStrength() * 100);
 	}
 
 	@Override
