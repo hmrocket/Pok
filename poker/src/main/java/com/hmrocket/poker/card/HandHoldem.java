@@ -116,7 +116,6 @@ public class HandHoldem implements Comparable<HandHoldem>, Observer {
 
 	@Override
 	public String toString() {
-		// XXX toString are consuming remove them on release build
 		String hand = this.hand.toString();
 		String communityCardsWeakReference;
 		String bestCards = null;

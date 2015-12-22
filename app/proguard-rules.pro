@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-assumenosideeffects class com.hmrocket.** {
+	public ** toString();
+}
