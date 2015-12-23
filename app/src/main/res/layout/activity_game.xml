@@ -1,45 +1,47 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  xmlns:tools="http://schemas.android.com/tools"
-			  android:layout_width="match_parent"
-			  android:layout_height="match_parent"
-			  android:orientation="vertical"
-			  android:weightSum="10"
-			  tools:context="com.hmrocket.magicpoker.activity.GameActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			 xmlns:tools="http://schemas.android.com/tools"
+			 android:layout_width="match_parent"
+			 android:layout_height="match_parent"
+			 android:orientation="vertical"
+			 android:weightSum="10"
+			 tools:context="com.hmrocket.magicpoker.activity.GameActivity">
 
 	<View
 		android:id="@+id/adsView"
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1"
-		android:gravity="center"
-		android:keepScreenOn="true"
-		android:orientation="vertical"
-		android:text="@string/dummy_content"
-		android:textColor="#33b5e5"
-		android:textSize="50sp"
-		android:textStyle="bold"/>
+		android:layout_width="320dp"
+		android:layout_height="@dimen/height_adsView"
+		android:layout_gravity="top|center_horizontal"
+		/>
 
 	<com.hmrocket.magicpoker.view.TableView
 		android:id="@+id/tableView"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="8"/>
+		android:layout_height="match_parent"
+		android:layout_marginBottom="@dimen/height_panelController"
+		android:layout_marginTop="@dimen/height_adsView"
+		/>
 
 	<!-- Controller panel is here -->
 
-	<View
-		android:layout_width="wrap_content"
-		android:layout_height="1dp"
-		android:background="@color/black_overlay"
-		/>
-
-	<include
-		layout="@layout/controller_panel"
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_gravity="bottom|center_horizontal"
-		android:layout_weight="1"
-		tools:ignore="UselessParent"/>
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		android:orientation="vertical"
+		>
 
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/black_overlay"
+			/>
 
-</LinearLayout>
+		<include
+			layout="@layout/controller_panel"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/height_panelController"
+			android:layout_gravity="bottom|center_horizontal"
+			tools:ignore="UselessParent"/>
+	</LinearLayout>
+
+</FrameLayout>

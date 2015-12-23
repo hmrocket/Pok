@@ -176,7 +176,7 @@ public class PotTest extends TestCase {
         PLAYERS.get(1).allIn();
         PLAYERS.get(2).fold();
         pot.update();
-        pot.distributeToWinners();
+        pot.distributeToWinners(false);
         assertEquals("update: cash(0)=" + PLAYERS.get(0).getCash(), cash[0] + cash[1], PLAYERS.get(0).getCash());
         assertEquals("update: cash(1)=" + PLAYERS.get(1).getCash(), 0, PLAYERS.get(1).getCash());
         assertEquals("update: cash(2)=" + PLAYERS.get(2).getCash(), cash[2], PLAYERS.get(2).getCash());
@@ -191,7 +191,7 @@ public class PotTest extends TestCase {
         PLAYERS.get(1).allIn();
         PLAYERS.get(2).fold();
         pot.update();
-        pot.distributeToWinners();
+        pot.distributeToWinners(false);
         assertEquals("update: cash(0)=" + PLAYERS.get(0).getCash(), 10 + cash[0] + cash[1], PLAYERS.get(0).getCash());
         assertEquals("update: cash(1)=" + PLAYERS.get(1).getCash(), 0, PLAYERS.get(1).getCash());
         assertEquals("update: cash(2)=" + PLAYERS.get(2).getCash(), cash[2] - 10, PLAYERS.get(2).getCash());
@@ -214,8 +214,8 @@ public class PotTest extends TestCase {
 		players.get(1).allIn();
 		players.get(2).allIn();
 		pot.update();
-		Set<Player> busted = pot.distributeToWinners();
-		assertEquals("not the correct number of busted Player", 0, busted.size());
+        Set<Player> busted = pot.distributeToWinners(false);
+        assertEquals("not the correct number of busted Player", 0, busted.size());
 		for (Player player : busted) {
 			assertTrue(player.getName() + " wasn't really busted", player.getCash() == 0);
 		}
@@ -233,8 +233,8 @@ public class PotTest extends TestCase {
 		players.get(1).allIn();
 		players.get(2).allIn();
 		pot.update();
-		busted = pot.distributeToWinners();
-		assertEquals("not the correct number of busted Player", 2, busted.size());
+        busted = pot.distributeToWinners(false);
+        assertEquals("not the correct number of busted Player", 2, busted.size());
 		for (Player player : busted) {
 			assertTrue(player.getName() + " wasn't really busted", player.getCash() == 0);
 		}

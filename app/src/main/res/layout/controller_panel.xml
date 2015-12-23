@@ -4,7 +4,7 @@
 			  android:layout_height="match_parent"
 			  android:background="@color/background_controller_grey"
 			  android:gravity="center_vertical"
-			  android:minWidth="52dp">
+	>
 	<!-- Persistent footer buttons: https://www.google.com/design/spec/components/buttons.html#buttons-usage -->
 	<!-- flat button design -->
 
@@ -14,10 +14,10 @@
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
 		android:layout_marginLeft="8dp"
+		android:layout_marginStart="8dp"
 		android:layout_weight="1"
 		android:background="@android:color/transparent"
 		android:enabled="false"
-		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="@string/all_in"
 		android:textColor="@color/allin_selector"/>
 
@@ -29,7 +29,6 @@
 		android:layout_weight="1"
 		android:background="@android:color/transparent"
 		android:enabled="false"
-		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="@string/raise"
 		android:textColor="@color/raise_selector"/>
 
@@ -53,7 +52,6 @@
 		android:layout_weight="1"
 		android:background="@android:color/transparent"
 		android:enabled="false"
-		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="@string/call"
 		android:textColor="@color/call_selector"/>
 
@@ -62,11 +60,11 @@
 		style="?android:attr/borderlessButtonStyle"
 		android:layout_width="0dp"
 		android:layout_height="match_parent"
+		android:layout_marginEnd="8dp"
 		android:layout_marginRight="8dp"
 		android:layout_weight="1"
 		android:background="@android:color/transparent"
 		android:enabled="false"
-		android:minWidth="@dimen/abc_action_button_min_width_material"
 		android:text="@string/fold"
 		android:textColor="@color/fold_selector"/>
 
