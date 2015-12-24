@@ -11,6 +11,7 @@
 		android:layout_width="320dp"
 		android:layout_height="@dimen/height_adsView"
 		android:layout_gravity="top|center_horizontal"
+		android:background="@android:color/black"
 		/>
 
 	<com.hmrocket.magicpoker.view.TableView
