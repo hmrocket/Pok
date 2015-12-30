@@ -44,6 +44,7 @@
 					android:layout_width="@dimen/width_pot"
 					android:layout_height="@dimen/height_pot"
 					android:layout_gravity="center_horizontal|bottom"
+					android:gravity="center_horizontal|bottom"
 					/>
 
 			</FrameLayout>
