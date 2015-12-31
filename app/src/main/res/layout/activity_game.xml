@@ -12,6 +12,7 @@
 		android:layout_height="@dimen/height_adsView"
 		android:layout_gravity="top|center_horizontal"
 		android:background="@android:color/black"
+		android:visibility="gone"
 		/>
 
 	<com.hmrocket.magicpoker.view.TableView
@@ -19,8 +20,12 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_marginBottom="@dimen/height_panelController"
-		android:layout_marginTop="@dimen/height_adsView"
 		/>
+	<!-- Having an adsView in small screen is impossible think about another way to introduce ads in the free version
+	1- you can replace panelController by and adsView from time to time
+	2- Whenever the user pass to the next level ?
+	android:layout_marginTop="@dimen/height_adsView"-->
+
 
 	<!-- Controller panel is here -->
 
