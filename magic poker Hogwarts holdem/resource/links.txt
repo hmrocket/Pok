@@ -21,7 +21,8 @@ https://www.pokerschoolonline.com/articles/NLHE-cash-pre-flop-essentials
 http://info.localytics.com/blog/the-8-mobile-app-metrics-that-matter
 https://www.woopra.com/blog/2014/05/29/mobile-app-tracking-best-practices/
 https://www.quora.com/What-are-the-best-mobile-analytics-tools-for-native-apps
-
+http://www.androidhive.info/2015/08/android-integrating-google-analytics-v4/ (How to use Google Analytic)
+https://developers.google.com/analytics/devguides/collection/android/campaigns#google-play-url-builder (Build Track install Referrer URL)
 
 ----->App I can copy from
 https://play.google.com/store/apps/details?id=com.bigblueparrot.pokerfriends.

@@ -15,6 +15,8 @@
 Description2): just play against your friends image
 
 3) Poker offline - texas holdem
+3) Poker Pro - offline
+3) Learn Poker - offline
 
 4) Poker Night - multiplayer offline
 Description4): You don't have deck and no chips no worries use our app to handle it all totally free, The app made especially for a Night poker with your buddies

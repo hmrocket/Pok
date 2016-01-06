@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- The application name. Defaults to name specified for the application label -->
+	<string name="ga_appName">Poker Offline</string>
+
+	<!-- End current session if app sleeps for a period of time -->
+	<integer name="ga_sessionTimeout">300</integer>
+
+	<!--  The property id associated with this analytics tracker -->
+	<string name="ga_trackingId">UA-72033830-1</string>
+
+	<!-- Enable automatic Activity measurement -->
+	<bool name="ga_autoActivityTracking">true</bool>
+
+	<bool name="ga_reportUncaughtExceptions">true</bool>
+
+	<!--
+	  See Project Structure -> Analytics -> Google Analytics -> Learn More
+	  to learn more about configuring this file.
+	-->
+
+	<screenName name="com.hmrocket.magicpoker.activity.GameActivity">Game Screen</screenName>
+	<screenName name="com.hmrocket.magicpoker.activity.MainActivity">Home Screen</screenName>
+
+</resources>
