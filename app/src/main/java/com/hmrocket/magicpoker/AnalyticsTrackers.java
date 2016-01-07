@@ -41,6 +41,7 @@ public final class AnalyticsTrackers {
 	private static final String CATEGORY_PREFERENCE = "Preference";
 	private static final String ON = "ON";
 	private static final String OFF = "OFF";
+
 	private static AnalyticsTrackers sInstance;
 	private final Map<Target, Tracker> mTrackers = new HashMap<>();
 	private final Context mContext;
@@ -85,7 +86,6 @@ public final class AnalyticsTrackers {
 				.setCategory(CATEGORY_GAME_PLAY)
 				.setAction("Skip")
 				.setLabel(roundPhase.name())
-				.setValue(1)
 				.build());
 	}
 
@@ -96,12 +96,13 @@ public final class AnalyticsTrackers {
 		getAppTracker().send(new HitBuilders.EventBuilder()
 				.setCategory(CATEGORY_GAME_PLAY)
 				.setAction("Start")
-				.setValue(1)
+						//.setValue(1) // Not needed, by default the value is one
 				.build());
 	}
 
 	/**
 	 * Track user level progress.
+	 * Note: a new session is manually create
 	 *
 	 * @param level User level (bot levels and difficulty between 1 to 100)
 	 */
@@ -110,7 +111,10 @@ public final class AnalyticsTrackers {
 				.setCategory(CATEGORY_COMPLETIONS)
 				.setAction("Level-up")
 				.setLabel(Integer.toString(level))
-				.setValue(1)
+						// make sure to star new session when the custom dimension (Level) change.
+						// For more https://support.google.com/analytics/answer/2709828?hl=en#processing and https://support.google.com/analytics/answer/2709828?hl=en#example-hit
+				.setNewSession()
+				.setCustomDimension(1, "level_" + level)
 				.build());
 	}
 
@@ -120,11 +124,11 @@ public final class AnalyticsTrackers {
 	 * @param on true if the user set sound effect preference to ON, false if muted.
 	 */
 	public static void soundPreferenceEvent(boolean on) {
+		// XXX It seems your just collecting your data for the sake of it.
 		getAppTracker().send(new HitBuilders.EventBuilder()
 				.setCategory(CATEGORY_PREFERENCE)
 				.setAction("Sound")
 				.setLabel(on ? ON : OFF)
-				.setValue(1)
 				.build());
 	}
 
@@ -134,22 +138,22 @@ public final class AnalyticsTrackers {
 	 * @param on true if the user set music preference to ON, false if muted.
 	 */
 	public static void musicPreferenceEvent(boolean on) {
+		// XXX It seems your just collecting your data for the sake of it.
 		getAppTracker().send(new HitBuilders.EventBuilder()
 				.setCategory(CATEGORY_PREFERENCE)
 				.setAction("Music")
 				.setLabel(on ? ON : OFF)
-				.setValue(1)
 				.build());
 	}
 
-	// XXX It seems your just collecting your data for the sake of it.
-
-	public static void setSessionLevel(int level) {
-		Tracker appTracker = getAppTracker();
-		appTracker.set("1", Integer.toString(level));
+	/**
+	 * Track user level progress. By setting Custom Dimension Index 1, note cd level has user scope
+	 *
+	 * @param level User level (bot levels and difficulty between 1 to 100)
+	 */
+	public static void setUserLevel(int level) {
+		getAppTracker().set("&cd1", Integer.toString(level));
 	}
-
-	// XXX It seems your just collecting your data for the sake of it.
 
 	/**
 	 * Tracker getter
