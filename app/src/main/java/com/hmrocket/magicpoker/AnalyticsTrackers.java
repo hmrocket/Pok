@@ -6,6 +6,8 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.analytics.ecommerce.Product;
+import com.google.android.gms.analytics.ecommerce.ProductAction;
 import com.hmrocket.poker.RoundPhase;
 
 import java.util.HashMap;
@@ -41,11 +43,9 @@ public final class AnalyticsTrackers {
 	private static final String CATEGORY_PREFERENCE = "Preference";
 	private static final String ON = "ON";
 	private static final String OFF = "OFF";
-
 	private static AnalyticsTrackers sInstance;
 	private final Map<Target, Tracker> mTrackers = new HashMap<>();
 	private final Context mContext;
-
 	/**
 	 * Don't instantiate directly - use {@link #getInstance()} instead.
 	 */
@@ -61,21 +61,6 @@ public final class AnalyticsTrackers {
 		sInstance = new AnalyticsTrackers(context);
 	}
 
-	public static synchronized AnalyticsTrackers getInstance() {
-		if (sInstance == null) {
-			throw new IllegalStateException("Call initialize() before getInstance()");
-		}
-
-		return sInstance;
-	}
-
-	/**
-	 * @return Google Analytic tracker for the target App
-	 */
-	public static synchronized Tracker getAppTracker() {
-		return getInstance().get(AnalyticsTrackers.Target.APP);
-	}
-
 	/**
 	 * Track user pressing skip button.
 	 *
@@ -87,6 +72,56 @@ public final class AnalyticsTrackers {
 				.setAction("Skip")
 				.setLabel(roundPhase.name())
 				.build());
+	}
+
+	/**
+	 * @return Google Analytic tracker for the target App
+	 */
+	public static synchronized Tracker getAppTracker() {
+		return getInstance().get(AnalyticsTrackers.Target.APP);
+	}
+
+	/**
+	 * Tracker getter
+	 *
+	 * @param target define the tracking target
+	 * @return Google Analytic tracker for specific target
+	 */
+	public synchronized Tracker get(Target target) {
+		if (!mTrackers.containsKey(target)) {
+			Tracker tracker;
+			switch (target) {
+				case APP:
+					tracker = GoogleAnalytics.getInstance(mContext).newTracker(R.xml.app_tracker);
+					tracker.enableAdvertisingIdCollection(true);
+					// Set tracker currency to US Dollars.
+					tracker.set("&cu", "USD");
+					// TODO verify that auto activity is working (the ligne below should solved in case is not)
+					// tracker.enableAutoActivityTracking(true);
+					// TODO remove false after you make sure everything is working on GA server side
+					if (MyApp.isDebugMode(mContext) && false) {
+						// activate Debug features (dry run and verbose logger)
+						GoogleAnalytics.getInstance(mContext).setDryRun(true);
+						//  To enable DEBUG level run the following adb command on your device or emulator:
+						// adb shell setprop log.tag.GAv4 DEBUG
+						GoogleAnalytics.getInstance(mContext).getLogger().setLogLevel(Logger.LogLevel.VERBOSE);
+					}
+					break;
+				default:
+					throw new IllegalArgumentException("Unhandled analytics target " + target);
+			}
+			mTrackers.put(target, tracker);
+		}
+
+		return mTrackers.get(target);
+	}
+
+	public static synchronized AnalyticsTrackers getInstance() {
+		if (sInstance == null) {
+			throw new IllegalStateException("Call initialize() before getInstance()");
+		}
+
+		return sInstance;
 	}
 
 	/**
@@ -156,40 +191,89 @@ public final class AnalyticsTrackers {
 	}
 
 	/**
-	 * Tracker getter
-	 *
-	 * @param target define the tracking target
-	 * @return Google Analytic tracker for specific target
+	 * track user Social interaction specifically (Facebook/Google) game page like
 	 */
-	public synchronized Tracker get(Target target) {
-		if (!mTrackers.containsKey(target)) {
-			Tracker tracker;
-			switch (target) {
-				case APP:
-					tracker = GoogleAnalytics.getInstance(mContext).newTracker(R.xml.app_tracker);
-					tracker.enableAdvertisingIdCollection(true);
-					// TODO verify that auto activity is working (the ligne below should solved in case is not)
-					// tracker.enableAutoActivityTracking(true);
-					// TODO remove false after you make sure everything is working on GA server side
-					if (MyApp.isDebugMode(mContext) && false) {
-						// activate Debug features (dry run and verbose logger)
-						GoogleAnalytics.getInstance(mContext).setDryRun(true);
-						GoogleAnalytics.getInstance(mContext).getLogger().setLogLevel(Logger.LogLevel.VERBOSE);
-					}
-					break;
-				default:
-					throw new IllegalArgumentException("Unhandled analytics target " + target);
-			}
-			mTrackers.put(target, tracker);
+	public static void pageLike(Social social) {
+		getAppTracker().send(new HitBuilders.SocialBuilder()
+				.setNetwork(social.toString())
+				.setAction(social == Social.FACEBOOK ? "Like" : "Follow")
+				.build());
+	}
+
+	/**
+	 * track user Social interaction specifically (Facebook/Google) game page share
+	 */
+	public static void pageShare(Social social) {
+		getAppTracker().send(new HitBuilders.SocialBuilder()
+				.setNetwork(social.toString())
+				.setAction("Share")
+				.setTarget("Page")
+				.build());
+	}
+
+	/**
+	 * track user Social interaction specifically game score share on (Facebook/Google)
+	 */
+	public static void scoreShare(Social social) {
+		getAppTracker().send(new HitBuilders.SocialBuilder()
+				.setNetwork(social.toString())
+				.setAction("Share")
+				.setTarget("Score")
+				.build());
+	}
+
+	/**
+	 * An example of purchase tracking
+	 */
+	public static void purchase() {
+		long priceInCent = 100;
+		float price = 1.00f;
+		Product product = new Product()
+				.setId("P000")
+				.setName("Skull table")
+				.setCategory("Table")
+				.setVariant("black")
+				.setPrice(price)
+				.setQuantity(1);
+		ProductAction productAction = new ProductAction(ProductAction.ACTION_PURCHASE)
+				.setTransactionId("T000")
+				.setTransactionAffiliation("Google Wallet")
+				.setTransactionRevenue(0.70)
+				.setTransactionTax(.30);
+
+		// Add the transaction data to the event.
+		HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
+				.setCategory("In-Game Store")
+				.setAction("Purchase")
+				.setValue(priceInCent)
+				.addProduct(product)
+				.setProductAction(productAction);
+		// Send the transaction data with the event.
+		getAppTracker().send(builder.build());
+	}
+
+	public enum Social {
+		FACEBOOK("Facebook"), GOOGLE("Google");
+
+		private String name;
+
+		Social(String name) {
+			this.name = name;
 		}
 
-		return mTrackers.get(target);
+		@Override
+		public String toString() {
+			return name;
+		}
 	}
 
 
 	public enum Target {
 		APP,
-		// Add more trackers here if you need, and update the code in #get(Target) below
+		// tracker for all the similar event cross apps
+		// GLOBAL_TRACKER,
+		// Tracker for All E commerce tracking
+		// E_COMMERCE_TRACKER
 	}
 
 }
