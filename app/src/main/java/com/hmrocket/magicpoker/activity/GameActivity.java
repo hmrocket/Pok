@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.hmrocket.magicpoker.AnalyticsTrackers;
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.magicpoker.Util;
 import com.hmrocket.magicpoker.fragment.DataFragment;
@@ -112,6 +113,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 					btnController[4].setEnabled(false);
 					v.setTag(null);
 					dataFragment.skip();
+					AnalyticsTrackers.skipEvent(dataFragment.getRoundPhase());
 					break;
 				}
 				// XXX DEBUG
@@ -125,6 +127,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				// XXX DEBUG
 				tableView.clear();
 				dataFragment.startGame();
+				AnalyticsTrackers.startEvent();
 				btnController[4].setEnabled(false);
 				break;
 		}

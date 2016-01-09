@@ -96,10 +96,8 @@ public final class AnalyticsTrackers {
 					tracker.enableAdvertisingIdCollection(true);
 					// Set tracker currency to US Dollars.
 					tracker.set("&cu", "USD");
-					// TODO verify that auto activity is working (the ligne below should solved in case is not)
 					// tracker.enableAutoActivityTracking(true);
-					// TODO remove false after you make sure everything is working on GA server side
-					if (MyApp.isDebugMode(mContext) && false) {
+					if (MyApp.isDebugMode(mContext)) {
 						// activate Debug features (dry run and verbose logger)
 						GoogleAnalytics.getInstance(mContext).setDryRun(true);
 						//  To enable DEBUG level run the following adb command on your device or emulator:
