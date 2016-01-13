@@ -3,7 +3,7 @@
     <color name="black_overlay">#66000000</color>
 	<!-- Same grey color used for the icon-->
 	<color name="chip_background">#CC626262</color>
-	<color name="background_controller_grey">#333333</color>
+	<color name="background_controller_grey">#FF333333</color>
     <color name="allin">#E69241</color>
     <color name="allin_70p">#B2E69241</color>
     <color name="allin_25p">#3FE69241</color>
@@ -33,5 +33,15 @@
 	<color name="fold_state_disabled">@color/fold_25p</color>
 	<color name="textColor_disable">@color/white_30p</color>
 	<color name="textColor_default">@android:color/white</color>
+
+	<!-- Theme colors  https://www.materialpalette.com/indigo/amber -->
+	<color name="primary">#3F51B5</color>
+	<color name="primary_dark">#303F9F</color>
+	<color name="primary_light">#C5CAE9</color>
+	<color name="accent">#FFC107</color>
+	<color name="primary_text">#212121</color>
+	<color name="secondary_text">#727272</color>
+	<color name="icons">#FFFFFF</color>
+	<color name="divider">#B6B6B6</color>
 
 </resources>
