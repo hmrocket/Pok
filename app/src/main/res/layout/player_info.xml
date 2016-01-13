@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:orientation="horizontal"
+	>
+
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@mipmap/default_profile"
+		/>
+
+	<RelativeLayout
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:orientation="vertical"
+		>
+
+		<TextView
+			android:id="@+id/tx_playerName"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="top|start"
+			android:text="SneakEyes"
+			/>
+
+
+		<TextView
+			android:id="@+id/tx_level"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_gravity="bottom|start"
+			android:text="Lv. 1"
+
+			/>
+
+		<ProgressBar
+			android:id="@+id/pb_level"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignLeft="@id/tx_level"
+			android:layout_alignParentBottom="true"
+			android:layout_alignStart="@id/tx_level"
+			android:layout_gravity="bottom|end"
+			android:layout_marginLeft="40dp"
+			android:layout_marginStart="40dp"
+			android:progress="75"
+			/>
+
+	</RelativeLayout>
+
+	<com.hmrocket.magicpoker.view.PotView
+
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:gravity="center"
+		/>
+
+
+</LinearLayout>
