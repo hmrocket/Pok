@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<dimen name="playerView_card_width">@dimen/wrap_content</dimen>
+	<dimen name="playerView_card_height">@dimen/wrap_content</dimen>
+	<dimen name="width_iv_profile">@dimen/wrap_content</dimen>
+	<dimen name="height_iv_profile">@dimen/wrap_content</dimen>
+	<dimen name="height_vs_info">@dimen/wrap_content</dimen>
+	<dimen name="width_pot">@dimen/wrap_content</dimen>
+	<dimen name="height_pot">@dimen/wrap_content</dimen>
+	<dimen name="marginT_tx_cash">2dp</dimen>
+</resources>

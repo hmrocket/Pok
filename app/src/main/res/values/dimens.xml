@@ -10,4 +10,14 @@
 	<dimen name="margin_table_communityCard">2dp</dimen>
 	<dimen name="height_panelController">48dp</dimen>
 	<dimen name="height_adsView">50dp</dimen>
+	<!-- PLayerView values -->
+	<dimen name="playerView_card_height">48dp</dimen>
+	<dimen name="playerView_card_width">32dp</dimen>
+	<dimen name="height_iv_profile">40dp</dimen>
+	<dimen name="width_iv_profile">40dp</dimen>
+	<dimen name="height_vs_info">30dp</dimen>
+	<dimen name="marginT_tx_cash">0dp</dimen>
+
+	<item name="match_parent" format="integer" type="dimen">-1</item>
+	<item name="wrap_content" format="integer" type="dimen">-2</item>
 </resources>
