@@ -4,7 +4,6 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="10dp"
 	tools:context=".activity.MainActivity"
 	>
 
@@ -13,78 +12,131 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="top"
+		android:layout_margin="10dp"
 		/>
 
 	<LinearLayout
-		android:layout_width="wrap_content"
-		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_gravity="center"
 		android:gravity="center"
-		android:orientation="vertical"
 		>
 
-		<!--Better create two styles for these button under 21 and above and another for the oldest versions -->
-		<Button
-			android:id="@+id/btn_continueGame"
-			style="@style/Widget.AppCompat.Button.Colored"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:enabled="false"
-			android:text="@string/continue_"
-			android:textColor="@color/textcolor_circle"
-			android:visibility="gone"
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
 			/>
 
-		<Button
-			android:id="@+id/btn_startGame"
-			style="@style/Widget.AppCompat.Button.Colored"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/new_game"
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:layout_weight="2"
+			android:gravity="center"
+			android:orientation="vertical"
+			>
+			<!--Better create two styles for these button under 21 and above and another for the oldest versions -->
+			<Button
+				android:id="@+id/btn_continueGame"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:enabled="false"
+				android:text="@string/continue_"
+				android:textColor="@color/textcolor_circle"
+				android:visibility="gone"
+				/>
+
+			<Button
+				android:id="@+id/btn_startGame"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/new_game"
+				/>
+
+			<Button
+				android:id="@+id/btn_multiplayer"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/multiplayer"
+				/>
+		</LinearLayout>
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight=".5"
 			/>
 
-		<Button
-			android:id="@+id/btn_multiplayer"
-			style="@style/Widget.AppCompat.Button.Colored"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/multiplayer"
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:layout_weight="2"
+			android:gravity="center"
+			android:orientation="vertical"
+			>
+
+			<Button
+				android:id="@+id/btn_pokerGuide"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/poker_guide"
+				/>
+
+			<Button
+
+				android:id="@+id/btn_store"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/store"
+				android:visibility="visible"
+				/>
+		</LinearLayout>
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="0.5"
 			/>
 
-		<Button
-			android:id="@+id/btn_pokerGuide"
-			style="@style/Widget.AppCompat.Button.Colored"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/poker_guide"
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:layout_weight="2"
+			android:gravity="center"
+			android:orientation="vertical"
+			>
+
+			<Button
+				android:id="@+id/btn_preference"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/preference"
+				android:visibility="visible"
+				/>
+
+			<Button
+				android:id="@+id/btn_about"
+				style="@style/Widget.AppCompat.Button.Colored"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/about"
+				/>
+
+		</LinearLayout>
+
+		<Space
+			android:layout_width="0dp"
+			android:layout_height="match_parent"
+			android:layout_weight="1"
 			/>
-
-		<Button
-			android:id="@+id/btn_store"
-			style="@style/Widget.AppCompat.Button.Colored"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/store"
-			android:visibility="visible"
-			/>
-
-		<Button
-			android:id="@+id/btn_customization"
-			style="@style/Widget.AppCompat.Button.Colored"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/preference"
-			android:visibility="visible"
-			/>
-
-		<Button
-			android:id="@+id/btn_about"
-			style="@style/Widget.AppCompat.Button.Colored"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/about"
-			/>
-
-
 	</LinearLayout>
 </FrameLayout>
