@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				startActivity(new Intent(this, GameActivity.class));
 				break;
 			case R.id.btn_store:
+				startActivity(new Intent(this, StoreActivity.class));
 				break;
 			case R.id.btn_pokerGuide:
 				break;
