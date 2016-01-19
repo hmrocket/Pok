@@ -18,3 +18,5 @@
 -assumenosideeffects class com.hmrocket.** {
 	public ** toString();
 }
+# that will allow you to reuse your mapping.txt to avoid changes on the mappings
+#-applymapping filename

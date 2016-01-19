@@ -38,7 +38,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 			new HumanPlayer("Mhamed", (long) 13e6, (long) 150), //1
 			new SafeBot("Kais", (long) 72e6, (long) 100), //0
 			new SafeBot("Kevin", 450633L, (long) 200),//3
-			new SafeBot("Itachi", (long) 10e6, 200),//4
+			new HumanPlayer("Itachi", (long) 10e6, 200),//4
 			new SafeBot("Yassin", (long) 4e6, 200),//5
 			new SafeBot("San", (long) 1e6, 50),//6
 			new SafeBot("Elhem", (long) 480e3, 100),//7
@@ -246,7 +246,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 
 				if (player instanceof HumanPlayer) {
 					playerView.setHand(player.getHandHoldem().getHand());
-					playerView.showCards();
+					// Show cards only if 1 one human is playing, don't on multiplayer mode
+					if (dataFragment.getTable().getPlayers(HumanPlayer.class).size() == 1) playerView.showCards();
 				}
 				// PRE_FLOP is called before onBlindPosted (before setup of the round and after setup of the game)
 				playerView.setEnabled(true);

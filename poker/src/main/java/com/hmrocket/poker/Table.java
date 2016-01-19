@@ -13,12 +13,12 @@ import java.util.Set;
  */
 public class Table implements GameEvent {
 
-    private List<Player> players;
-    private int seatsAvailable;
-    private List<Seat> seats;
+	private List<Player> players;
+	private int seatsAvailable;
+	private List<Seat> seats;
 	private int dealer;
 	private Game game;
-    private long minBet;
+	private long minBet;
 	private GameEvent lisGameEvent;
 
 	/**
@@ -28,15 +28,15 @@ public class Table implements GameEvent {
 	 * @param minBet   the smallest bet amount allowed
 	 */
 	public Table(int capacity, long minBet) {
-        this.players = new ArrayList<Player>(capacity);
-        this.seats = new ArrayList<Seat>(capacity);
-        for (int i = 0; i < capacity; i++) {
+		this.players = new ArrayList<>(capacity);
+		this.seats = new ArrayList<>(capacity);
+		for (int i = 0; i < capacity; i++) {
 			seats.add(new Seat(i));
 			players.add(null);
-        }
-        this.seatsAvailable = capacity;
-        this.minBet = minBet;
-        this.game = new Game(this);
+		}
+		this.seatsAvailable = capacity;
+		this.minBet = minBet;
+		this.game = new Game(this);
 	}
 
 	/**
@@ -64,6 +64,7 @@ public class Table implements GameEvent {
 
 	/**
 	 * Add a new Player to Table
+	 *
 	 * @param player Player to add to the Table
 	 * @param seatId Player's picked Seat id (position on the table not the game)
 	 */
@@ -127,6 +128,7 @@ public class Table implements GameEvent {
 
 	/**
 	 * Get Players on the Table
+	 *
 	 * @return list of added Players (ordered from right to left)
 	 */
 	public List<Player> getPlayers() {
@@ -165,12 +167,12 @@ public class Table implements GameEvent {
 		if (lisGameEvent != null) lisGameEvent.gameEnded();
 	}
 
-    @Override
-    public void playerBusted(Set<Player> playersBusted) {
-        // Player doesn't have enough cash to Buy-In
-        Iterator<Player> iterator = playersBusted.iterator();
-        while (iterator.hasNext())
-            removePlayer(iterator.next());
+	@Override
+	public void playerBusted(Set<Player> playersBusted) {
+		// Player doesn't have enough cash to Buy-In
+		Iterator<Player> iterator = playersBusted.iterator();
+		while (iterator.hasNext())
+			removePlayer(iterator.next());
 
 		if (lisGameEvent != null) lisGameEvent.playerBusted(playersBusted);
 	}
@@ -232,4 +234,18 @@ public class Table implements GameEvent {
 		}
 	}
 
+	/**
+	 * Get Players on the Table for a specific type
+	 *
+	 * @param childPlayerClass Class that extends Player
+	 * @return list of specific type players
+	 */
+	public List<Player> getPlayers(Class<? extends Player> childPlayerClass) {
+		List<Player> type = new ArrayList<>();
+		for (Player p : players)
+			if (p != null && childPlayerClass.isAssignableFrom(p.getClass()))
+				type.add(p);
+
+		return type;
+	}
 }

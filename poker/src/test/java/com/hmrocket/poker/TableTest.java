@@ -1,6 +1,8 @@
 package com.hmrocket.poker;
 
+import com.hmrocket.poker.ai.bot.Bot;
 import com.hmrocket.poker.ai.bot.RandBot;
+import com.hmrocket.poker.ai.bot.SafeBot;
 
 import junit.framework.TestCase;
 
@@ -238,4 +240,57 @@ public class TableTest extends TestCase {
 		}
 	}
 
+	public void testPlayerTypeCount() throws Exception {
+		final int SEATS_COUNT = 9;
+		table = new Table(SEATS_COUNT, MIN_BET);
+		List<Player> PLAYERS = Arrays.asList(new Player[]{
+				new RandBot("Kais", (long) 72e6, (long) 2e6), //1
+				new RandBot("Mhamed", (long) 13e6, (long) 2e6), //2
+				new RandBot("Kevin", 450633L, (long) 1e6),//3
+				new RandBot("Itachi", (long) 10e6, 182000L),//4
+				new RandBot("Yassin", (long) 4e6, 100000L),//5
+				new RandBot("San", (long) 1e6, 100000L),//6
+				new RandBot("Elhem", (long) 480e3, 100000L),//7
+				new RandBot("Sof", (long) 100e3, 100000L),//8
+				new RandBot("M", (long) 100e3, 100000L) //9
+		});
+		for (int i = 0; i < PLAYERS_FAVORITE_SEAT.size(); i++) {
+			table.addPlayer(PLAYERS.get(i), PLAYERS_FAVORITE_SEAT.get(i));
+		}
+
+		assertEquals(PLAYERS.size(), table.getPlayers(RandBot.class).size());
+		assertEquals(PLAYERS.size(), table.getPlayers(Player.class).size());
+		List<Player> players = table.getPlayers(Bot.class);
+		assertTrue(players == null || 0 == players.size());
+
+		PLAYERS = Arrays.asList(new Player[]{
+				new BotChild("Kais", (long) 72e6, (long) 2e6), //1
+				new BotChild("Mhamed", (long) 13e6, (long) 2e6), //2
+				new BotChild("Kevin", 450633L, (long) 1e6),//3
+				new RandBot("Itachi", (long) 10e6, 182000L),//4
+				new RandBot("Yassin", (long) 4e6, 100000L),//5
+				new RandBot("San", (long) 1e6, 100000L),//6
+				new SafeBot("Elhem", (long) 480e3, 100000L),//7
+				new SafeBot("Sof", (long) 100e3, 100000L),//8
+				new SafeBot("M", (long) 100e3, 100000L) //9
+		});
+		table = new Table(SEATS_COUNT, MIN_BET);
+		for (int i = 0; i < SEATS_COUNT; i++) {
+			table.addPlayer(PLAYERS.get(i), PLAYERS_FAVORITE_SEAT.get(i));
+		}
+
+		assertEquals(3, table.getPlayers(RandBot.class).size());
+		assertEquals(PLAYERS.size(), table.getPlayers(Player.class).size());
+		players = table.getPlayers(Bot.class);
+		assertTrue(players == null || 0 == table.getPlayers(Bot.class).size());
+		assertEquals(6, table.getPlayers(SafeBot.class).size());
+		assertEquals(3, table.getPlayers(BotChild.class).size());
+	}
+
+	class BotChild extends SafeBot {
+
+		public BotChild(String name, long bankBalance, long cash) {
+			super(name, bankBalance, cash);
+		}
+	}
 }

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.hmrocket.magicpoker.R;
@@ -17,7 +18,7 @@ import com.hmrocket.poker.card.Card;
 /**
  * @since 10/Nov/2015 - mhamed
  */
-public class CardView extends ImageView {
+public class CardView extends ImageView implements View.OnClickListener {
 
 	private int cardId;
 	private boolean faceDown;
@@ -25,17 +26,6 @@ public class CardView extends ImageView {
 	public CardView(Context context) {
 		super(context);
 		init(true);
-	}
-
-	/**
-	 * set the default state of the CardView which is no image card and facedown is set to true
-	 *
-	 * @param facedown false CardView by default will be show, otherwise backcover will be shown by default
-	 */
-	protected void init(boolean facedown) {
-		cardId = -1;
-		// by default No card is shown and show the card facedown
-		faceDown = facedown;
 	}
 
 	public CardView(Context context, AttributeSet attributeset) {
@@ -52,6 +42,19 @@ public class CardView extends ImageView {
 	public CardView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(true);
+	}
+
+	/**
+	 * set the default state of the CardView which is no image card and facedown is set to true
+	 *
+	 * @param facedown false CardView by default will be show, otherwise backcover will be shown by default
+	 */
+	protected void init(boolean facedown) {
+		cardId = -1;
+		// by default No card is shown and show the card facedown
+		faceDown = facedown;
+
+		setOnClickListener(this);
 	}
 
 	/**
@@ -143,6 +146,11 @@ public class CardView extends ImageView {
 		faceDown = savedState.getBoolean("facedown", true);
 		if (cardId != -1)
 			renderCard();
+	}
+
+	@Override
+	public void onClick(View view) {
+		facedown(!faceDown);
 	}
 }
 
