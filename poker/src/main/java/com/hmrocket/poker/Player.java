@@ -56,8 +56,8 @@ public abstract class Player implements Comparable<Player> {
         this.cash = cash;
     }
 
-    @Override
-    public int compareTo(Player o) {
+	@Override
+	public int compareTo(Player o) {
 		if (handHoldem == null && o.handHoldem == null || isOut() && o.isOut())
 			return 0; // return 0 if both player has not hands or both of them folded
 		else if (handHoldem == null || this.isOut()) // lose automatically if he folded
@@ -82,8 +82,16 @@ public abstract class Player implements Comparable<Player> {
         this.cash = cash;
     }
 
-    /**
-     * @return the player bet
+	public long getBankBalance() {
+		return bankBalance;
+	}
+
+	public void setBankBalance(long bankBalance) {
+		this.bankBalance = bankBalance;
+	}
+
+	/**
+	 * @return the player bet
      */
     public long getBet() {
         return bet;
