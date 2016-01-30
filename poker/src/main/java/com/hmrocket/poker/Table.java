@@ -47,18 +47,18 @@ public class Table implements GameEvent {
 	 */
 	public void populate(Collection<Player> players) {
 		// preference placement is on the right then left
-		int[] seatIdsOrganized = null;
-		if (players.size() <= 5) {
-			int[] seatIdsOrganized5Max = new int[]{0, 5, 4, 7, 2};
-			seatIdsOrganized = seatIdsOrganized5Max;
-		} else if (players.size() <= 7) {
-			int[] seatIdsOrganized7Max = new int[]{0, 5, 4, 8, 1, 6, 3};
-			seatIdsOrganized = seatIdsOrganized7Max;
-		}
 		int i = 0;
-		for (Player p : players) {
-			addPlayer(p, seatIdsOrganized == null ? i : seatIdsOrganized[i]);
-			i++;
+		final int playersLastIndex = players.size() - 1;
+		final int seatLastIndex = seats.size() - 1;
+		if (seatsAvailable != seats.size())
+			throw new IllegalStateException("Populate should be called only when the table is empty");
+		if (players.size() > 1) {
+			for (Player p : players) {
+				addPlayer(p, Math.round(0.49f + seatLastIndex * i / playersLastIndex));
+				i++;
+			}
+		} else if (players.size() == 1) {
+			addPlayer(players.iterator().next(), 0);
 		}
 	}
 

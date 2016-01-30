@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				xmlns:tools="http://schemas.android.com/tools"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				tools:context=".view.TableView">
+
+	<FrameLayout
+		android:id="@+id/frameLayout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:paddingBottom="@dimen/table_padding"
+		android:paddingEnd="@dimen/table_padding"
+		android:paddingStart="@dimen/table_padding"
+		android:paddingTop="@dimen/table_padding">
+
+		<ImageView
+			android:id="@+id/imageView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@null"
+			android:cropToPadding="false"
+			android:src="@mipmap/table_pro"
+			/>
+
+
+		<LinearLayout
+			android:id="@+id/ll"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="vertical"
+			android:weightSum="3"
+			>
+
+
+			<com.hmrocket.magicpoker.view.PotView
+				android:id="@+id/potView"
+				android:layout_width="@dimen/width_pot"
+				android:layout_height="@dimen/height_pot"
+				android:layout_marginBottom="2dp"
+				android:animateLayoutChanges="true"
+				android:gravity="center_horizontal|top"
+				/>
+
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="2dp"
+				android:gravity="center"
+				android:orientation="horizontal"
+				>
+
+				<com.hmrocket.magicpoker.view.CardView
+					android:id="@+id/cardView_communityCard0"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="@dimen/margin_table_communityCard"
+					android:layout_marginRight="@dimen/margin_table_communityCard"
+					/>
+
+				<com.hmrocket.magicpoker.view.CardView
+					android:id="@+id/cardView_communityCard1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="@dimen/margin_table_communityCard"
+					android:layout_marginRight="@dimen/margin_table_communityCard"
+					/>
+
+				<com.hmrocket.magicpoker.view.CardView
+					android:id="@+id/cardView_communityCard2"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="@dimen/margin_table_communityCard"
+					android:layout_marginRight="@dimen/margin_table_communityCard"
+					/>
+
+				<com.hmrocket.magicpoker.view.CardView
+					android:id="@+id/cardView_communityCard3"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="@dimen/margin_table_communityCard"
+					android:layout_marginRight="@dimen/margin_table_communityCard"
+					/>
+
+				<com.hmrocket.magicpoker.view.CardView
+					android:id="@+id/cardView_communityCard4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					/>
+			</LinearLayout>
+
+			<TextView
+				android:id="@+id/tx_tableInfo"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal|top"
+				android:text=""
+				android:textColor="@color/textcolor_circle"
+				android:textSize="14dp"
+				/>
+		</LinearLayout>
+
+	</FrameLayout>
+
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginLeft="@dimen/margin_player_parent_horizontal"
+		android:layout_marginStart="@dimen/margin_player_parent_horizontal"
+		android:layout_marginTop="@dimen/margin_player_parent_vertical"
+		android:visibility="invisible"
+		/>
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_marginBottom="@dimen/margin_player_parent_vertical"
+		android:layout_marginLeft="@dimen/margin_player_parent_horizontal"
+		android:layout_marginStart="@dimen/margin_player_parent_horizontal"
+		android:visibility="invisible"
+		/>
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView3"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginEnd="@dimen/margin_player_parent_horizontal"
+		android:layout_marginRight="@dimen/margin_player_parent_horizontal"
+		android:layout_marginTop="@dimen/margin_player_parent_vertical"
+		android:visibility="invisible"/>
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView4"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_marginBottom="@dimen/margin_player_parent_vertical"
+		android:layout_marginEnd="@dimen/margin_player_parent_horizontal"
+		android:layout_marginRight="@dimen/margin_player_parent_horizontal"
+		android:visibility="invisible"
+		/>
+
+	<Space
+		android:id="@+id/spacer"
+		android:layout_width="20px"
+		android:layout_height="20px"
+		android:layout_alignTop="@id/playerView1"
+		android:layout_centerHorizontal="true"
+		android:layout_marginBottom="10dp"
+		/>
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView0"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBottom="@+id/spacer"
+		android:layout_centerHorizontal="true"
+		android:visibility="invisible"
+		/>
+
+	<Space
+		android:id="@+id/spacer2"
+		android:layout_width="20px"
+		android:layout_height="20px"
+		android:layout_alignBottom="@id/playerView3"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="10dp"
+		/>
+
+	<com.hmrocket.magicpoker.view.PlayerView
+		android:id="@+id/playerView5"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@+id/spacer2"
+		android:layout_centerHorizontal="true"
+		android:visibility="invisible"
+		/>
+
+</RelativeLayout>

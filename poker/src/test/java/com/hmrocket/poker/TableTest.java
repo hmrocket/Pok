@@ -7,6 +7,7 @@ import com.hmrocket.poker.ai.bot.SafeBot;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -292,5 +293,30 @@ public class TableTest extends TestCase {
 		public BotChild(String name, long bankBalance, long cash) {
 			super(name, bankBalance, cash);
 		}
+	}
+	public void testPopulate() throws Exception {
+		int capacity = R.nextBoolean() ? 5 : 9;
+		table = new Table(capacity, 2);
+		int playerToAdd = R.nextInt(capacity + 1);
+		System.out.println("table of: " + capacity + ", player added: " + playerToAdd);
+		List<Player> players = new ArrayList<>();
+		for (int i = 0; i < capacity && i < playerToAdd; i++)
+			players.add(PLAYERS.get(i));
+
+//		int[] seatIdsOrganized = null;
+//		if (players.size() <= 5) {
+//			int[] seatIdsOrganized5Max = new int[]{0, 5, 4, 7, 2};
+//			seatIdsOrganized = seatIdsOrganized5Max;
+//		} else if (players.size() <= 7) {
+//			int[] seatIdsOrganized7Max = new int[]{0, 5, 4, 8, 1, 6, 3};
+//			seatIdsOrganized = seatIdsOrganized7Max;
+//		}
+
+		table.populate(players);
+
+		for (Player p : players)
+			System.out.println(p.getName() + " seats@: " + p.getSeat().getId());
+
+
 	}
 }

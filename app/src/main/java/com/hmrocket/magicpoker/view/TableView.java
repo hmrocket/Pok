@@ -35,6 +35,10 @@ public class TableView extends RelativeLayout {
 	 */
 	public static final int COMMUNITY_CARDS = 5;
 
+	/**
+	 * capacity of TableView represented by the number of player
+	 */
+	protected int capacity = MAX_PLAYERS;
 	protected PotView potView;
 	/**
 	 * array Contains all the playerViews, layout can hold max 9 playerViews the other will be invisible
@@ -55,6 +59,40 @@ public class TableView extends RelativeLayout {
 		init();
 	}
 
+	private void init() {
+		// FIXME Add the possibility to set TableView player count from xml or from
+		capacity = false ? MAX_PLAYERS : 6;
+		View view = inflate(getContext(),
+				capacity == MAX_PLAYERS ? R.layout.table_view : R.layout.table_view_6p,
+				this);
+		potView = (PotView) view.findViewById(R.id.potView);
+		playerViews = new PlayerView[capacity];
+		cardViews = new CardView[COMMUNITY_CARDS];
+
+		playerViews[0] = (PlayerView) findViewById(R.id.playerView0);
+		playerViews[1] = (PlayerView) findViewById(R.id.playerView1);
+		playerViews[2] = (PlayerView) findViewById(R.id.playerView2);
+		playerViews[3] = (PlayerView) findViewById(R.id.playerView3);
+		playerViews[4] = (PlayerView) findViewById(R.id.playerView4);
+		playerViews[5] = (PlayerView) findViewById(R.id.playerView5);
+		if (capacity == MAX_PLAYERS) {
+			playerViews[6] = (PlayerView) findViewById(R.id.playerView6);
+			playerViews[7] = (PlayerView) findViewById(R.id.playerView7);
+			playerViews[8] = (PlayerView) findViewById(R.id.playerView8);
+		}
+
+		CardView cardView;
+		int cardViewIDs[] = new int[]{R.id.cardView_communityCard0, R.id.cardView_communityCard1, R.id.cardView_communityCard2,
+				R.id.cardView_communityCard3, R.id.cardView_communityCard4};
+		for (int i = 0; i < cardViews.length; i++) {
+			cardView = (CardView) findViewById(cardViewIDs[i]);
+			cardView.facedown(false);
+			cardViews[i] = cardView;
+		}
+
+		txInfo = (TextView) findViewById(R.id.tx_tableInfo);
+	}
+
 	public TableView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
@@ -69,34 +107,6 @@ public class TableView extends RelativeLayout {
 	public TableView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init();
-	}
-
-	private void init() {
-		View view = inflate(getContext(), R.layout.table_view, this);
-		potView = (PotView) view.findViewById(R.id.potView);
-		playerViews = new PlayerView[MAX_PLAYERS];
-		cardViews = new CardView[COMMUNITY_CARDS];
-
-		playerViews[0] = (PlayerView) findViewById(R.id.playerView0);
-		playerViews[1] = (PlayerView) findViewById(R.id.playerView1);
-		playerViews[2] = (PlayerView) findViewById(R.id.playerView2);
-		playerViews[3] = (PlayerView) findViewById(R.id.playerView3);
-		playerViews[4] = (PlayerView) findViewById(R.id.playerView4);
-		playerViews[5] = (PlayerView) findViewById(R.id.playerView5);
-		playerViews[6] = (PlayerView) findViewById(R.id.playerView6);
-		playerViews[7] = (PlayerView) findViewById(R.id.playerView7);
-		playerViews[8] = (PlayerView) findViewById(R.id.playerView8);
-
-		CardView cardView;
-		int cardViewIDs[] = new int[]{R.id.cardView_communityCard0, R.id.cardView_communityCard1, R.id.cardView_communityCard2,
-				R.id.cardView_communityCard3, R.id.cardView_communityCard4};
-		for (int i = 0; i < cardViews.length; i++) {
-			cardView = (CardView) findViewById(cardViewIDs[i]);
-			cardView.facedown(false);
-			cardViews[i] = cardView;
-		}
-
-		txInfo = (TextView) findViewById(R.id.tx_tableInfo);
 	}
 
 	/**
@@ -137,7 +147,7 @@ public class TableView extends RelativeLayout {
 	/**
 	 * Specify the dealer
 	 *
-	 * @param seatId seat number on the table should be between 0 and less than {@link #MAX_PLAYERS}
+	 * @param seatId seat number on the table should be between 0 and less than {@link #capacity}
 	 */
 	public void setDealer(int seatId) {
 		for (int i = 0; i < seatId; i++)
@@ -277,7 +287,7 @@ public class TableView extends RelativeLayout {
 	/**
 	 * Get the PlayerView affect to that seat
 	 *
-	 * @param seatId seat number on the table should be between 0 and less than {@link #MAX_PLAYERS}
+	 * @param seatId seat number on the table should be between 0 and less than {@link #capacity}
 	 * @return PlayerView number <code>seatId</code>
 	 */
 	public PlayerView getPlayerView(int seatId) {
