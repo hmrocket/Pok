@@ -1,4 +1,4 @@
-1) You can cast not only on people but also the deck (liek altering the next comming card)
+﻿1) You can cast not only on people but also the deck (liek altering the next comming card)
 2) You can cast magic on other player but for you drink potions (potion to protect you from spells 3 tours)
 3) Create a pre-selected or create mutli player game from the begging
 
@@ -21,6 +21,10 @@ Description2): just play against your friends image
 4) Poker Night - multiplayer offline
 Description4): You don't have deck and no chips no worries use our app to handle it all totally free, The app made especially for a Night poker with your buddies
 			Let's us handle the game mechanics for you. Just enjoy, pure fun.
+
+5) Strip poker
+	Mutiplayer mostly: give the user to pick how many cloths does every player has and what's the value of each one
+	Single: show a video of women or man getting naked
 
 ----> cheats (12 per level)
 - Note: Play music or have some effect 
