@@ -37,4 +37,7 @@
 	<string name="chips_and_gold"><![CDATA[CHIPS & GOLD]]></string>
 	<string name="customization">CUSTOMIZATION</string>
 	<string name="more_fun">MORE FUN</string>
+	<string name="chips">CHIPS</string>
+	<string name="gold">GOLD</string>
+
 </resources>
