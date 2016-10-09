@@ -11,8 +11,6 @@ import com.hmrocket.magicpoker.R;
 
 /**
  * A fragment with a Google +1 button.
- * Use the {@link MoreFunFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class MoreFunFragment extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match

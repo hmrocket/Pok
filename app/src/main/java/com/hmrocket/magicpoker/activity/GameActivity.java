@@ -1,6 +1,8 @@
 package com.hmrocket.magicpoker.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -34,7 +37,9 @@ import java.util.Set;
  */
 public class GameActivity extends Activity implements View.OnClickListener, RaiseDialog.OnRaiseListener, GameEvent {
 
-	private final List<Player> PLAYERS = new ArrayList(Arrays.asList(
+	private static final String KEY_HUMAN_COUNT = "humanCount";
+
+	private final List<Player> PLAYERS = new ArrayList<>(Arrays.asList(
 			new HumanPlayer("Mhamed", (long) 13e6, (long) 150), //1
 //			new SafeBot("Kais", (long) 72e6, (long) 100), //0
 //			new SafeBot("Kevin", 450633L, (long) 200),//3
@@ -50,12 +55,37 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 	private DataFragment dataFragment;
 	private RaiseDialog raiseDialog;
 	private TableView tableView;
+	/**
+	 * if there's more of one human player this will be changed to true
+	 */
+	private boolean humanCardFaceDown = false;
+
+
+	public static Intent newIntent(Context context) {
+		return new Intent(context, GameActivity.class);
+	}
+
+	public static Intent newIntent(Context context, int humanCount) {
+		Intent i = new Intent(context, GameActivity.class);
+		i.putExtra(KEY_HUMAN_COUNT, humanCount);
+		return i;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_game);
+		if (savedInstanceState != null) {
+			int playerNumber = savedInstanceState.getInt(KEY_HUMAN_COUNT, 1);
+			// more than one player ( supprot for only one player more)
+			if (playerNumber > 1) {
+				int position = new Random().nextInt(PLAYERS.size() - 1) + 1;
+				PLAYERS.add(position, new HumanPlayer("Mhamed2", (long) 1e6, 200));
+				this.humanCardFaceDown = true;
+			}
+		}
+
 
 
 		// set Layout controller
@@ -246,7 +276,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 
 				if (player instanceof HumanPlayer) {
 					playerView.setHand(player.getHandHoldem().getHand());
-					playerView.showCards();
+					// if there's more of one player show card face down
+					playerView.showCards(humanCardFaceDown);
 				}
 				// PRE_FLOP is called before onBlindPosted (before setup of the round and after setup of the game)
 				playerView.setEnabled(true);
@@ -269,7 +300,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 		for (Player player : potentialWinners) {
 			PlayerView playerView = tableView.getPlayerView(player.getSeat().getId());
 			playerView.setHand(player.getHandHoldem().getHand());
-			playerView.showCards();
+			playerView.showCards(false);
 		}
 	}
 

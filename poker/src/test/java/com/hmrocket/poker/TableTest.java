@@ -33,8 +33,7 @@ public class TableTest extends TestCase {
 			new RandBot("Sof", (long) 100e3, 100000L),//8
 			new RandBot("M", (long) 100e3, 100000L) //9
 	});
-	private static final List<Integer> PLAYERS_FAVORITE_SEAT = Arrays.asList(new Integer[]{
-			0, //PLAYERS[0]
+	private static final List<Integer> PLAYERS_FAVORITE_SEAT = Arrays.asList(0, //PLAYERS[0]
 			3, //PLAYERS[1]
 			2,//PLAYERS[2]
 			1,//PLAYERS[3]
@@ -43,7 +42,7 @@ public class TableTest extends TestCase {
 			6,//PLAYERS[6]
 			7,//PLAYERS[7]
 			5//PLAYERS[8]
-	});
+	);
 
 	static {
 		SEATS_COUNT = 9;
@@ -264,8 +263,7 @@ public class TableTest extends TestCase {
 		List<Player> players = table.getPlayers(Bot.class);
 		assertTrue(players == null || 0 == players.size());
 
-		PLAYERS = Arrays.asList(new Player[]{
-				new BotChild("Kais", (long) 72e6, (long) 2e6), //1
+		PLAYERS = Arrays.asList(new BotChild("Kais", (long) 72e6, (long) 2e6), //1
 				new BotChild("Mhamed", (long) 13e6, (long) 2e6), //2
 				new BotChild("Kevin", 450633L, (long) 1e6),//3
 				new RandBot("Itachi", (long) 10e6, 182000L),//4
@@ -274,7 +272,7 @@ public class TableTest extends TestCase {
 				new SafeBot("Elhem", (long) 480e3, 100000L),//7
 				new SafeBot("Sof", (long) 100e3, 100000L),//8
 				new SafeBot("M", (long) 100e3, 100000L) //9
-		});
+		);
 		table = new Table(SEATS_COUNT, MIN_BET);
 		for (int i = 0; i < SEATS_COUNT; i++) {
 			table.addPlayer(PLAYERS.get(i), PLAYERS_FAVORITE_SEAT.get(i));
@@ -288,12 +286,6 @@ public class TableTest extends TestCase {
 		assertEquals(3, table.getPlayers(BotChild.class).size());
 	}
 
-	class BotChild extends SafeBot {
-
-		public BotChild(String name, long bankBalance, long cash) {
-			super(name, bankBalance, cash);
-		}
-	}
 	public void testPopulate() throws Exception {
 		int capacity = R.nextBoolean() ? 5 : 9;
 		table = new Table(capacity, 2);
@@ -318,5 +310,12 @@ public class TableTest extends TestCase {
 			System.out.println(p.getName() + " seats@: " + p.getSeat().getId());
 
 
+	}
+
+	class BotChild extends SafeBot {
+
+		public BotChild(String name, long bankBalance, long cash) {
+			super(name, bankBalance, cash);
+		}
 	}
 }

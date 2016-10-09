@@ -270,15 +270,15 @@ public class PlayerView extends RelativeLayout {
 
 	/**
 	 * Flip hand cards
+	 * @param faceDown tru if the card are face down, false if card is showing
 	 */
-	public void showCards() {
-		cardView1.facedown(false);
-		cardView2.facedown(false);
+	public void showCards(boolean faceDown) {
+		cardView1.facedown(faceDown);
+		cardView2.facedown(faceDown);
 	}
 
 	/**
 	 * set the CardView of PlayerView face down
-	 *
 	 * @param hand two cards
 	 */
 	public void setHand(Hand hand) {
