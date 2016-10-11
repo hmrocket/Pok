@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<group android:checkableBehavior="single">
+		<item
+			android:id="@+id/nav_rules"
+			android:icon="@android:drawable/ic_menu_camera"
+			android:title="Rules of the game"/>
+		<item
+			android:id="@+id/nav_handRanks"
+			android:icon="@android:drawable/ic_menu_gallery"
+			android:title="Hand Ranks"/>
+		<item
+			android:id="@+id/nav_manage"
+			android:icon="@android:drawable/ic_menu_manage"
+			android:title="Tools"/>
+	</group>
+
+	<item android:title="Strategies">
+		<menu>
+			<item
+				android:id="@+id/nav_preFlop_strategy"
+				android:icon="@android:drawable/ic_menu_slideshow"
+				android:title="Pre-Flop Strategy"/>
+			<item
+				android:id="@+id/nav_bankroll"
+				android:icon="@android:drawable/ic_menu_share"
+				android:title="Bankroll Management"/>
+			<item
+				android:id="@+id/nav_tight_aggressive"
+				android:icon="@android:drawable/ic_menu_send"
+				android:title="Tight-Aggressive"/>
+		</menu>
+	</item>
+
+</menu>

@@ -40,4 +40,11 @@
 	<string name="chips">CHIPS</string>
 	<string name="gold">GOLD</string>
 
+	<!--Poker Guide-->
+	<string name="title_activity_guide">Poker Guide</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+
+	<string name="action_feedback">Send feedback</string>
+
 </resources>

@@ -139,7 +139,7 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				break;
 			case R.id.btn_start_skip_info:
 				// only one HumanPlayer
-				if (v.getTag() == 1) {
+				if ((Integer) v.getTag() == 1) {
 					btnController[4].setEnabled(false);
 					v.setTag(null);
 					dataFragment.skip();
