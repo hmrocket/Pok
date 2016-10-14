@@ -20,14 +20,11 @@ import com.hmrocket.poker.HumanPlayer;
 import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Turn;
-import com.hmrocket.poker.ai.bot.SafeBot;
 import com.hmrocket.poker.card.CommunityCards;
 import com.hmrocket.poker.card.HandScoreCalculator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -38,18 +35,6 @@ import java.util.Set;
 public class GameActivity extends Activity implements View.OnClickListener, RaiseDialog.OnRaiseListener, GameEvent {
 
 	private static final String KEY_HUMAN_COUNT = "humanCount";
-
-	private final List<Player> PLAYERS = new ArrayList<>(Arrays.asList(
-			new HumanPlayer("Mhamed", (long) 13e6, (long) 150), //1
-//			new SafeBot("Kais", (long) 72e6, (long) 100), //0
-//			new SafeBot("Kevin", 450633L, (long) 200),//3
-//			new SafeBot("Itachi", (long) 10e6, 200),//4
-			new SafeBot("Yassin", (long) 4e6, 200),//5
-			new SafeBot("San", (long) 1e6, 50),//6
-			new SafeBot("Elhem", (long) 480e3, 100),//7
-			new SafeBot("Sof", (long) 100e3, 200),//8
-			new SafeBot("M", (long) 100e3, 200)//9
-	));
 
 	private Button btnController[];
 	private DataFragment dataFragment;
@@ -76,14 +61,9 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_game);
+		int playerNumber = 1;
 		if (savedInstanceState != null) {
-			int playerNumber = savedInstanceState.getInt(KEY_HUMAN_COUNT, 1);
-			// more than one player ( supprot for only one player more)
-			if (playerNumber > 1) {
-				int position = new Random().nextInt(PLAYERS.size() - 1) + 1;
-				PLAYERS.add(position, new HumanPlayer("Mhamed2", (long) 1e6, 200));
-				this.humanCardFaceDown = true;
-			}
+			playerNumber = savedInstanceState.getInt(KEY_HUMAN_COUNT, playerNumber);
 		}
 
 
@@ -104,10 +84,17 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 		dataFragment = (DataFragment) getFragmentManager().findFragmentByTag("game");
 		if (dataFragment == null) {
 			dataFragment = DataFragment.newInstance(6, 2);
+			// more than one player ( supprot for only one player more)
+			if (playerNumber > 1) {
+				int position = new Random().nextInt(DataFragment.PLAYERS.size() - 1) + 1;
+				DataFragment.PLAYERS.add(position, new HumanPlayer("Mhamed2", (long) 1e6, 200));
+				this.humanCardFaceDown = true;
+			}
 			getFragmentManager().beginTransaction().add(dataFragment, "game").commit();
 			// DEBUG
 			//tableView.populate();
 		}
+		// else TODO restore the game
 
 
 	}
@@ -148,8 +135,8 @@ public class GameActivity extends Activity implements View.OnClickListener, Rais
 				}
 				// XXX DEBUG
 				if (dataFragment.getTable().getPlayers() == null || dataFragment.getTable().getPlayers().isEmpty()) {
-					dataFragment.getTable().populate(PLAYERS);
-					tableView.populate(PLAYERS);
+					dataFragment.getTable().populate(DataFragment.PLAYERS);
+					tableView.populate(DataFragment.PLAYERS);
 				}
 				// remove busted player if any
 				for (Player p : dataFragment.getBustedPlayer() != null ? dataFragment.getBustedPlayer() : Collections.<Player>emptyList())

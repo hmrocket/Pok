@@ -13,8 +13,12 @@ import com.hmrocket.poker.Player;
 import com.hmrocket.poker.RoundPhase;
 import com.hmrocket.poker.Table;
 import com.hmrocket.poker.Turn;
+import com.hmrocket.poker.ai.bot.SafeBot;
 import com.hmrocket.poker.card.CommunityCards;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,10 +26,20 @@ import java.util.Set;
  */
 public class DataFragment extends Fragment {
 
+	public static final List<Player> PLAYERS = new ArrayList<>(Arrays.asList(
+			new HumanPlayer("Mhamed", (long) 13e6, (long) 150), //1
+//			new SafeBot("Kais", (long) 72e6, (long) 100), //0
+//			new SafeBot("Kevin", 450633L, (long) 200),//3
+//			new SafeBot("Itachi", (long) 10e6, 200),//4
+			new SafeBot("Yassin", (long) 4e6, 200),//5
+			new SafeBot("San", (long) 1e6, 50),//6
+			new SafeBot("Elhem", (long) 480e3, 100),//7
+			new SafeBot("Sof", (long) 100e3, 200),//8
+			new SafeBot("M", (long) 100e3, 200)//9
+	));
 	// Arguments
 	private static final String TABLE_CAPACITY = "table_capacity";
 	private static final String MIN_BET = "min_bet";
-
 	private Table table;
 	private GameEvent gameEventListener;
 	private GameService gameService;
