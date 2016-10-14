@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.magicpoker.fragment.ChipsGoldFragment;
+import com.hmrocket.magicpoker.fragment.CustomizeFragment;
 import com.hmrocket.magicpoker.fragment.MoreFunFragment;
 
 public class StoreActivity extends AppCompatActivity {
@@ -70,11 +71,11 @@ public class StoreActivity extends AppCompatActivity {
 				case 0:
 					return new ChipsGoldFragment();
 				case 1:
-					break;
+					return CustomizeFragment.newInstance();
 				case 2:
+				default:
 					return MoreFunFragment.newInstance("meh", "meh");
 			}
-			return new ChipsGoldFragment();
 		}
 
 		@Override
