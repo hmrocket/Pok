@@ -10,11 +10,14 @@ import com.hmrocket.magicpoker.R;
 
 public class ChipsGoldFragment extends Fragment implements View.OnClickListener {
 
+	// 2arrays to define the the among gold and chip that one will get after purchasing (I know it a very shitty way to do things)
 	private static int[] GOLD_DEALS = new int[]{129, 250, 600};
-	private static int[] CHIPS_DEALS = new int[]{20000, (int) 1e6, (int) 20e6};
+	private static int[] CHIPS_DEALS = new int[]{2000, (int) 1e5, (int) 1e6};
+	private static int[] CHIPS_COST = new int[]{10, 90, 180};
 
-	public ChipsGoldFragment() {
-		// Required empty public constructor
+
+	public static ChipsGoldFragment newInstance() {
+		return new ChipsGoldFragment();
 	}
 
 	@Override
