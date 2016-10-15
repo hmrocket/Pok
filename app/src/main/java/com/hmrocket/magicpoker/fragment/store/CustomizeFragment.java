@@ -1,4 +1,4 @@
-package com.hmrocket.magicpoker.fragment;
+package com.hmrocket.magicpoker.fragment.store;
 
 
 import android.os.Bundle;

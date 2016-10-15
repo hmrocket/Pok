@@ -10,9 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.hmrocket.magicpoker.R;
-import com.hmrocket.magicpoker.fragment.ChipsGoldFragment;
-import com.hmrocket.magicpoker.fragment.CustomizeFragment;
-import com.hmrocket.magicpoker.fragment.MoreFunFragment;
+import com.hmrocket.magicpoker.fragment.store.ChipsGoldFragment;
+import com.hmrocket.magicpoker.fragment.store.CustomizeFragment;
+import com.hmrocket.magicpoker.fragment.store.MoreFunFragment;
 
 public class StoreActivity extends AppCompatActivity {
 
