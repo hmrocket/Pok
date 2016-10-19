@@ -38,3 +38,7 @@ Matt Joseph: CircularSeekBar https://github.com/devadvance/circularseekbar
 LittleRobotSoundFactory
 Tomlija
 www.bensound.com (background soung)
+--> Articles
+RuffPoker.com
+partypoker.com
+pokerschoolonline.com

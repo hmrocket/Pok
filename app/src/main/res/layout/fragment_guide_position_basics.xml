@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			tools:context=".activity.GuideActivity">
+	<!--https://www.partypoker.com/how-to-play/school/basics/position.html-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/activity_vertical_margin"
+			android:text="@string/guide_positionBasics_title1"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_positionBasics_para1"
+			/>
+
+		<!--early position-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/early_position"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_positionBasics_para_early"
+			/>
+
+		<!--Mid position-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/mid_position"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_positionBasics_para_mid"
+			/>
+
+		<!--End position-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/late_position"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_positionBasics_late_para"
+			/>
+
+		<!--Blind position-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/the_blinds"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_positionBasics_blind_para"
+			/>
+
+		<!--Fold, call or raise? (last para) -->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/guide_positionBasics_title6"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/activity_vertical_margin"
+			android:text="@string/guide_positionBasics_para6"
+			/>
+	</LinearLayout>
+
+</ScrollView>

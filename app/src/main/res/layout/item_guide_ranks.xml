@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  xmlns:tools="http://schemas.android.com/tools"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:orientation="vertical"
+			  android:paddingBottom="@dimen/activity_vertical_margin"
+			  android:paddingEnd="@dimen/activity_horizontal_margin"
+			  android:paddingLeft="@dimen/activity_horizontal_margin"
+			  android:paddingRight="@dimen/activity_horizontal_margin"
+			  android:paddingStart="@dimen/activity_horizontal_margin"
+			  android:paddingTop="@dimen/activity_vertical_margin"
+			  tools:context=".activity.GuideActivity"
+	>
+
+
+	<TextView
+		android:id="@+id/tx_rank_title"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/space_para"
+		android:textSize="@dimen/textSize_title"
+		android:textStyle="bold"
+		tools:text="Royal flush"
+		/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="@dimen/space_para"
+		android:gravity="center"
+		android:orientation="horizontal"
+		>
+
+		<ImageView
+			android:id="@+id/iv_card1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:ignore="ContentDescription"
+			tools:src="@mipmap/sa"
+			/>
+
+		<ImageView
+			android:id="@+id/iv_card2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:ignore="ContentDescription"
+			tools:src="@mipmap/sk"
+			/>
+
+		<ImageView
+			android:id="@+id/iv_card3"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:ignore="ContentDescription"
+			tools:src="@mipmap/sq"
+			/>
+
+		<ImageView
+			android:id="@+id/iv_card4"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:ignore="ContentDescription"
+			tools:src="@mipmap/sj"
+			/>
+
+		<ImageView
+			android:id="@+id/iv_card5"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:ignore="ContentDescription"
+			tools:src="@mipmap/s10"
+			/>
+	</LinearLayout>
+
+
+	<TextView
+		android:id="@+id/tx_rank_description"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		tools:text="A royal flush is an ace high straight flush. i.e A hand contains five cards in sequence, all of the same suit. For example A-K-Q-J-10 all of diamonds."
+		/>
+
+</LinearLayout>

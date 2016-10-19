@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_alignParentTop="true"
+	android:fillViewport="true"
+	android:scrollbarStyle="outsideOverlay">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="8dp"
+			android:layout_marginBottom="0dp"
+			android:background="@drawable/tablerow_background">
+
+			<TableLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="8dp"
+				android:orientation="vertical"
+				android:shrinkColumns="true"
+				android:stretchColumns="*">
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="#222222"
+					android:orientation="vertical"
+					android:padding="4dp"
+					android:weightSum="3.0">
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/early_position"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/un_raised"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raised"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="0dp"
+					android:layout_marginRight="0dp"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AA KK QQ AKs AK"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/re_raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="0dp"
+					android:layout_marginRight="0dp"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AQs AQ AJs"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="0dp"
+					android:layout_marginRight="0dp"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="KQs KJs QJs JJ"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="0dp"
+					android:layout_marginRight="0dp"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="TT 99 88 77"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginBottom="0dp"
+					android:layout_marginLeft="0dp"
+					android:layout_marginRight="0dp"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AJ ATs A9s A8s A7s"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#000000"
+						android:textSize="16sp"/>
+				</TableRow>
+			</TableLayout>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="8dp"
+			android:layout_marginBottom="0dp"
+			android:background="@drawable/tablerow_background">
+
+			<TableLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="8dp"
+				android:stretchColumns="*">
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#222222"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/mid_position"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/un_raised"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raised"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AA KK QQ AKs AK"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/re_raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AQs AQ AJs JJ"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AJ ATs AT TT"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="A9 A8s A7s 99"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="Axs KQs KQ KJs"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="KTs QJs QJ QTs"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="JTs J9 T9s 98s"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginBottom="10dp"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="88 77 66 55 44"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+			</TableLayout>
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="8dp"
+			android:layout_marginBottom="0dp"
+			android:background="@drawable/tablerow_background">
+
+			<TableLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_margin="8dp"
+				android:orientation="vertical"
+				android:shrinkColumns="true"
+				android:stretchColumns="*">
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#222222"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/late_position"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/un_raised"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raised"
+						android:textAllCaps="true"
+						android:textColor="#ffffff"
+						android:textSize="16sp"
+						android:textStyle="bold"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AA KK QQ AKs AK"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/re_raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AQs AQ AJs JJ TT"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/re_raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="AJ ATs AT KQs"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="KQ KJs KJ KTs"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="99 88 77"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="QJs QJ QTs JTs"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/raise"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="Axs Kxs"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="KT K9s K8s K7s"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="QT Q9s Q8s JT"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:background="#eeeeee"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="J9s J8s T9s T8s"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+
+				<TableRow
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginBottom="10dp"
+					android:background="#ffffff"
+					android:padding="4dp">
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="87s 76s"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/call"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1.0"
+						android:text="@string/fold"
+						android:textColor="#222222"
+						android:textSize="16sp"/>
+				</TableRow>
+			</TableLayout>
+		</LinearLayout>
+	</LinearLayout>
+</ScrollView>

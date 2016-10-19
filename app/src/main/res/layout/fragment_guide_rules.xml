@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:scrollbarStyle="outsideOverlay"
+			tools:context=".activity.GuideActivity"
+	>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="@dimen/activity_vertical_margin"
+			android:text="@string/guide_rules_p1"
+			/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_rules_para2"/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_rules_para3"/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_rules_para4"/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_rules_para5"/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_rules_para6"/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_rules_para7"/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"
+			android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
+
+	</LinearLayout>
+
+</ScrollView>

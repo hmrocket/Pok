@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:scrollbarStyle="outsideOverlay"
+			tools:context=".activity.GuideActivity">
+	<!--https://www.partypoker.com/how-to-play/school/basics/position.html-->
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:paddingBottom="@dimen/activity_vertical_margin"
+		android:paddingEnd="@dimen/activity_horizontal_margin"
+		android:paddingLeft="@dimen/activity_horizontal_margin"
+		android:paddingRight="@dimen/activity_horizontal_margin"
+		android:paddingStart="@dimen/activity_horizontal_margin"
+		android:paddingTop="@dimen/activity_vertical_margin"
+		>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_tightAgressive_title1"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<android.support.v4.widget.Space
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/space_para"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_tightAgressive_para1"
+			/>
+
+		<!--KEEP IT TIGHT-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/keep_it_tight"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_tightAgressive_para2"
+			/>
+
+		<!--STAY AGGRESSIVE-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/stay_aggressive"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_tightAgressive_para3"
+			/>
+
+		<!--GATHERING AND USING INFORMATION-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/guide_tightAgressive_title4"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_tightAgressive_para4"
+			/>
+
+		<!--CONCLUSION-->
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="@dimen/space_para"
+			android:layout_marginTop="@dimen/space_para"
+			android:text="@string/conclusion"
+			android:textSize="@dimen/textSize_title"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/guide_tightAgressive_para5"
+			/>
+
+	</LinearLayout>
+
+</ScrollView>

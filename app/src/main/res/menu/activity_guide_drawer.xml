@@ -5,32 +5,66 @@
 		<item
 			android:id="@+id/nav_rules"
 			android:icon="@android:drawable/ic_menu_camera"
-			android:title="Rules of the game"/>
+			android:title="@string/rules_of_the_game"/>
 		<item
 			android:id="@+id/nav_handRanks"
 			android:icon="@android:drawable/ic_menu_gallery"
-			android:title="Hand Ranks"/>
+			android:title="@string/hand_ranks"/>
 		<item
-			android:id="@+id/nav_manage"
+			android:id="@+id/nav_positionBasics"
 			android:icon="@android:drawable/ic_menu_manage"
-			android:title="Tools"/>
+			android:title="@string/position_basics"/>
 	</group>
 
-	<item android:title="Strategies">
+	<item
+		android:title="Mini Games"
+		android:visible="false">
 		<menu>
+			<!--TODO implement game of percentage ask the user who wins-->
 			<item
-				android:id="@+id/nav_preFlop_strategy"
+				android:id="@+id/nav_whoWins"
 				android:icon="@android:drawable/ic_menu_slideshow"
-				android:title="Pre-Flop Strategy"/>
+				android:title="Who Wins"/>
+			<!--TODO implement Odd calculator -->
 			<item
-				android:id="@+id/nav_bankroll"
+				android:id="@+id/nav_odds_calculator"
 				android:icon="@android:drawable/ic_menu_share"
-				android:title="Bankroll Management"/>
+				android:title="Odds Calculator"/>
+			<!--TODO Video poker -->
 			<item
-				android:id="@+id/nav_tight_aggressive"
+				android:id="@+id/nav_video_poker"
+				android:icon="@android:drawable/ic_menu_share"
+				android:title="Video Poker"/>
+			<!--ite will be nice to have bankroll management apps also-->
+			<item
+				android:id="@+id/nav_bankroll_app"
+				android:title="@string/bankroll_management"/>
+			<!--TODO add quiz better be from a server somewhere-->
+			<item
+				android:id="@+id/nav_quiz"
 				android:icon="@android:drawable/ic_menu_send"
-				android:title="Tight-Aggressive"/>
+				android:title="Poker Quiz"/>
 		</menu>
 	</item>
+
+	<group android:checkableBehavior="single">
+		<item android:title="@string/strategies">
+			<menu>
+				<item
+					android:id="@+id/nav_preFlop_strategy"
+					android:title="@string/pre_flop_strategy"/>
+				<item
+					android:id="@+id/nav_reading_your_opponent"
+					android:title="@string/reading_your_opponent"/>
+			<item
+				android:id="@+id/nav_bankroll"
+				android:title="@string/bankroll_management"
+				android:visible="false"/>
+			<item
+				android:id="@+id/nav_tight_aggressive"
+				android:title="@string/tight_aggressive"/>
+		</menu>
+	</item>
+	</group>
 
 </menu>

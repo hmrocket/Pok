@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.hmrocket.magicpoker.R;
+import com.hmrocket.magicpoker.fragment.StaticFragment;
+import com.hmrocket.magicpoker.fragment.guide.HandRanksFragment;
 
 public class GuideActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener {
@@ -83,24 +86,48 @@ public class GuideActivity extends AppCompatActivity
 		return super.onOptionsItemSelected(item);
 	}
 
-	@SuppressWarnings("StatementWithEmptyBody")
+	@SuppressWarnings({"StatementWithEmptyBody", "ConstantConditions"})
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 		// Handle navigation view item clicks here.
-		int id = item.getItemId();
-
-		if (id == R.id.nav_rules) {
-		} else if (id == R.id.nav_handRanks) {
-
-		} else if (id == R.id.nav_preFlop_strategy) {
-
-		} else if (id == R.id.nav_manage) {
-
-		} else if (id == R.id.nav_bankroll) {
-
-		} else if (id == R.id.nav_tight_aggressive) {
-
+		Fragment fragment = null;
+		switch (item.getItemId()) {
+			case R.id.nav_rules:
+				fragment = StaticFragment.newInstance(R.layout.fragment_guide_rules);
+				getSupportActionBar().setTitle(R.string.rules_of_the_game);
+				break;
+			case R.id.nav_handRanks:
+				fragment = HandRanksFragment.newInstance();
+				getSupportActionBar().setTitle(R.string.hand_ranks);
+				break;
+			case R.id.nav_positionBasics:
+				fragment = StaticFragment.newInstance(R.layout.fragment_guide_position_basics);
+				getSupportActionBar().setTitle(R.string.position_basics);
+				break;
+			case R.id.nav_preFlop_strategy:
+				fragment = StaticFragment.newInstance(R.layout.fragment_guide_preflop);
+				getSupportActionBar().setTitle(R.string.pre_flop_strategy);
+				break;
+			case R.id.nav_reading_your_opponent:
+				fragment = StaticFragment.newInstance(R.layout.fragment_guide_reading_your_opponent);
+				getSupportActionBar().setTitle(R.string.reading_your_opponent);
+				break;
+			case R.id.nav_bankroll:
+				// TODO write an article about this
+				fragment = StaticFragment.newInstance(R.layout.fragment_guide_backroll_mangement);
+				getSupportActionBar().setTitle(R.string.bankroll_management);
+				break;
+			case R.id.nav_tight_aggressive:
+				fragment = StaticFragment.newInstance(R.layout.fragment_guide_tight_agressive);
+				getSupportActionBar().setTitle(R.string.tight_aggressive);
+				break;
+			default:
+				// mini games and poker tools
 		}
+
+		getSupportFragmentManager().beginTransaction()
+				.replace(R.id.content_guide, fragment)
+				.commit();
 
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
