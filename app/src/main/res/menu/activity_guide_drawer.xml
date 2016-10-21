@@ -14,6 +14,26 @@
 			android:id="@+id/nav_positionBasics"
 			android:icon="@android:drawable/ic_menu_manage"
 			android:title="@string/position_basics"/>
+
+		<item android:title="@string/strategies">
+			<menu>
+				<group android:checkableBehavior="single">
+					<item
+						android:id="@+id/nav_preFlop_strategy"
+						android:title="@string/pre_flop_strategy"/>
+					<item
+						android:id="@+id/nav_reading_your_opponent"
+						android:title="@string/reading_your_opponent"/>
+					<item
+						android:id="@+id/nav_bankroll"
+						android:title="@string/bankroll_management"
+						android:visible="false"/>
+					<item
+						android:id="@+id/nav_tight_aggressive"
+						android:title="@string/tight_aggressive"/>
+				</group>
+			</menu>
+		</item>
 	</group>
 
 	<item
@@ -47,24 +67,5 @@
 		</menu>
 	</item>
 
-	<group android:checkableBehavior="single">
-		<item android:title="@string/strategies">
-			<menu>
-				<item
-					android:id="@+id/nav_preFlop_strategy"
-					android:title="@string/pre_flop_strategy"/>
-				<item
-					android:id="@+id/nav_reading_your_opponent"
-					android:title="@string/reading_your_opponent"/>
-			<item
-				android:id="@+id/nav_bankroll"
-				android:title="@string/bankroll_management"
-				android:visible="false"/>
-			<item
-				android:id="@+id/nav_tight_aggressive"
-				android:title="@string/tight_aggressive"/>
-		</menu>
-	</item>
-	</group>
 
 </menu>

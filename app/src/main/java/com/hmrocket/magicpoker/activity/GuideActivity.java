@@ -24,6 +24,8 @@ import com.hmrocket.magicpoker.fragment.guide.HandRanksFragment;
 public class GuideActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener {
 
+	private NavigationView navigationView;
+
 	public static Intent newInstance(Context context) {
 		return new Intent(context, GuideActivity.class);
 	}
@@ -50,7 +52,7 @@ public class GuideActivity extends AppCompatActivity
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
 
-		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		navigationView = (NavigationView) findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
 	}
 
@@ -89,6 +91,8 @@ public class GuideActivity extends AppCompatActivity
 	@SuppressWarnings({"StatementWithEmptyBody", "ConstantConditions"})
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+		// check the item
+		navigationView.setCheckedItem(item.getItemId());
 		// Handle navigation view item clicks here.
 		Fragment fragment = null;
 		switch (item.getItemId()) {
