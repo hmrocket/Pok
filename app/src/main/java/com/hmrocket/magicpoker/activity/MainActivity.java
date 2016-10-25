@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.hmrocket.magicpoker.R;
 import com.hmrocket.magicpoker.data.AppPreference;
@@ -21,11 +22,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		findViewById(R.id.btn_multiplayer).setOnClickListener(this);
 		findViewById(R.id.btn_store).setOnClickListener(this);
 		findViewById(R.id.btn_pokerGuide).setOnClickListener(this);
+		findViewById(R.id.btn_settings).setOnClickListener(this);
 		findViewById(R.id.btn_about).setOnClickListener(this);
 
 		preference = new AppPreference(this);
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		((TextView) findViewById(R.id.tx_playerName)).setText(preference.getUsername());
+		((TextView) findViewById(R.id.tx_level)).setText(
+				getString(R.string.lv, preference.getLevel()));
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -42,7 +51,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				startActivity(new Intent(this, StoreActivity.class));
 				break;
 			case R.id.btn_pokerGuide:
-				startActivity(GuideActivity.newInstance(this));
+				startActivity(GuideActivity.newIntent(this));
+				break;
+			case R.id.btn_settings:
+				startActivity(SettingsActivity.newIntent(this));
 				break;
 			case R.id.btn_about:
 				break;

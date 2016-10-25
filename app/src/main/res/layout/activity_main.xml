@@ -115,11 +115,11 @@
 			>
 
 			<Button
-				android:id="@+id/btn_preference"
+				android:id="@+id/btn_settings"
 				style="@style/Widget.AppCompat.Button.Colored"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/preference"
+				android:text="@string/settings"
 				android:visibility="visible"
 				/>
 

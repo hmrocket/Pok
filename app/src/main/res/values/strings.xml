@@ -29,7 +29,7 @@
 	<string name="multiplayer">MULTIPLAYER</string>
 	<string name="continue_">CONTINUE</string>
 	<string name="store">STORE</string>
-	<string name="preference">PREFERENCE</string>
+	<string name="settings">SETTINGS</string>
 	<string name="poker_guide">POKER GUIDE</string>
 	<string name="about">ABOUT</string>
 	<string name="title_activity_store">Store</string>
@@ -94,6 +94,37 @@
 	<string name="guide_tightAgressive_para4">\tPoker would be no fun if everyone\'s cards were always face up. This would mean people would always bet when they were ahead and fold when they were losing. Everyone would play perfectly and only the deal of the cards would decide the winner. \n\nIn reality, you cannot see your opponents\' hole cards and therefore the game is much more difficult and much more interesting. But a good player should always be trying to make an educated guess about their opponents\' hands. Although you can never be 100 per cent sure what they are holding, you can gather information by the way they act. \n\n The more information you have, the better you can play. \n\n As a very general rule, if an opponent bets or raises, he is telling you that his hand is strong. Similarly if he only calls, his hole cards can\'t be that bad and perhaps he is hoping to improve his hand by seeing the flop, turn or river. If he folds you don\'t have to worry about him; he has told you his cards were bad. \n\n If you have good position at the table, ideally on the button, you are last to act and so have the best chance to observe your opponents. Don\'t squander it. Pay close attention and listen to what your opponents are telling you through their decision-making.</string>
 	<string name="guide_tightAgressive_para5">\tPoker novices typically want to play too many hands and play them weakly. They check or call rather than bet or raise. They play \'loose-passive\' instead of \'tight-aggressive\'. \n\n They play from early position, when minimal information is available, instead of waiting until later when they can act on what their opponents are telling them. Sometimes they compound this error by not paying attention and not making the most of their positional advantage. \n\n In practice it is not always possible to play tight-aggressive, but it is the best style for a novice player to get started.</string>
 	<string name="conclusion">CONCLUSION</string>
+	<string name="title_activity_settings">Settings</string>
+
+	<!-- Strings related to Settings -->
+
+	<string name="pref_title_sound_effect">Sound Effects</string>
+	<string name="pref_title_background_sound">Backgournd Sound</string>
+	<string name="pref_title_username">Username</string>
+	<string name="pref_default_username">Fish</string>
+	<string name="pref_title_humanCount">Multiplayer Count</string>
+
+	<integer name="pref_humanCount_default">2</integer>
+	<string name="key_humanCount">key_humanCount</string>
+
+	<string-array name="pref_humanCount_list_titles">
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+	</string-array>
+	<string-array name="pref_humanCount_list_values">
+		<item>2</item>
+		<item>3</item>
+		<item>4</item>
+		<item>5</item>
+	</string-array>
+
+	<string name="key_soundEffect" translatable="false">key_soundEffect</string>
+	<string name="key_backgroundSound" translatable="false">key_backgroundSound</string>
+	<string name="key_username">key_username</string>
+	<string name="lv">"Lv. %1$d"</string>
+
 
 	<!--Store-->
 

@@ -26,7 +26,7 @@ public class GuideActivity extends AppCompatActivity
 
 	private NavigationView navigationView;
 
-	public static Intent newInstance(Context context) {
+	public static Intent newIntent(Context context) {
 		return new Intent(context, GuideActivity.class);
 	}
 
