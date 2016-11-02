@@ -14,9 +14,9 @@ class StoreTable {
 	final int tableId;
 	@StringRes
 	final int titleId;
-	final float price;
+	final int price;
 
-	StoreTable(@DrawableRes int tableId, @StringRes int titleId, float price) {
+	StoreTable(@DrawableRes int tableId, @StringRes int titleId, int price) {
 		this.tableId = tableId;
 		this.titleId = titleId;
 		this.price = price;

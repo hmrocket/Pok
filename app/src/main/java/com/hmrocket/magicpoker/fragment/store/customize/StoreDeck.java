@@ -13,9 +13,9 @@ class StoreDeck {
 	final int[] deckPeek;
 	@StringRes
 	final int titleId;
-	final float price;
+	final int price;
 
-	public StoreDeck(int[] deckPeek, int titleId, float price) {
+	StoreDeck(int[] deckPeek, int titleId, int price) {
 		this.deckPeek = deckPeek;
 		this.titleId = titleId;
 		this.price = price;

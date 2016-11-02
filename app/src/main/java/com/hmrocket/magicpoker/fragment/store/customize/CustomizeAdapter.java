@@ -91,7 +91,34 @@ final class CustomizeAdapter extends RecyclerView.Adapter {
 
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+		switch (holder.getItemViewType()) {
+			case TYPE_DECK:
+				DeckViewHolder deckViewHolder = (DeckViewHolder) holder;
+				StoreDeck storeDeck = getStoreDeck(position);
+				String priceString = deckViewHolder.price.getResources().getString(R.string.price_virtual_format, storeDeck.price);
+				deckViewHolder.price.setText(priceString);
+				deckViewHolder.title.setText(storeDeck.titleId);
+				for (int i = 0; i < deckViewHolder.deckPreview.length; i++) {
+					deckViewHolder.deckPreview[i].setImageResource(storeDeck.deckPeek[i]);
+				}
+				break;
+			case TYPE_TABLE:
+				TableViewHolder tableViewHolder = ((TableViewHolder) holder);
+				StoreTable storeTable = getStoreTable(position);
+				priceString = tableViewHolder.price.getResources().getString(R.string.price_virtual_format, storeTable.price);
+				tableViewHolder.price.setText(priceString);
+				tableViewHolder.title.setText(storeTable.titleId);
+				tableViewHolder.table.setImageResource(storeTable.tableId);
+				break;
+			case TYPE_BACKGROUND:
+				BackgroundViewHolder backgroundViewHolder = ((BackgroundViewHolder) holder);
+				StoreBackground storeBackground = getStoreBackground(position);
+				priceString = backgroundViewHolder.price.getResources().getString(R.string.price_virtual_format, storeBackground.price);
+				backgroundViewHolder.price.setText(priceString);
+				backgroundViewHolder.title.setText(storeBackground.titleId);
+				backgroundViewHolder.background.setImageResource(storeBackground.backgroundId);
+				break;
+		}
 	}
 
 	@Override

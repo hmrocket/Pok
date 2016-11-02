@@ -12,9 +12,9 @@ class StoreBackground {
 	final int backgroundId;
 	@StringRes
 	final int titleId;
-	final float price;
+	final int price;
 
-	public StoreBackground(int backgroundId, int titleId, float price) {
+	public StoreBackground(int backgroundId, int titleId, int price) {
 		this.backgroundId = backgroundId;
 		this.titleId = titleId;
 		this.price = price;
