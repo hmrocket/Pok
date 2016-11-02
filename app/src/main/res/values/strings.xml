@@ -124,6 +124,7 @@
 	<string name="key_backgroundSound" translatable="false">key_backgroundSound</string>
 	<string name="key_username">key_username</string>
 	<string name="lv">"Lv. %1$d"</string>
+	<string name="buy">BUY</string>
 
 
 	<!--Store-->

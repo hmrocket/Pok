@@ -1,13 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			 xmlns:tools="http://schemas.android.com/tools"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent"
-			 tools:context=".fragment.store.CustomizeFragment">
+<android.support.v7.widget.RecyclerView
+	android:id="@+id/recyclerview"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".fragment.store.customize.CustomizeFragment">
 
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:text="show a list of card, table and background room"
-		/>
 
-</FrameLayout>
+</android.support.v7.widget.RecyclerView>
