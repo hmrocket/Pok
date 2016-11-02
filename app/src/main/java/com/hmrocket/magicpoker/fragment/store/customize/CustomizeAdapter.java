@@ -133,7 +133,7 @@ final class CustomizeAdapter extends RecyclerView.Adapter {
 	}
 
 	//	----------------- Holders (Deck, Table, Background)
-	private final static class DeckViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+	private final static class DeckViewHolder extends RecyclerView.ViewHolder {
 		ImageView[] deckPreview;
 		TextView title;
 		TextView price;
@@ -146,13 +146,9 @@ final class CustomizeAdapter extends RecyclerView.Adapter {
 			buy = (Button) itemView.findViewById(R.id.btn_buy);
 
 			int[] ids = new int[]{R.id.iv_card1, R.id.iv_card2, R.id.iv_card3, R.id.iv_card4, R.id.iv_card5};
+			deckPreview = new ImageView[ids.length];
 			for (int i = 0; i < ids.length; i++)
 				deckPreview[i] = (ImageView) itemView.findViewById(ids[i]);
-		}
-
-		@Override
-		public void onClick(View view) {
-
 		}
 	}
 
