@@ -137,6 +137,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 			// guidelines.
 			bindPreferenceSummaryToValue(findPreference(getString(R.string.key_humanCount)));
 			bindPreferenceSummaryToValue(findPreference(getString(R.string.key_username)));
+			// customization
+			bindPreferenceSummaryToValue(findPreference(getString(R.string.key_deck)));
+			bindPreferenceSummaryToValue(findPreference(getString(R.string.key_table)));
+			bindPreferenceSummaryToValue(findPreference(getString(R.string.key_background)));
 		}
 
 		@Override

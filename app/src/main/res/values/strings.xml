@@ -101,10 +101,16 @@
 	<string name="pref_title_sound_effect">Sound Effects</string>
 	<string name="pref_title_background_sound">Backgournd Sound</string>
 	<string name="pref_title_username">Username</string>
+	<string name="pref_title_deck">Deck</string>
+	<string name="pref_title_table">Table</string>
+	<string name="pref_title_background">Background</string>
 	<string name="pref_default_username">Fish</string>
 	<string name="pref_title_humanCount">Multiplayer Count</string>
 
 	<integer name="pref_humanCount_default">2</integer>
+	<integer name="pref_deck_default">2</integer>
+	<integer name="pref_table_default">2</integer>
+	<integer name="pref_background_default">2</integer>
 	<string name="key_humanCount">key_humanCount</string>
 
 	<string-array name="pref_humanCount_list_titles">
@@ -120,6 +126,48 @@
 		<item>5</item>
 	</string-array>
 
+	<string name="key_table" translatable="false">key_table</string>
+	<string-array name="pref_table_list_titles">
+		<item>@string/table_blue_title</item>
+		<item>@string/table_skull_title</item>
+		<item>@string/table_blue_title</item>
+		<item>@string/table_pro_title</item>
+	</string-array>
+	<string-array name="pref_table_list_values">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+	</string-array>
+
+	<string name="key_deck" translatable="false">key_deck</string>
+	<string-array name="pref_deck_list_titles">
+		<item>"deck 1"</item>
+		<item>"deck 2"</item>
+		<item>"deck 3"</item>
+		<item>"deck 4"</item>
+	</string-array>
+	<string-array name="pref_deck_list_values">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+	</string-array>
+
+	<string name="key_background" translatable="false">key_background</string>
+	<string-array name="pref_background_list_titles">
+		<item>"background 1"</item>
+		<item>"background 2"</item>
+		<item>"background 3"</item>
+		<item>"background 4"</item>
+	</string-array>
+	<string-array name="pref_background_list_values">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
+	</string-array>
+
 	<string name="key_soundEffect" translatable="false">key_soundEffect</string>
 	<string name="key_backgroundSound" translatable="false">key_backgroundSound</string>
 	<string name="key_username">key_username</string>
@@ -132,6 +180,7 @@
 	<string name="table_skull_title">Metal Bar</string>
 	<string name="table_pro_title">Pro table</string>
 	<string name="table_blue_title">Flat design table</string>
+	<string name="title_sound">Sound</string>
 
 
 </resources>
