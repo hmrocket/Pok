@@ -124,10 +124,14 @@
 	<string name="key_backgroundSound" translatable="false">key_backgroundSound</string>
 	<string name="key_username">key_username</string>
 	<string name="lv">"Lv. %1$d"</string>
+	<!--Store-->
+
 	<string name="buy">BUY</string>
 	<string name="price_virtual_format">%1$d Gold</string>
+	<string name="table_green_title">God of death</string>
+	<string name="table_skull_title">Metal Bar</string>
+	<string name="table_pro_title">Pro table</string>
+	<string name="table_blue_title">Flat design table</string>
 
-
-	<!--Store-->
 
 </resources>

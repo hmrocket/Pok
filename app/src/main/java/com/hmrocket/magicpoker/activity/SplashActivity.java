@@ -15,7 +15,7 @@ public class SplashActivity extends Activity {
     /**
 	 * The number of milliseconds to wait before launching MainActivity
 	 */
-	private static final int AUTO_MAIN_DELAY_MILLIS = 500;
+	private static final int AUTO_MAIN_DELAY_MILLIS = 0;
 	private final Runnable launchMain = new Runnable() {
 		@Override
 		public void run() {
