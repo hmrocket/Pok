@@ -182,5 +182,23 @@
 	<string name="table_blue_title">Flat design table</string>
 	<string name="title_sound">Sound</string>
 
+	<!-- About -->
+	<string name="title_activity_about">AboutActivity</string>
+	<string name="about_long_text">This project would be same without the help of many, if you are a developer and would like to work on this project, please do not heistate to contact me.\n
+		\nIf you want to have your own article included on the guide section let me know.\n
+		\n<b>Design</b>\n
+		- Matt Joseph: CircularSeekBar https://github.com/devadvance/circularseekbar\n
+		- Mauricio Duque
+		\n<b>Sound</b>\n
+		- LittleRobotSoundFactory\n
+		- Tomlija\n
+		- www.bensound.com (background soung)\n
+		- Kenney Vleugels (www.kenney.nl)
+		\n<b>Articles</b>\n
+		- RuffPoker.com\n
+		- partypoker.com\n
+		- pokerschoolonline.com\n
+	</string>
+
 
 </resources>
