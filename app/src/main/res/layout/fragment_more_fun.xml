@@ -2,7 +2,7 @@
 			 xmlns:tools="http://schemas.android.com/tools"
 			 android:layout_width="match_parent"
 			 android:layout_height="match_parent"
-			 tools:context=".MoreFunFragment">
+			 tools:context=".fragment.store.MoreFunFragment">
 	<!--
 		<com.google.android.gms.plus.PlusOneButton
 			android:id="@+id/plus_one_button"
