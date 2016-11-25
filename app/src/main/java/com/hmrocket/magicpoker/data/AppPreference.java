@@ -14,6 +14,7 @@ public class AppPreference {
 
 	public static final String KEY_GOLD = "gold";
 	private static final String KEY_LEVEL = "level";
+	private static final String ZERO = "0";
 	// public static final String APP_CONFIG_NAME = "app_config";
 	private final String KEY_MULTI_COUNT;
 	private final String KEY_SOUND_EFFECT;
@@ -35,9 +36,9 @@ public class AppPreference {
 	/**
 	 * @return the number of humans for multi players
 	 */
-	public String getHumanCount() {
+	public int getHumanCount() {
 		// human count default is 2 (also defined in the xml)
-		return preferences.getString(KEY_MULTI_COUNT, null);
+		return Integer.parseInt(preferences.getString(KEY_MULTI_COUNT, "2"));
 	}
 
 	public void levelUp() {
@@ -81,17 +82,17 @@ public class AppPreference {
 		preferences.edit().putInt(KEY_GOLD, gold).apply();
 	}
 
-	public String getTableId() {
-		return preferences.getString("key_table", null);
+	public int getTableId() {
+		return Integer.parseInt(preferences.getString("key_table", ZERO));
 	}
 
-	public String getDeckId() {
-		// the same
-		return preferences.getString("key_deck", null);
+	public int getDeckId() {
+		// first is the default
+		return Integer.parseInt(preferences.getString("key_deck", ZERO));
 	}
 
-	public String getBackgroundId() {
-		// the same
-		return preferences.getString("key_background", null);
+	public int getBackgroundId() {
+		// first is the default
+		return Integer.parseInt(preferences.getString("key_background", ZERO));
 	}
 }
