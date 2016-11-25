@@ -12,9 +12,9 @@ import com.hmrocket.magicpoker.R;
 @SuppressWarnings("WeakerAccess")
 public class AppPreference {
 
+	public static final String KEY_GOLD = "gold";
 	private static final String KEY_LEVEL = "level";
 	// public static final String APP_CONFIG_NAME = "app_config";
-
 	private final String KEY_MULTI_COUNT;
 	private final String KEY_SOUND_EFFECT;
 	private final String KEY_BACKGROUND_SOUND;
@@ -35,9 +35,9 @@ public class AppPreference {
 	/**
 	 * @return the number of humans for multi players
 	 */
-	public int getHumanCount() {
+	public String getHumanCount() {
 		// human count default is 2 (also defined in the xml)
-		return preferences.getInt(KEY_MULTI_COUNT, 2);
+		return preferences.getString(KEY_MULTI_COUNT, null);
 	}
 
 	public void levelUp() {
@@ -71,5 +71,27 @@ public class AppPreference {
 
 	public String getUsername() {
 		return preferences.getString(KEY_USERNAME, DEFAULT_USERNAME);
+	}
+
+	public int getGold() {
+		return preferences.getInt(KEY_GOLD, 0);
+	}
+
+	public void setGold(int gold) {
+		preferences.edit().putInt(KEY_GOLD, gold).apply();
+	}
+
+	public String getTableId() {
+		return preferences.getString("key_table", null);
+	}
+
+	public String getDeckId() {
+		// the same
+		return preferences.getString("key_deck", null);
+	}
+
+	public String getBackgroundId() {
+		// the same
+		return preferences.getString("key_background", null);
 	}
 }
