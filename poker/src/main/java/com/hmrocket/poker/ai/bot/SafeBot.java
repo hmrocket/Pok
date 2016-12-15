@@ -73,7 +73,7 @@ public class SafeBot extends Player {
 							if (turn.isRaisedBefore() || turn.isRaisedAfter())
 								call(turn.getAmountToContinue());
 							else if (turn.isEveryoneFoldOnPreflop())
-								fold();
+								fold(turn);
 							else raise(calculateRaise(turn));
 							break;
 						case MID_POSITION:
@@ -92,7 +92,7 @@ public class SafeBot extends Player {
 						case EARLY:
 							if (turn.isRaisedBefore() || turn.isRaisedAfter())
 								call(turn.getAmountToContinue());
-							else fold();
+							else fold(turn);
 							break;
 						case MID_POSITION:
 						case BLINDS:
@@ -110,7 +110,7 @@ public class SafeBot extends Player {
 			switch (getHandHoldem().getHand().getMin().getRank()) {
 				case KING: //AK
 					if (turn.isRaisedAfter())
-						fold();
+						fold(turn);
 					else raise(calculateRaise(turn));
 					break;
 				case QUEEN: //AQ to AT
@@ -118,19 +118,19 @@ public class SafeBot extends Player {
 				case TEN:
 					switch (turn.getPokerPosition()) {
 						case EARLY:
-							fold();
+							fold(turn);
 							break;
 						case MID_POSITION:
 						case BLINDS:
 							if (turn.isRaisedAfter() || turn.isRaisedBefore()) {
-								fold();
+								fold(turn);
 							} else if (turn.isEveryoneFoldOnPreflop()) {
 								raise(calculateRaise(turn));
 							} else call(turn.getAmountToContinue());
 							break;
 						case LATE:
 							if (turn.isRaisedAfter() || turn.isRaisedBefore()) {
-								fold();
+								fold(turn);
 							} else {
 								raise(calculateRaise(turn));
 							}
@@ -142,35 +142,35 @@ public class SafeBot extends Player {
 					if (getHandHoldem().getHand().isSuited()) { // Suited Aces
 						switch (turn.getPokerPosition()) {
 							case EARLY:
-								fold();
+								fold(turn);
 								break;
 							case MID_POSITION:
 							case BLINDS:
 								if (turn.isRaisedBefore() || turn.isRaisedAfter()) {
-									fold();
+									fold(turn);
 								} else if (turn.isEveryoneFoldOnPreflop()) {
 									raise(calculateRaise(turn));
 								} else call(turn.getAmountToContinue());
 								break;
 							case LATE:
 								if (turn.isRaisedBefore() || turn.isRaisedAfter()) {
-									fold();
+									fold(turn);
 								} else raise(calculateRaise(turn));
 								break;
 						}
-					} else fold();
+					} else fold(turn);
 					break;
 			}
 		} else if (isFaceCards()) {
 			switch (turn.getPokerPosition()) {
 				case EARLY:
 				case MID_POSITION:
-					fold();
+					fold(turn);
 					break;
 				case LATE:
 				case BLINDS:
 					if (turn.isRaisedBefore() || turn.isRaisedAfter())
-						fold();
+						fold(turn);
 					else if (turn.isEveryoneFoldOnPreflop())
 						raise(calculateRaise(turn));
 					else call(turn.getAmountToContinue());
@@ -180,23 +180,23 @@ public class SafeBot extends Player {
 			switch (turn.getPokerPosition()) {
 				case EARLY:
 				case MID_POSITION:
-					fold();
+					fold(turn);
 					break;
 				case LATE:
 					if (turn.isEveryoneFoldOnPreflop())
 						raise(calculateRaise(turn));
 					else if (turn.isRaisedBefore() || turn.isRaisedAfter())
-						fold();
+						fold(turn);
 					else call(turn.getAmountToContinue());
 					break;
 				case BLINDS:
 					if (turn.isEveryoneFoldOnPreflop() || turn.isRaisedBefore() || turn.isRaisedAfter())
-						fold();
+						fold(turn);
 					else call(turn.getAmountToContinue());
 					break;
 			}
 		} else {
-			fold();
+			fold(turn);
 		}
 	}
 
@@ -222,11 +222,11 @@ public class SafeBot extends Player {
 			System.out.println("MakeMove: ror=" + ror + ", random=" + per + " win=" + winPercentage);
 		if (ror < 0.8) {
 			if (per < 95)
-				fold();
+				fold(turn);
 			else raise(calculateRaise(turn));
 		} else if (ror < 1.0) {
 			if (per < 80)
-				fold();
+				fold(turn);
 			else if (per < 85)
 				call(turn.getAmountToContinue());
 			else raise(calculateRaise(turn));
@@ -293,4 +293,9 @@ public class SafeBot extends Player {
 				&& handHoldem.getHand().getMax().getRank().compareTo(Rank.THREE) > 0;
 	}
 
+	public void fold(Turn turn) {
+		if (turn.getAmountToContinue() > getBet())
+			super.fold();
+		else super.call(turn.getAmountToContinue());
+	}
 }
